@@ -1,1 +1,402 @@
-<!DOCTYPE html> <html lang="de"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Total Verschnurrt – Raum 4</title> <style> * { box-sizing: border-box; } body { margin: 0; min-height: 100vh; font-family: Arial, sans-serif; background: #f2f0e8; color: #222; } .app { width: 100%; max-width: 500px; margin: auto; padding: 16px; } /* ========================================= TITEL ========================================= */ .header { text-align: center; margin-bottom: 25px; } .title { font-size: 30px; font-weight: 900; margin-bottom: 6px; } .subtitle { font-size: 18px; font-weight: bold; } /* ========================================= MENÜ ========================================= */ .menu { background: white; padding: 18px; border-radius: 15px; box-shadow: 0 2px 9px #0002; } label { display: block; font-weight: bold; margin: 5px 0 7px; } select, button { width: 100%; font-size: 18px; padding: 13px; border-radius: 10px; } select { border: 1px solid #aaa; background: white; } button { margin-top: 16px; border: 0; background: #222; color: white; font-weight: bold; cursor: pointer; -webkit-tap-highlight-color: transparent; } button:active { transform: scale(.98); } /* ========================================= SPIEL ========================================= */ .game { display: none; text-align: center; } /* ========================================= AUFGABE / TIMER ========================================= */ .timer-screen { min-height: calc(100vh - 32px); display: flex; flex-direction: column; align-items: center; justify-content: center; } .timer { font-size: 120px; line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums; } .timer.warning { color: #d49b00; } .timer.danger { color: #d00000; } .time-label { margin-top: 20px; font-size: 22px; font-weight: bold; } /* ========================================= ZEIT ABGELAUFEN ========================================= */ .finished-screen { display: none; min-height: calc(100vh - 32px); align-items: center; justify-content: center; flex-direction: column; text-align: center; } .finished-title { font-size: 42px; font-weight: 900; line-height: 1.1; color: #a00000; } .finished-subtitle { margin-top: 20px; font-size: 21px; font-weight: bold; line-height: 1.4; } /* ========================================= NEUE RUNDE ========================================= */ .new-round { display: none; margin-top: 25px; background: white; color: #222; border: 1px solid #888; } </style> </head> <body> <div class="app"> <!-- ===================================== STARTSEITE ===================================== --> <div class="menu" id="menu"> <div class="header"> <div class="title"> TOTAL VERSCHNURRT </div> <div class="subtitle"> RAUM 4 </div> </div> <label for="task"> Aufgabe </label> <select id="task"> <optgroup label="🟢 Leicht"> <option value="easy1"> Leicht 1 </option> <option value="easy2"> Leicht 2 </option> <option value="easy3"> Leicht 3 </option> <option value="easy4"> Leicht 4 </option> <option value="easy5"> Leicht 5 </option> <option value="easy6"> Leicht 6 </option> </optgroup> <optgroup label="🟡 Mittel"> <option value="medium1"> Mittel 1 </option> <option value="medium2"> Mittel 2 </option> <option value="medium3"> Mittel 3 </option> <option value="medium4"> Mittel 4 </option> <option value="medium5"> Mittel 5 </option> <option value="medium6"> Mittel 6 </option> </optgroup> <optgroup label="🟠 Schwer"> <option value="hard1"> Schwer 1 </option> <option value="hard2"> Schwer 2 </option> <option value="hard3"> Schwer 3 </option> <option value="hard4"> Schwer 4 </option> <option value="hard5"> Schwer 5 </option> <option value="hard6"> Schwer 6 </option> </optgroup> <optgroup label="🔴 Sehr schwer"> <option value="veryhard1"> Sehr schwer 1 </option> <option value="veryhard2"> Sehr schwer 2 </option> <option value="veryhard3"> Sehr schwer 3 </option> <option value="veryhard4"> Sehr schwer 4 </option> <option value="veryhard5"> Sehr schwer 5 </option> <option value="veryhard6"> Sehr schwer 6 </option> </optgroup> </select> <button type="button" id="startButton"> Runde starten </button> </div> <!-- ===================================== TIMERSEITE ===================================== --> <div class="game" id="game"> <div class="timer-screen" id="timerScreen"> <div class="timer" id="timer"> 0 </div> <div class="time-label"> SCHNÜRE VERFOLGEN </div> </div> <!-- =================================== ZEIT ABGELAUFEN ==================================== --> <div class="finished-screen" id="finishedScreen"> <div class="finished-title"> ZEIT<br> ABGELAUFEN </div> <div class="finished-subtitle"> Eure gemeinsame Entscheidung<br> muss jetzt auf dem Tisch liegen. </div> <button type="button" class="new-round" id="newRoundButton"> Neue Runde </button> </div> </div> <script> /* ========================================= AUFGABEN ========================================= */ /* Die Zahlenkombinationen sind die hinterlegten Kombinationen der jeweiligen Aufgabe. Sie werden hier bewusst nicht auf dem Bildschirm angezeigt. So kann die Aufgabe auf dem Tisch bzw. im eigentlichen Spielmaterial verwendet werden. */ const tasks = { /* --------------------------------------- LEICHT 1 Schnur --------------------------------------- */ easy1: { difficulty: "easy", combination: [1] }, easy2: { difficulty: "easy", combination: [2] }, easy3: { difficulty: "easy", combination: [3] }, easy4: { difficulty: "easy", combination: [4] }, easy5: { difficulty: "easy", combination: [1, 3] }, easy6: { difficulty: "easy", combination: [2, 4] }, /* --------------------------------------- MITTEL 2 Schnüre --------------------------------------- */ medium1: { difficulty: "medium", combination: [1, 3] }, medium2: { difficulty: "medium", combination: [1, 4] }, medium3: { difficulty: "medium", combination: [2, 3] }, medium4: { difficulty: "medium", combination: [2, 4] }, medium5: { difficulty: "medium", combination: [3, 1] }, medium6: { difficulty: "medium", combination: [4, 2] }, /* --------------------------------------- SCHWER 3 Schnüre --------------------------------------- */ hard1: { difficulty: "hard", combination: [1, 3, 2] }, hard2: { difficulty: "hard", combination: [1, 4, 3] }, hard3: { difficulty: "hard", combination: [2, 1, 4] }, hard4: { difficulty: "hard", combination: [2, 4, 1] }, hard5: { difficulty: "hard", combination: [3, 1, 4] }, hard6: { difficulty: "hard", combination: [4, 2, 3] }, /* --------------------------------------- SEHR SCHWER 4 Schnüre --------------------------------------- */ veryhard1: { difficulty: "veryhard", combination: [1, 3, 4, 2] }, veryhard2: { difficulty: "veryhard", combination: [1, 4, 2, 3] }, veryhard3: { difficulty: "veryhard", combination: [2, 1, 3, 4] }, veryhard4: { difficulty: "veryhard", combination: [2, 4, 3, 1] }, veryhard5: { difficulty: "veryhard", combination: [3, 1, 4, 2] }, veryhard6: { difficulty: "veryhard", combination: [4, 2, 1, 3] } }; /* ========================================= SCHWIERIGKEITEN / ZEITEN ========================================= */ const difficultyData = { easy: { observe: 15 }, medium: { observe: 20 }, hard: { observe: 30 }, veryhard: { observe: 25 } }; /* ========================================= ELEMENTE ========================================= */ const menu = document.getElementById( "menu" ); const game = document.getElementById( "game" ); const taskSelect = document.getElementById( "task" ); const startButton = document.getElementById( "startButton" ); const timerScreen = document.getElementById( "timerScreen" ); const timer = document.getElementById( "timer" ); const finishedScreen = document.getElementById( "finishedScreen" ); const newRoundButton = document.getElementById( "newRoundButton" ); /* ========================================= VARIABLEN ========================================= */ let interval = null; let currentTask = null; /* ========================================= TIMER STOPPEN ========================================= */ function stopTimer() { if (interval !== null) { clearInterval(interval); interval = null; } } /* ========================================= KLINGELTON ========================================= */ function bellSound() { try { const AudioContext = window.AudioContext || window.webkitAudioContext; const context = new AudioContext(); /* Zwei leicht versetzte Töne erzeugen einen deutlich hörbaren Klingel-/Glockenklang. */ const frequencies = [ 880, 1174 ]; frequencies.forEach( function(frequency, index) { const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.type = "sine"; oscillator.frequency.value = frequency; const startTime = context.currentTime + index * 0.08; gain.gain.setValueAtTime( 0.0001, startTime ); gain.gain.exponentialRampToValueAtTime( 0.5, startTime + 0.02 ); gain.gain.exponentialRampToValueAtTime( 0.0001, startTime + 0.9 ); oscillator.connect( gain ); gain.connect( context.destination ); oscillator.start( startTime ); oscillator.stop( startTime + 1 ); } ); } catch (error) { console.log( "Klingelton konnte nicht abgespielt werden." ); } } /* ========================================= TIMER STARTEN ========================================= */ function startTimer(seconds) { stopTimer(); let time = seconds; timer.textContent = time; timer.className = "timer"; interval = setInterval( function() { time--; timer.textContent = time; if ( time <= 5 && time > 0 ) { timer.classList.add( "danger" ); } if ( time <= 0 ) { stopTimer(); timer.textContent = "0"; /* Der Klingelton ertönt exakt beim Ablauf der Zeit. */ bellSound(); showFinishedScreen(); } }, 1000 ); } /* ========================================= ZEIT ABGELAUFEN ========================================= */ function showFinishedScreen() { timerScreen.style.display = "none"; finishedScreen.style.display = "flex"; /* Der Button "Neue Runde" wird erst nach Ablauf der Zeit sichtbar. */ newRoundButton.style.display = "block"; } /* ========================================= RUNDE STARTEN ========================================= */ startButton.addEventListener( "click", function() { const taskId = taskSelect.value; currentTask = tasks[taskId]; if (!currentTask) { return; } const data = difficultyData[ currentTask.difficulty ]; /* Startseite verschwindet. */ menu.style.display = "none"; game.style.display = "block"; /* Timerseite anzeigen. */ timerScreen.style.display = "flex"; finishedScreen.style.display = "none"; newRoundButton.style.display = "none"; /* Timer starten. */ startTimer( data.observe ); } ); /* ========================================= NEUE RUNDE ========================================= */ newRoundButton.addEventListener( "click", function() { stopTimer(); currentTask = null; /* Zurück zur Startseite. */ game.style.display = "none"; menu.style.display = "block"; timerScreen.style.display = "flex"; finishedScreen.style.display = "none"; newRoundButton.style.display = "none"; timer.textContent = "0"; timer.className = "timer"; } ); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Verschnurrt – Raum 4</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f2f0e8;
+  color: #222;
+}
+.app {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  padding: 16px;
+}
+.header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.title {
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.subtitle {
+  font-size: 16px;
+  color: #555;
+}
+.menu {
+  background: white;
+  padding: 16px;
+  border-radius: 15px;
+  box-shadow: 0 2px 9px #0002;
+}
+label {
+  display: block;
+  font-weight: bold;
+  margin: 10px 0 5px;
+}
+select,
+button {
+  width: 100%;
+  font-size: 18px;
+  padding: 12px;
+  border-radius: 10px;
+}
+select {
+  border: 1px solid #aaa;
+  background: white;
+}
+button {
+  margin-top: 14px;
+  border: 0;
+  background: #222;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+button:active {
+  transform: scale(.98);
+}
+.task-preview {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f0f0f0;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: left;
+  display: none;
+}
+.task-preview strong {
+  font-weight: 900;
+}
+.game {
+  display: none;
+  text-align: center;
+  padding-top: 10px;
+}
+.game-task {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 9px #0002;
+  font-size: 26px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  text-align: center;
+  display: none;
+}
+.timer-box {
+  margin-top: 10px;
+  padding: 36px 20px;
+  border-radius: 18px;
+  background: #222;
+  color: white;
+}
+.timer {
+  font-size: 110px;
+  line-height: 1;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.timer.warning {
+  color: #ffd400;
+}
+.timer.danger {
+  color: #ff4b4b;
+}
+.status {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 15px;
+  background: white;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+.status.observe {
+  color: #0645ad;
+}
+.status.transition {
+  color: #a00000;
+  background: #fff1f1;
+}
+.status.decide {
+  color: #a00000;
+  background: #fff1f1;
+}
+.status.finished {
+  color: #16832c;
+  background: #e8f5e9;
+}
+.secondary {
+  background: white;
+  color: #222;
+  border: 1px solid #888;
+  margin-top: 20px;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="title">TOTAL VERSCHNURRT</div>
+    <div class="subtitle">Raum 4</div>
+  </div>
+
+  <div class="menu" id="menu">
+    <label for="difficulty">Schwierigkeit</label>
+    <select id="difficulty">
+      <option value="easy">🟢 Leicht (1 Schnur) – 25 Sek.</option>
+      <option value="medium">🟡 Mittel (2 Schnüre) – 30 Sek.</option>
+      <option value="hard">🟠 Schwer (3 Schnüre) – 35 Sek.</option>
+      <option value="veryhard">🔴 Sehr schwer (4 Schnüre) – 40 Sek.</option>
+    </select>
+    <div class="task-preview" id="taskPreview"></div>
+    <button type="button" id="startButton">Runde starten</button>
+  </div>
+
+  <div class="game" id="game">
+    <div class="game-task" id="gameTask"></div>
+    <div class="timer-box">
+      <div class="timer" id="timer">0</div>
+    </div>
+    <div class="status observe" id="status">Zeit läuft …</div>
+    <button type="button" class="secondary" id="newRoundButton">Neue Runde</button>
+  </div>
+</div>
+
+<script>
+const times = {
+  easy: 25,
+  medium: 30,
+  hard: 35,
+  veryhard: 40
+};
+const TRANSITION_TIME = 5;
+const DECIDE_TIME = 20;
+
+const tasks = {
+  easy: [
+    { full: "Unter welcher Zahl ist die <strong>rote</strong> Kugel versteckt?<br><br>Verfolge die rote Schnur nur mit den Augen.", short: "<strong>Rot</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>orange</strong> Kugel versteckt?<br><br>Verfolge die orange Schnur nur mit den Augen.", short: "<strong>Orange</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge die grüne Schnur nur mit den Augen.", short: "<strong>Grün</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die gelbe Schnur nur mit den Augen.", short: "<strong>Gelb</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>rote</strong> Kugel versteckt?<br><br>Verfolge die rote Schnur nur mit den Augen.", short: "<strong>Rot</strong>" },
+    { full: "Unter welcher Zahl ist die <strong>orange</strong> Kugel versteckt?<br><br>Verfolge die orange Schnur nur mit den Augen.", short: "<strong>Orange</strong>" }
+  ],
+  medium: [
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong> und die <strong>orange</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Grün</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge beide Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Grün</strong>" }
+  ],
+  hard: [
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>orange</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong>, die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>orange</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>rote</strong>, die <strong>orange</strong> und die <strong>grüne</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong>" },
+    { full: "Unter welchen Zahlen sind die <strong>orange</strong>, die <strong>grüne</strong> und die <strong>gelbe</strong> Kugel versteckt?<br><br>Verfolge die drei Schnüre nur mit den Augen.", short: "<strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" }
+  ],
+  veryhard: [
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" },
+    { full: "Unter welchen Zahlen sind <strong>alle vier</strong> Kugeln versteckt?<br><br>Verfolge die rote, orange, grüne und gelbe Schnur nur mit den Augen.", short: "<strong>Rot</strong> + <strong>Orange</strong> + <strong>Grün</strong> + <strong>Gelb</strong>" }
+  ]
+};
+
+const taskIndex = {
+  easy: 0,
+  medium: 0,
+  hard: 0,
+  veryhard: 0
+};
+
+const menu = document.getElementById("menu");
+const game = document.getElementById("game");
+const difficulty = document.getElementById("difficulty");
+const taskPreview = document.getElementById("taskPreview");
+const gameTask = document.getElementById("gameTask");
+const startButton = document.getElementById("startButton");
+const timer = document.getElementById("timer");
+const status = document.getElementById("status");
+const newRoundButton = document.getElementById("newRoundButton");
+
+let interval = null;
+let currentTask = null;
+let currentTime = 25;
+
+function playKlingelton() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.value = 880;
+    gain1.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain1.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + 0.02);
+    gain1.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(ctx.currentTime);
+    osc1.stop(ctx.currentTime + 0.35);
+
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.value = 660;
+    gain2.gain.setValueAtTime(0.0001, ctx.currentTime + 0.4);
+    gain2.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + 0.42);
+    gain2.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.75);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(ctx.currentTime + 0.4);
+    osc2.stop(ctx.currentTime + 0.75);
+  } catch (e) {
+    console.log("Klingelton konnte nicht abgespielt werden.");
+  }
+}
+
+function stopTimer() {
+  clearInterval(interval);
+  interval = null;
+}
+
+function startObservationTimer(seconds) {
+  stopTimer();
+  gameTask.style.display = "block";
+  gameTask.innerHTML = currentTask.short;
+
+  let time = seconds;
+  timer.textContent = time;
+  timer.className = "timer";
+  status.className = "status observe";
+  status.textContent = "Nur mit den Augen verfolgen!";
+  newRoundButton.style.display = "none";
+
+  interval = setInterval(function () {
+    time--;
+    timer.textContent = time;
+
+    if (time <= 10 && time > 5) {
+      timer.classList.add("warning");
+    }
+    if (time <= 5) {
+      timer.classList.remove("warning");
+      timer.classList.add("danger");
+    }
+
+    if (time <= 0) {
+      stopTimer();
+      playKlingelton();
+      startTransition();
+    }
+  }, 1000);
+}
+
+function startTransition() {
+  gameTask.style.display = "none";
+
+  timer.textContent = "–";
+  timer.className = "timer";
+  status.className = "status transition";
+  status.innerHTML =
+    "Legt eure gemeinsame Entscheidung<br>" +
+    "und Einsprüche auf den Tisch.";
+
+  let wait = TRANSITION_TIME;
+  interval = setInterval(function () {
+    wait--;
+    if (wait <= 0) {
+      stopTimer();
+      startDecideTimer();
+    }
+  }, 1000);
+}
+
+function startDecideTimer() {
+  let time = DECIDE_TIME;
+  timer.textContent = time;
+  timer.className = "timer danger";
+  status.className = "status decide";
+  status.innerHTML =
+    "Legt eure gemeinsame Entscheidung<br>" +
+    "und Einsprüche innerhalb von<br>" +
+    "<strong>20 Sekunden</strong> auf den Tisch.";
+
+  interval = setInterval(function () {
+    time--;
+    timer.textContent = time;
+
+    if (time <= 0) {
+      stopTimer();
+      playKlingelton();
+      timer.textContent = "0";
+      status.className = "status finished";
+      status.innerHTML =
+        "ZEIT ABGELAUFEN<br><br>" +
+        "Die Entscheidung und Einsprüche<br>müssen jetzt auf dem Tisch liegen.";
+      newRoundButton.style.display = "block";
+    }
+  }, 1000);
+}
+
+function pickAndShowTask() {
+  const level = difficulty.value;
+  const list = tasks[level];
+
+  currentTask = list[taskIndex[level]];
+  currentTime = times[level];
+  taskIndex[level] = (taskIndex[level] + 1) % list.length;
+
+  taskPreview.innerHTML =
+    currentTask.full +
+    "<br><br><strong>" + currentTime + " Sekunden</strong>";
+  taskPreview.style.display = "block";
+}
+
+difficulty.addEventListener("change", pickAndShowTask);
+
+startButton.addEventListener("click", function () {
+  if (!currentTask) pickAndShowTask();
+  menu.style.display = "none";
+  game.style.display = "block";
+  startObservationTimer(currentTime);
+});
+
+newRoundButton.addEventListener("click", function () {
+  stopTimer();
+  game.style.display = "none";
+  menu.style.display = "block";
+  gameTask.style.display = "none";
+  timer.textContent = "0";
+  status.textContent = "Zeit läuft …";
+  status.className = "status observe";
+  newRoundButton.style.display = "none";
+  pickAndShowTask();
+});
+
+pickAndShowTask();
+</script>
+</body>
+</html>
