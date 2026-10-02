@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -40,7 +41,7 @@ body {
 .header {
   text-align: center;
 
-  margin-bottom: 16px;
+  margin-bottom: 25px;
 }
 
 .title {
@@ -48,13 +49,13 @@ body {
 
   font-weight: 900;
 
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .subtitle {
-  font-size: 16px;
+  font-size: 18px;
 
-  color: #555;
+  font-weight: bold;
 }
 
 
@@ -65,7 +66,7 @@ body {
 .menu {
   background: white;
 
-  padding: 16px;
+  padding: 18px;
 
   border-radius: 15px;
 
@@ -77,7 +78,7 @@ label {
 
   font-weight: bold;
 
-  margin: 10px 0 5px;
+  margin: 5px 0 7px;
 }
 
 select,
@@ -86,7 +87,7 @@ button {
 
   font-size: 18px;
 
-  padding: 12px;
+  padding: 13px;
 
   border-radius: 10px;
 }
@@ -98,7 +99,7 @@ select {
 }
 
 button {
-  margin-top: 14px;
+  margin-top: 16px;
 
   border: 0;
 
@@ -119,27 +120,6 @@ button:active {
 
 
 /* =========================================
-   INFO
-========================================= */
-
-.info {
-  margin-top: 15px;
-
-  padding: 13px;
-
-  border-radius: 11px;
-
-  background: #f0f0f0;
-
-  text-align: center;
-
-  font-size: 15px;
-
-  line-height: 1.5;
-}
-
-
-/* =========================================
    SPIEL
 ========================================= */
 
@@ -149,80 +129,25 @@ button:active {
   text-align: center;
 }
 
-.room {
-  margin-top: 5px;
-
-  font-size: 18px;
-
-  font-weight: bold;
-}
-
-.difficulty {
-  margin-top: 4px;
-
-  font-size: 16px;
-
-  color: #555;
-}
-
 
 /* =========================================
-   AUFGABE
+   AUFGABE / TIMER
 ========================================= */
 
-.task {
-  background: white;
+.timer-screen {
+  min-height: calc(100vh - 32px);
 
-  padding: 15px;
+  display: flex;
 
-  margin-top: 15px;
+  flex-direction: column;
 
-  border-radius: 15px;
+  align-items: center;
 
-  box-shadow: 0 2px 9px #0002;
-}
-
-.task-title {
-  font-size: 18px;
-
-  font-weight: bold;
-
-  margin-bottom: 8px;
-}
-
-.task-text {
-  font-size: 16px;
-
-  line-height: 1.45;
-}
-
-
-/* =========================================
-   TIMER
-========================================= */
-
-.timer-box {
-  margin-top: 18px;
-
-  padding: 20px;
-
-  border-radius: 18px;
-
-  background: #222;
-
-  color: white;
-}
-
-.timer-label {
-  font-size: 16px;
-
-  opacity: .8;
-
-  margin-bottom: 5px;
+  justify-content: center;
 }
 
 .timer {
-  font-size: 76px;
+  font-size: 120px;
 
   line-height: 1;
 
@@ -232,136 +157,58 @@ button:active {
 }
 
 .timer.warning {
-  color: #ffd400;
+  color: #d49b00;
 }
 
 .timer.danger {
-  color: #ff4b4b;
+  color: #d00000;
+}
+
+.time-label {
+  margin-top: 20px;
+
+  font-size: 22px;
+
+  font-weight: bold;
 }
 
 
 /* =========================================
-   STATUS
+   ZEIT ABGELAUFEN
 ========================================= */
 
-.status {
-  margin-top: 18px;
+.finished-screen {
+  display: none;
 
-  padding: 18px;
+  min-height: calc(100vh - 32px);
 
-  border-radius: 15px;
+  align-items: center;
 
-  background: white;
+  justify-content: center;
 
-  font-size: 23px;
+  flex-direction: column;
+
+  text-align: center;
+}
+
+.finished-title {
+  font-size: 42px;
 
   font-weight: 900;
 
-  line-height: 1.25;
-}
+  line-height: 1.1;
 
-.status.observe {
-  color: #0645ad;
-}
-
-.status.transition {
   color: #a00000;
-  background: #fff1f1;
 }
 
-.status.think {
-  color: #c00000;
-}
+.finished-subtitle {
+  margin-top: 20px;
 
-.status.finished {
-  color: #16832c;
-}
-
-
-/* =========================================
-   NUMMERN
-========================================= */
-
-.answer {
-  display: none;
-
-  margin-top: 18px;
-
-  padding: 16px;
-
-  background: white;
-
-  border-radius: 15px;
-
-  box-shadow: 0 2px 9px #0002;
-}
-
-.answer-title {
-  font-size: 18px;
+  font-size: 21px;
 
   font-weight: bold;
 
-  margin-bottom: 12px;
-}
-
-.number-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 8px;
-}
-
-.number-button {
-  margin: 0;
-
-  padding: 15px;
-
-  font-size: 28px;
-
-  background: #eee;
-
-  color: #222;
-
-  border: 2px solid #bbb;
-}
-
-.number-button:hover {
-  background: #ddd;
-}
-
-
-/* =========================================
-   AUFLÖSUNG
-========================================= */
-
-.result {
-  display: none;
-
-  margin-top: 18px;
-
-  padding: 18px;
-
-  background: white;
-
-  border-radius: 15px;
-
-  box-shadow: 0 2px 9px #0002;
-}
-
-.result-title {
-  font-size: 30px;
-
-  font-weight: 900;
-
-  margin-bottom: 10px;
-}
-
-.result-text {
-  font-size: 16px;
-
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 
@@ -369,122 +216,16 @@ button:active {
    NEUE RUNDE
 ========================================= */
 
-.secondary {
+.new-round {
+  display: none;
+
+  margin-top: 25px;
+
   background: white;
 
   color: #222;
 
   border: 1px solid #888;
-}
-
-
-/* =========================================
-   VOLLBILD-ÜBERGANG
-========================================= */
-
-.transition-screen {
-  display: none;
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 1000;
-
-  background: #a00000;
-
-  color: white;
-
-  align-items: center;
-
-  justify-content: center;
-
-  text-align: center;
-
-  padding: 25px;
-}
-
-.transition-content {
-  width: 100%;
-}
-
-.transition-title {
-  font-size: 34px;
-
-  font-weight: 900;
-
-  line-height: 1.15;
-
-  margin-bottom: 15px;
-}
-
-.transition-timer {
-  font-size: 100px;
-
-  font-weight: 900;
-
-  line-height: 1;
-}
-
-.transition-subtitle {
-  margin-top: 15px;
-
-  font-size: 20px;
-}
-
-
-/* =========================================
-   BERATUNG
-========================================= */
-
-.think-screen {
-  display: none;
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 999;
-
-  background: #222;
-
-  color: white;
-
-  align-items: center;
-
-  justify-content: center;
-
-  text-align: center;
-
-  padding: 25px;
-}
-
-.think-content {
-  width: 100%;
-}
-
-.think-title {
-  font-size: 35px;
-
-  font-weight: 900;
-
-  line-height: 1.15;
-
-  margin-bottom: 20px;
-}
-
-.think-timer {
-  font-size: 110px;
-
-  font-weight: 900;
-
-  line-height: 1;
-}
-
-.think-subtitle {
-  font-size: 20px;
-
-  margin-top: 18px;
 }
 
 </style>
@@ -498,59 +239,150 @@ button:active {
 
 
 <!-- =====================================
-     HEADER
-===================================== -->
-
-<div class="header">
-
-  <div class="title">
-    TOTAL VERSCHNURRT
-  </div>
-
-  <div class="subtitle">
-    Raum 4 – Farbschnüre
-  </div>
-
-</div>
-
-
-<!-- =====================================
-     MENÜ
+     STARTSEITE
 ===================================== -->
 
 <div
   class="menu"
   id="menu">
 
-  <label for="difficulty">
-    Schwierigkeitsstufe
+
+  <div class="header">
+
+    <div class="title">
+      TOTAL VERSCHNURRT
+    </div>
+
+    <div class="subtitle">
+      RAUM 4
+    </div>
+
+  </div>
+
+
+  <label for="task">
+    Aufgabe
   </label>
 
-  <select id="difficulty">
 
-    <option value="easy">
-      🟢 Leicht
-    </option>
+  <select id="task">
 
-    <option value="medium">
-      🟡 Mittel
-    </option>
+    <optgroup label="🟢 Leicht">
 
-    <option value="hard">
-      🟠 Schwer
-    </option>
+      <option value="easy1">
+        Leicht 1
+      </option>
 
-    <option value="veryhard">
-      🔴 Sehr schwer
-    </option>
+      <option value="easy2">
+        Leicht 2
+      </option>
+
+      <option value="easy3">
+        Leicht 3
+      </option>
+
+      <option value="easy4">
+        Leicht 4
+      </option>
+
+      <option value="easy5">
+        Leicht 5
+      </option>
+
+      <option value="easy6">
+        Leicht 6
+      </option>
+
+    </optgroup>
+
+
+    <optgroup label="🟡 Mittel">
+
+      <option value="medium1">
+        Mittel 1
+      </option>
+
+      <option value="medium2">
+        Mittel 2
+      </option>
+
+      <option value="medium3">
+        Mittel 3
+      </option>
+
+      <option value="medium4">
+        Mittel 4
+      </option>
+
+      <option value="medium5">
+        Mittel 5
+      </option>
+
+      <option value="medium6">
+        Mittel 6
+      </option>
+
+    </optgroup>
+
+
+    <optgroup label="🟠 Schwer">
+
+      <option value="hard1">
+        Schwer 1
+      </option>
+
+      <option value="hard2">
+        Schwer 2
+      </option>
+
+      <option value="hard3">
+        Schwer 3
+      </option>
+
+      <option value="hard4">
+        Schwer 4
+      </option>
+
+      <option value="hard5">
+        Schwer 5
+      </option>
+
+      <option value="hard6">
+        Schwer 6
+      </option>
+
+    </optgroup>
+
+
+    <optgroup label="🔴 Sehr schwer">
+
+      <option value="veryhard1">
+        Sehr schwer 1
+      </option>
+
+      <option value="veryhard2">
+        Sehr schwer 2
+      </option>
+
+      <option value="veryhard3">
+        Sehr schwer 3
+      </option>
+
+      <option value="veryhard4">
+        Sehr schwer 4
+      </option>
+
+      <option value="veryhard5">
+        Sehr schwer 5
+      </option>
+
+      <option value="veryhard6">
+        Sehr schwer 6
+      </option>
+
+    </optgroup>
 
   </select>
-
-
-  <div
-    class="info"
-    id="info">
-  </div>
 
 
   <button
@@ -561,11 +393,12 @@ button:active {
 
   </button>
 
+
 </div>
 
 
 <!-- =====================================
-     SPIEL
+     TIMERSEITE
 ===================================== -->
 
 <div
@@ -573,42 +406,9 @@ button:active {
   id="game">
 
 
-  <div class="room">
-    RAUM 4
-  </div>
-
-
   <div
-    class="difficulty"
-    id="gameDifficulty">
-  </div>
-
-
-  <div class="task">
-
-    <div class="task-title">
-      Eure Aufgabe
-    </div>
-
-    <div
-      class="task-text"
-      id="taskText">
-    </div>
-
-  </div>
-
-
-  <!-- TIMER -->
-
-  <div class="timer-box">
-
-    <div
-      class="timer-label"
-      id="timerLabel">
-
-      Schnüre verfolgen
-
-    </div>
+    class="timer-screen"
+    id="timerScreen">
 
     <div
       class="timer"
@@ -618,96 +418,44 @@ button:active {
 
     </div>
 
-  </div>
 
+    <div class="time-label">
 
-  <div
-    class="status observe"
-    id="status">
-
-    Bereit
-
-  </div>
-
-
-  <!-- ANTWORT -->
-
-  <div
-    class="answer"
-    id="answer">
-
-    <div class="answer-title">
-
-      Welche Nummer wählt ihr gemeinsam?
-
-    </div>
-
-
-    <div class="number-grid">
-
-      <button
-        class="number-button"
-        data-number="1">
-
-        1
-
-      </button>
-
-
-      <button
-        class="number-button"
-        data-number="2">
-
-        2
-
-      </button>
-
-
-      <button
-        class="number-button"
-        data-number="3">
-
-        3
-
-      </button>
-
-
-      <button
-        class="number-button"
-        data-number="4">
-
-        4
-
-      </button>
+      SCHNÜRE VERFOLGEN
 
     </div>
 
   </div>
 
 
-  <!-- ERGEBNIS -->
+  <!-- ===================================
+       ZEIT ABGELAUFEN
+  ==================================== -->
 
   <div
-    class="result"
-    id="result">
+    class="finished-screen"
+    id="finishedScreen">
 
-    <div
-      class="result-title"
-      id="resultTitle">
+
+    <div class="finished-title">
+
+      ZEIT<br>
+      ABGELAUFEN
 
     </div>
 
 
-    <div
-      class="result-text"
-      id="resultText">
+    <div class="finished-subtitle">
+
+      Eure gemeinsame Entscheidung<br>
+      muss jetzt auf dem Tisch liegen.
 
     </div>
 
 
     <button
       type="button"
-      class="secondary"
+      class="new-round"
       id="newRoundButton">
 
       Neue Runde
@@ -716,88 +464,6 @@ button:active {
 
   </div>
 
-</div>
-
-
-</div>
-
-
-<!-- =====================================
-     5 SEKUNDEN ÜBERGANG
-===================================== -->
-
-<div
-  class="transition-screen"
-  id="transitionScreen">
-
-  <div class="transition-content">
-
-    <div class="transition-title">
-
-      GEMEINSAMES<br>
-      ÜBERLEGEN &amp; EINSPRUCH
-
-    </div>
-
-
-    <div
-      class="transition-timer"
-      id="transitionTimer">
-
-      5
-
-    </div>
-
-
-    <div class="transition-subtitle">
-
-      Die Verfolgungszeit ist abgelaufen.
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================
-     BERATUNG
-===================================== -->
-
-<div
-  class="think-screen"
-  id="thinkScreen">
-
-  <div class="think-content">
-
-    <div class="think-title">
-
-      GEMEINSAM<br>
-      ÜBERLEGEN &amp; EINSPRUCH
-
-    </div>
-
-
-    <div
-      class="think-timer"
-      id="thinkTimer">
-
-      25
-
-    </div>
-
-
-    <div class="think-subtitle">
-
-      Einigt euch auf eure gemeinsame Antwort.
-
-      <br><br>
-
-      Ein Einspruch muss jetzt erfolgen.
-
-    </div>
-
-  </div>
 
 </div>
 
@@ -806,64 +472,197 @@ button:active {
 
 
 /* =========================================
-   SCHWIERIGKEITEN
+   AUFGABEN
+========================================= */
+
+/*
+   Die Zahlenkombinationen sind die
+   hinterlegten Kombinationen der
+   jeweiligen Aufgabe.
+
+   Sie werden hier bewusst nicht auf
+   dem Bildschirm angezeigt.
+
+   So kann die Aufgabe auf dem Tisch
+   bzw. im eigentlichen Spielmaterial
+   verwendet werden.
+*/
+
+const tasks = {
+
+  /* ---------------------------------------
+     LEICHT
+     1 Schnur
+  --------------------------------------- */
+
+  easy1: {
+    difficulty: "easy",
+    combination: [1]
+  },
+
+  easy2: {
+    difficulty: "easy",
+    combination: [2]
+  },
+
+  easy3: {
+    difficulty: "easy",
+    combination: [3]
+  },
+
+  easy4: {
+    difficulty: "easy",
+    combination: [4]
+  },
+
+  easy5: {
+    difficulty: "easy",
+    combination: [1, 3]
+  },
+
+  easy6: {
+    difficulty: "easy",
+    combination: [2, 4]
+  },
+
+
+  /* ---------------------------------------
+     MITTEL
+     2 Schnüre
+  --------------------------------------- */
+
+  medium1: {
+    difficulty: "medium",
+    combination: [1, 3]
+  },
+
+  medium2: {
+    difficulty: "medium",
+    combination: [1, 4]
+  },
+
+  medium3: {
+    difficulty: "medium",
+    combination: [2, 3]
+  },
+
+  medium4: {
+    difficulty: "medium",
+    combination: [2, 4]
+  },
+
+  medium5: {
+    difficulty: "medium",
+    combination: [3, 1]
+  },
+
+  medium6: {
+    difficulty: "medium",
+    combination: [4, 2]
+  },
+
+
+  /* ---------------------------------------
+     SCHWER
+     3 Schnüre
+  --------------------------------------- */
+
+  hard1: {
+    difficulty: "hard",
+    combination: [1, 3, 2]
+  },
+
+  hard2: {
+    difficulty: "hard",
+    combination: [1, 4, 3]
+  },
+
+  hard3: {
+    difficulty: "hard",
+    combination: [2, 1, 4]
+  },
+
+  hard4: {
+    difficulty: "hard",
+    combination: [2, 4, 1]
+  },
+
+  hard5: {
+    difficulty: "hard",
+    combination: [3, 1, 4]
+  },
+
+  hard6: {
+    difficulty: "hard",
+    combination: [4, 2, 3]
+  },
+
+
+  /* ---------------------------------------
+     SEHR SCHWER
+     4 Schnüre
+  --------------------------------------- */
+
+  veryhard1: {
+    difficulty: "veryhard",
+    combination: [1, 3, 4, 2]
+  },
+
+  veryhard2: {
+    difficulty: "veryhard",
+    combination: [1, 4, 2, 3]
+  },
+
+  veryhard3: {
+    difficulty: "veryhard",
+    combination: [2, 1, 3, 4]
+  },
+
+  veryhard4: {
+    difficulty: "veryhard",
+    combination: [2, 4, 3, 1]
+  },
+
+  veryhard5: {
+    difficulty: "veryhard",
+    combination: [3, 1, 4, 2]
+  },
+
+  veryhard6: {
+    difficulty: "veryhard",
+    combination: [4, 2, 1, 3]
+  }
+
+};
+
+
+/* =========================================
+   SCHWIERIGKEITEN / ZEITEN
 ========================================= */
 
 const difficultyData = {
 
   easy: {
 
-    name: "Leicht",
-
-    icon: "🟢",
-
-    strings: 1,
-
-    observe: 15,
-
-    think: 25
+    observe: 15
 
   },
 
   medium: {
 
-    name: "Mittel",
-
-    icon: "🟡",
-
-    strings: 2,
-
-    observe: 20,
-
-    think: 25
+    observe: 20
 
   },
 
   hard: {
 
-    name: "Schwer",
-
-    icon: "🟠",
-
-    strings: 3,
-
-    observe: 30,
-
-    think: 25
+    observe: 30
 
   },
 
   veryhard: {
 
-    name: "Sehr schwer",
-
-    icon: "🔴",
-
-    strings: 4,
-
-    observe: 25,
-
-    think: 30
+    observe: 25
 
   }
 
@@ -884,14 +683,9 @@ const game =
     "game"
   );
 
-const difficulty =
+const taskSelect =
   document.getElementById(
-    "difficulty"
-  );
-
-const info =
-  document.getElementById(
-    "info"
+    "task"
   );
 
 const startButton =
@@ -899,14 +693,9 @@ const startButton =
     "startButton"
   );
 
-const gameDifficulty =
+const timerScreen =
   document.getElementById(
-    "gameDifficulty"
-  );
-
-const taskText =
-  document.getElementById(
-    "taskText"
+    "timerScreen"
   );
 
 const timer =
@@ -914,59 +703,14 @@ const timer =
     "timer"
   );
 
-const timerLabel =
+const finishedScreen =
   document.getElementById(
-    "timerLabel"
-  );
-
-const status =
-  document.getElementById(
-    "status"
-  );
-
-const answer =
-  document.getElementById(
-    "answer"
-  );
-
-const result =
-  document.getElementById(
-    "result"
-  );
-
-const resultTitle =
-  document.getElementById(
-    "resultTitle"
-  );
-
-const resultText =
-  document.getElementById(
-    "resultText"
+    "finishedScreen"
   );
 
 const newRoundButton =
   document.getElementById(
     "newRoundButton"
-  );
-
-const transitionScreen =
-  document.getElementById(
-    "transitionScreen"
-  );
-
-const transitionTimer =
-  document.getElementById(
-    "transitionTimer"
-  );
-
-const thinkScreen =
-  document.getElementById(
-    "thinkScreen"
-  );
-
-const thinkTimer =
-  document.getElementById(
-    "thinkTimer"
   );
 
 
@@ -976,84 +720,31 @@ const thinkTimer =
 
 let interval = null;
 
-let transitionInterval = null;
-
-let currentPhase = "idle";
-
-let selectedNumber = null;
+let currentTask = null;
 
 
 /* =========================================
-   INFO
+   TIMER STOPPEN
 ========================================= */
 
-function updateInfo() {
+function stopTimer() {
 
-  const data =
-    difficultyData[
-      difficulty.value
-    ];
+  if (interval !== null) {
 
+    clearInterval(interval);
 
-  info.innerHTML =
+    interval = null;
 
-    "<strong>" +
-
-    data.icon +
-    " " +
-    data.name +
-
-    "</strong><br><br>" +
-
-    "<strong>" +
-    data.strings +
-    "</strong> " +
-
-    (
-      data.strings === 1
-        ? "Schnur"
-        : "Schnüre"
-    ) +
-
-    " verfolgen: <strong>" +
-
-    data.observe +
-
-    " Sekunden</strong><br>" +
-
-    "Danach: <strong>5 Sekunden</strong> Übergang<br>" +
-
-    "Überlegen &amp; Einspruch: <strong>" +
-
-    data.think +
-
-    " Sekunden</strong>";
+  }
 
 }
 
 
-difficulty.addEventListener(
-  "change",
-  updateInfo
-);
-
-
 /* =========================================
-   TON
+   KLINGELTON
 ========================================= */
 
-function beep(
-  frequency = 700,
-  duration = 300
-) {
-
-  /*
-     Der Ton wird direkt über den
-     Browser erzeugt.
-
-     Dadurch wird keine Audiodatei
-     benötigt.
-  */
+function bellSound() {
 
   try {
 
@@ -1064,51 +755,78 @@ function beep(
     const context =
       new AudioContext();
 
-    const oscillator =
-      context.createOscillator();
 
-    const gain =
-      context.createGain();
+    /*
+       Zwei leicht versetzte Töne
+       erzeugen einen deutlich hörbaren
+       Klingel-/Glockenklang.
+    */
 
-
-    oscillator.type =
-      "sine";
-
-    oscillator.frequency.value =
-      frequency;
-
-
-    gain.gain.setValueAtTime(
-      0.0001,
-      context.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      0.35,
-      context.currentTime + 0.02
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      0.0001,
-      context.currentTime +
-      duration / 1000
-    );
+    const frequencies = [
+      880,
+      1174
+    ];
 
 
-    oscillator.connect(
-      gain
-    );
+    frequencies.forEach(
+      function(frequency, index) {
 
-    gain.connect(
-      context.destination
-    );
+        const oscillator =
+          context.createOscillator();
+
+        const gain =
+          context.createGain();
 
 
-    oscillator.start();
+        oscillator.type =
+          "sine";
 
-    oscillator.stop(
-      context.currentTime +
-      duration / 1000
+        oscillator.frequency.value =
+          frequency;
+
+
+        const startTime =
+          context.currentTime +
+          index * 0.08;
+
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          startTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.5,
+          startTime + 0.02
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          startTime + 0.9
+        );
+
+
+        oscillator.connect(
+          gain
+        );
+
+        gain.connect(
+          context.destination
+        );
+
+
+        oscillator.start(
+          startTime
+        );
+
+
+        oscillator.stop(
+          startTime + 1
+        );
+
+      }
     );
 
   }
@@ -1116,7 +834,7 @@ function beep(
   catch (error) {
 
     console.log(
-      "Ton konnte nicht abgespielt werden."
+      "Klingelton konnte nicht abgespielt werden."
     );
 
   }
@@ -1125,54 +843,24 @@ function beep(
 
 
 /* =========================================
-   TIMER STOPPEN
+   TIMER STARTEN
 ========================================= */
 
-function stopTimer() {
-
-  clearInterval(
-    interval
-  );
-
-  interval =
-    null;
-
-}
-
-
-/* =========================================
-   BEOBACHTUNGS-TIMER
-========================================= */
-
-function startObservationTimer(
-  seconds
-) {
+function startTimer(seconds) {
 
   stopTimer();
+
 
   let time =
     seconds;
 
 
-  timerLabel.textContent =
-    "SCHNÜRE VERFOLGEN";
-
   timer.textContent =
     time;
 
+
   timer.className =
     "timer";
-
-
-  currentPhase =
-    "observation";
-
-
-  status.className =
-    "status observe";
-
-  status.textContent =
-    "Nur mit den Augen verfolgen!";
 
 
   interval =
@@ -1181,12 +869,14 @@ function startObservationTimer(
 
         time--;
 
+
         timer.textContent =
           time;
 
 
         if (
-          time <= 5
+          time <= 5 &&
+          time > 0
         ) {
 
           timer.classList.add(
@@ -1202,12 +892,20 @@ function startObservationTimer(
 
           stopTimer();
 
-          beep(
-            500,
-            250
-          );
 
-          startTransition();
+          timer.textContent =
+            "0";
+
+
+          /*
+             Der Klingelton ertönt exakt
+             beim Ablauf der Zeit.
+          */
+
+          bellSound();
+
+
+          showFinishedScreen();
 
         }
 
@@ -1219,286 +917,28 @@ function startObservationTimer(
 
 
 /* =========================================
-   5 SEKUNDEN ÜBERGANG
+   ZEIT ABGELAUFEN
 ========================================= */
 
-function startTransition() {
+function showFinishedScreen() {
 
-  currentPhase =
-    "transition";
+  timerScreen.style.display =
+    "none";
 
 
-  transitionScreen.style.display =
+  finishedScreen.style.display =
     "flex";
 
 
-  let time =
-    5;
-
-
-  transitionTimer.textContent =
-    time;
-
-
-  clearInterval(
-    transitionInterval
-  );
-
-
-  transitionInterval =
-    setInterval(
-      function() {
-
-        time--;
-
-        transitionTimer.textContent =
-          time;
-
-
-        if (
-          time <= 0
-        ) {
-
-          clearInterval(
-            transitionInterval
-          );
-
-          transitionInterval =
-            null;
-
-
-          beep(
-            900,
-            200
-          );
-
-
-          transitionScreen.style.display =
-            "none";
-
-
-          startThinkingPhase();
-
-        }
-
-      },
-      1000
-    );
-
-}
-
-
-/* =========================================
-   DENKPHASE
-========================================= */
-
-function startThinkingPhase() {
-
-  const data =
-    difficultyData[
-      difficulty.value
-    ];
-
-
-  currentPhase =
-    "thinking";
-
-
-  thinkScreen.style.display =
-    "flex";
-
-
-  let time =
-    data.think;
-
-
-  thinkTimer.textContent =
-    time;
-
-
-  status.className =
-    "status think";
-
-  status.textContent =
-    "Gemeinsam überlegen und Einspruch";
-
-
-  clearInterval(
-    interval
-  );
-
-
-  interval =
-    setInterval(
-      function() {
-
-        time--;
-
-        thinkTimer.textContent =
-          time;
-
-
-        if (
-          time <= 5
-        ) {
-
-          thinkTimer.style.color =
-            "#ff4b4b";
-
-        }
-
-
-        if (
-          time <= 0
-        ) {
-
-          stopTimer();
-
-          thinkTimer.style.color =
-            "white";
-
-
-          beep(
-            350,
-            500
-          );
-
-
-          thinkScreen.style.display =
-            "none";
-
-
-          endThinkingPhase();
-
-        }
-
-      },
-      1000
-    );
-
-}
-
-
-/* =========================================
-   DENKPHASE ENDE
-========================================= */
-
-function endThinkingPhase() {
-
-  currentPhase =
-    "finished";
-
-
-  timerLabel.textContent =
-    "ZEIT ABGELAUFEN";
-
-
-  timer.textContent =
-    "0";
-
-
-  status.className =
-    "status finished";
-
-
-  status.textContent =
-    "Entscheidung steht fest!";
-
-
-  answer.style.display =
+  /*
+     Der Button "Neue Runde" wird erst
+     nach Ablauf der Zeit sichtbar.
+  */
+
+  newRoundButton.style.display =
     "block";
 
-
-  result.style.display =
-    "block";
-
-
-  resultTitle.textContent =
-    "JETZT ENTSCHEIDEN";
-
-
-  resultText.innerHTML =
-
-    "Nennt jetzt eure gemeinsame " +
-
-    "Nummer und führt anschließend " +
-
-    "die Auflösung durch.";
-
 }
-
-
-/* =========================================
-   NUMMER AUSWÄHLEN
-========================================= */
-
-document
-  .querySelectorAll(
-    ".number-button"
-  )
-  .forEach(
-    function(button) {
-
-      button.addEventListener(
-        "click",
-        function() {
-
-          if (
-            currentPhase !==
-            "finished"
-          ) {
-
-            return;
-
-          }
-
-
-          selectedNumber =
-            button.dataset.number;
-
-
-          answer.style.display =
-            "none";
-
-
-          resultTitle.textContent =
-            "GEMEINSAME ANTWORT";
-
-
-          resultText.innerHTML =
-
-            "Die Gruppe hat sich " +
-
-            "für Öffnung <strong>" +
-
-            selectedNumber +
-
-            "</strong> entschieden." +
-
-            "<br><br>" +
-
-            "Jetzt darf die Box geöffnet " +
-
-            "und die tatsächliche Position " +
-
-            "der Kugel überprüft werden.";
-
-
-          status.textContent =
-            "Antwort: Öffnung " +
-            selectedNumber;
-
-
-          beep(
-            800,
-            180
-          );
-
-        }
-      );
-
-    }
-  );
 
 
 /* =========================================
@@ -1509,71 +949,61 @@ startButton.addEventListener(
   "click",
   function() {
 
+
+    const taskId =
+      taskSelect.value;
+
+
+    currentTask =
+      tasks[taskId];
+
+
+    if (!currentTask) {
+
+      return;
+
+    }
+
+
     const data =
       difficultyData[
-        difficulty.value
+        currentTask.difficulty
       ];
 
+
+    /*
+       Startseite verschwindet.
+    */
 
     menu.style.display =
       "none";
 
+
     game.style.display =
       "block";
 
-    result.style.display =
-      "none";
 
-    answer.style.display =
-      "none";
+    /*
+       Timerseite anzeigen.
+    */
 
-
-    gameDifficulty.textContent =
-
-      data.icon +
-      " " +
-      data.name;
+    timerScreen.style.display =
+      "flex";
 
 
-    taskText.innerHTML =
-
-      "Verfolgt " +
-
-      "<strong>" +
-
-      data.strings +
-
-      "</strong> " +
-
-      (
-        data.strings === 1
-          ? "Schnur"
-          : "Schnüre"
-      ) +
-
-      " von der farbigen Leiste " +
-
-      "bis zur Box.<br><br>" +
-
-      "Merkt euch die Nummer der " +
-
-      "Öffnung, an der die gesuchte " +
-
-      "Kugel endet.";
-
-
-    selectedNumber =
-      null;
-
-
-    transitionScreen.style.display =
-      "none";
-
-    thinkScreen.style.display =
+    finishedScreen.style.display =
       "none";
 
 
-    startObservationTimer(
+    newRoundButton.style.display =
+      "none";
+
+
+    /*
+       Timer starten.
+    */
+
+    startTimer(
       data.observe
     );
 
@@ -1589,59 +1019,50 @@ newRoundButton.addEventListener(
   "click",
   function() {
 
+
     stopTimer();
 
-    clearInterval(
-      transitionInterval
-    );
 
-
-    transitionInterval =
+    currentTask =
       null;
 
 
-    transitionScreen.style.display =
-      "none";
-
-    thinkScreen.style.display =
-      "none";
-
-
-    currentPhase =
-      "idle";
-
+    /*
+       Zurück zur Startseite.
+    */
 
     game.style.display =
       "none";
+
 
     menu.style.display =
       "block";
 
 
-    result.style.display =
+    timerScreen.style.display =
+      "flex";
+
+
+    finishedScreen.style.display =
       "none";
 
-    answer.style.display =
+
+    newRoundButton.style.display =
       "none";
 
 
     timer.textContent =
       "0";
 
-    status.textContent =
-      "Bereit";
+
+    timer.className =
+      "timer";
 
   }
 );
-
-
-/* =========================================
-   STARTZUSTAND
-========================================= */
-
-updateInfo();
 
 </script>
 
 </body>
 </html>
+```
