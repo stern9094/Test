@@ -4,13 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BALANCE-TEAM</title>
+<title>BALANCE-TEAM – 4×4 Kugel-Version</title>
 
 <style>
-
-/* =========================================================
-   GRUNDLAYOUT
-========================================================= */
 
 * {
     box-sizing: border-box;
@@ -30,64 +26,42 @@ body {
     background:
         radial-gradient(
             circle at top,
-            #29445f 0%,
+            #29445f,
             #172638 45%,
             #0b111a 100%
         );
 }
 
 .container {
-    width: min(1200px, 96%);
-
+    width: min(1150px, 96%);
     margin: auto;
-
-    padding:
-        22px
-        0
-        40px;
+    padding: 22px 0 40px;
 }
 
 h1 {
     margin: 0;
-
     text-align: center;
-
-    font-size: 40px;
-
+    font-size: 38px;
     letter-spacing: 3px;
 }
 
 .subtitle {
-    margin:
-        6px
-        0
-        22px;
-
     text-align: center;
-
     color: #aebfd1;
+    margin: 6px 0 22px;
 }
 
-
-/* =========================================================
-   HAUPTBEREICH
-========================================================= */
-
 .game-layout {
-
     display: grid;
-
     grid-template-columns:
-        minmax(500px, 1fr)
+        minmax(450px, 1fr)
         360px;
 
     gap: 22px;
 }
 
 .panel {
-
-    background:
-        rgba(255,255,255,.075);
+    background: rgba(255,255,255,.075);
 
     border:
         1px solid
@@ -101,8 +75,7 @@ h1 {
         0 20px 50px
         rgba(0,0,0,.28);
 
-    backdrop-filter:
-        blur(8px);
+    backdrop-filter: blur(8px);
 }
 
 
@@ -112,8 +85,7 @@ h1 {
 
 .board {
 
-    width:
-        min(650px,100%);
+    width: min(650px, 100%);
 
     aspect-ratio: 1;
 
@@ -122,12 +94,12 @@ h1 {
     display: grid;
 
     grid-template-columns:
-        repeat(5,1fr);
+        repeat(4, 1fr);
 
     grid-template-rows:
-        repeat(5,1fr);
+        repeat(4, 1fr);
 
-    gap: 5px;
+    gap: 6px;
 }
 
 .cell {
@@ -156,56 +128,24 @@ h1 {
     cursor: pointer;
 
     transition:
-        transform .12s,
-        background .15s,
-        border-color .15s,
-        box-shadow .15s;
+        .15s;
 
     user-select: none;
 }
 
-
-/*
-    Normales Hover
-*/
-
 .cell:hover {
-
-    transform:
-        scale(1.025);
-
-    border-color:
-        #65d8ff;
-
+    transform: scale(1.025);
+    border-color: #65d8ff;
     z-index: 5;
 }
 
-
-/*
-    Startbereich
-*/
-
 .cell.start {
-
-    border-color:
-        #38bdf8;
+    border-color: #38bdf8;
 }
-
-
-/*
-    Zielbereich
-*/
 
 .cell.goal {
-
-    border-color:
-        #22c55e;
+    border-color: #22c55e;
 }
-
-
-/*
-    Aktuelles Feld der Figur
-*/
 
 .cell.current {
 
@@ -216,8 +156,7 @@ h1 {
             #4c1d95
         );
 
-    border-color:
-        #c4b5fd;
+    border-color: #c4b5fd;
 
     box-shadow:
         0 0 25px
@@ -225,11 +164,6 @@ h1 {
 
     z-index: 4;
 }
-
-
-/*
-    Weg
-*/
 
 .cell.path {
 
@@ -242,19 +176,11 @@ h1 {
 }
 
 
-/*
-    ---------------------------------------------------------
-    MÖGLICHE ABLAGEFELDER
-    ---------------------------------------------------------
-
-    Diese Markierung erscheint erst,
-    wenn ein Gewicht ausgewählt wurde.
-*/
+/* mögliche Ablagefelder */
 
 .cell.placeable {
 
-    border-color:
-        #facc15;
+    border-color: #facc15;
 
     background:
         linear-gradient(
@@ -267,88 +193,74 @@ h1 {
         inset 0 0 0 2px
         rgba(250,204,21,.18),
 
-        0 0 10px
-        rgba(250,204,21,.12);
+        0 0 12px
+        rgba(250,204,21,.15);
 }
-
-
-/*
-    Etwas stärker beim Darüberfahren.
-*/
 
 .cell.placeable:hover {
 
-    border-color:
-        #fde047;
-
-    background:
-        linear-gradient(
-            145deg,
-            #465b4e,
-            #304438
-        );
+    border-color: #fde047;
 
     box-shadow:
-        0 0 18px
-        rgba(250,204,21,.28);
+        0 0 20px
+        rgba(250,204,21,.35);
 
-    transform:
-        scale(1.035);
+    transform: scale(1.035);
 }
 
 
-/*
-    Bereits belegtes Feld
-*/
+/* richtiges Lösungsfeld */
 
-.cell.occupied {
+.cell.solution-field {
 
-    border-color:
-        #f59e0b;
+    border-color: #22c55e;
+
+    box-shadow:
+        0 0 20px
+        rgba(34,197,94,.55);
+
 }
 
 
-/*
-    Falscher Versuch
-*/
+/* falsch */
 
 .cell.wrong {
-
-    animation:
-        wrong .35s;
+    animation: wrong .35s;
 }
 
 @keyframes wrong {
 
     0%,100% {
-        transform:
-            translateX(0);
+        transform: translateX(0);
     }
 
     25% {
-        transform:
-            translateX(-7px);
+        transform: translateX(-7px);
     }
 
     75% {
-        transform:
-            translateX(7px);
+        transform: translateX(7px);
     }
 }
 
 
 /* =========================================================
-   SPIELFIGUR
+   FIGUR
 ========================================================= */
 
 .figure {
 
-    font-size:
-        clamp(
-            25px,
-            5vw,
-            44px
-        );
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 2px;
+
+    font-size: 30px;
 
     filter:
         drop-shadow(
@@ -359,64 +271,123 @@ h1 {
     z-index: 5;
 }
 
+.figure-label {
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    color: #ffffff;
+}
+
 
 /* =========================================================
-   GEWICHT AUF DEM SPIELFELD
+   KUGELN
 ========================================================= */
+
+.balls {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 3px;
+
+    max-width: 80px;
+}
+
+.ball {
+
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            #ffffff,
+            #dbeafe 35%,
+            #60a5fa 70%,
+            #1d4ed8
+        );
+
+    border:
+        1px solid
+        #bfdbfe;
+
+    box-shadow:
+        0 2px 4px
+        rgba(0,0,0,.4);
+}
+
+
+/* Kugeln auf Spielfeld */
 
 .weight-stack {
 
     position: absolute;
 
-    bottom: 7px;
-    right: 7px;
+    bottom: 6px;
+    right: 6px;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 3px;
-
     align-items: flex-end;
+
+    gap: 2px;
 
     z-index: 6;
 }
 
 .weight-token {
 
-    background:
-        linear-gradient(
-            145deg,
-            #f59e0b,
-            #b45309
-        );
+    display: flex;
 
-    color:
-        white;
+    align-items: center;
+
+    gap: 3px;
+
+    background:
+        rgba(15,23,42,.92);
 
     border:
         1px solid
-        #fde68a;
+        #60a5fa;
 
     border-radius: 6px;
 
     padding:
-        4px 7px;
+        3px 5px;
 
-    font-size:
-        11px;
+    font-size: 10px;
 
-    font-weight:
-        bold;
+    font-weight: bold;
+}
+
+
+/* eingefrorenes Gewicht */
+
+.weight-token.frozen {
+
+    background:
+        #166534;
+
+    border-color:
+        #4ade80;
 
     box-shadow:
-        0 3px 8px
-        rgba(0,0,0,.35);
+        0 0 9px
+        rgba(34,197,94,.45);
 }
 
 
 /* =========================================================
-   GRÜNER HAKEN
+   HAKEN
 ========================================================= */
 
 .correct-check {
@@ -427,88 +398,35 @@ h1 {
     left: 50%;
 
     transform:
-        translate(
-            -50%,
-            -50%
-        );
+        translate(-50%, -50%);
 
     width: 52px;
     height: 52px;
 
     display: flex;
 
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     border-radius: 50%;
 
-    background:
-        #16a34a;
+    background: #16a34a;
 
     border:
         3px solid
         #bbf7d0;
 
-    color:
-        white;
+    color: white;
 
-    font-size:
-        34px;
+    font-size: 34px;
 
-    font-weight:
-        bold;
+    font-weight: bold;
 
     z-index: 20;
 
     box-shadow:
         0 0 25px
-        rgba(34,197,94,.9),
-
-        0 0 50px
-        rgba(34,197,94,.45);
-
-    animation:
-        correctPop .2s
-        ease-out;
-}
-
-@keyframes correctPop {
-
-    0% {
-
-        transform:
-            translate(
-                -50%,
-                -50%
-            )
-            scale(.3);
-
-        opacity: 0;
-    }
-
-    70% {
-
-        transform:
-            translate(
-                -50%,
-                -50%
-            )
-            scale(1.15);
-
-        opacity: 1;
-    }
-
-    100% {
-
-        transform:
-            translate(
-                -50%,
-                -50%
-            )
-            scale(1);
-
-        opacity: 1;
-    }
+        rgba(34,197,94,.9);
 }
 
 
@@ -521,34 +439,27 @@ h1 {
     background:
         rgba(0,0,0,.2);
 
-    border-radius:
-        12px;
+    border-radius: 12px;
 
-    padding:
-        14px;
+    padding: 14px;
 
-    line-height:
-        1.55;
+    line-height: 1.55;
 
-    margin-bottom:
-        15px;
+    margin-bottom: 15px;
 }
 
 .status-title {
 
-    color:
-        #67e8f9;
+    color: #67e8f9;
 
-    font-weight:
-        bold;
+    font-weight: bold;
 
-    font-size:
-        17px;
+    font-size: 17px;
 }
 
 
 /* =========================================================
-   INFOS
+   INFO
 ========================================================= */
 
 .info-grid {
@@ -558,8 +469,7 @@ h1 {
     grid-template-columns:
         1fr 1fr;
 
-    gap:
-        9px;
+    gap: 9px;
 }
 
 .info {
@@ -567,43 +477,35 @@ h1 {
     background:
         rgba(0,0,0,.18);
 
-    padding:
-        11px;
+    padding: 11px;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 }
 
 .info-label {
 
-    color:
-        #8fa4b9;
+    color: #8fa4b9;
 
-    font-size:
-        12px;
+    font-size: 12px;
 }
 
 .info-value {
 
-    font-size:
-        20px;
+    font-size: 18px;
 
-    font-weight:
-        bold;
+    font-weight: bold;
 
-    margin-top:
-        3px;
+    margin-top: 3px;
 }
 
 
 /* =========================================================
-   GEWICHTE
+   GEWICHTSAUSWAHL
 ========================================================= */
 
 h2 {
 
-    font-size:
-        18px;
+    font-size: 18px;
 
     margin:
         20px 0 10px;
@@ -616,43 +518,35 @@ h2 {
     grid-template-columns:
         repeat(3,1fr);
 
-    gap:
-        8px;
+    gap: 8px;
 }
 
 .weight-option {
 
-    padding:
-        15px 5px;
+    padding: 12px 5px;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 
     background:
         linear-gradient(
             145deg,
-            #d97706,
-            #92400e
+            #334155,
+            #1e293b
         );
 
     border:
         2px solid
-        #fbbf24;
+        #64748b;
 
-    color:
-        white;
+    color: white;
 
-    font-weight:
-        bold;
+    font-weight: bold;
 
-    text-align:
-        center;
+    text-align: center;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
-    transition:
-        .15s;
+    transition: .15s;
 }
 
 .weight-option:hover {
@@ -660,21 +554,34 @@ h2 {
     transform:
         translateY(-2px);
 
-    filter:
-        brightness(1.12);
+    border-color:
+        #60a5fa;
 }
 
 .weight-option.selected {
 
     border-color:
-        white;
+        #facc15;
 
     box-shadow:
         0 0 20px
-        rgba(251,191,36,.7);
+        rgba(250,204,21,.55);
 
     transform:
         scale(1.04);
+}
+
+
+/* richtige Auswahl in Probe */
+
+.weight-option.solution-weight {
+
+    border-color:
+        #22c55e;
+
+    box-shadow:
+        0 0 18px
+        rgba(34,197,94,.6);
 }
 
 
@@ -684,45 +591,23 @@ h2 {
 
 button {
 
-    width:
-        100%;
+    width: 100%;
 
-    border:
-        none;
+    border: none;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 
-    padding:
-        12px;
+    padding: 12px;
 
-    margin-top:
-        9px;
+    margin-top: 9px;
 
-    color:
-        white;
+    color: white;
 
-    font-size:
-        15px;
+    font-size: 15px;
 
-    font-weight:
-        bold;
+    font-weight: bold;
 
-    cursor:
-        pointer;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0284c7,
-            #0369a1
-        );
-}
-
-button:hover {
-
-    filter:
-        brightness(1.12);
+    cursor: pointer;
 }
 
 button.new {
@@ -745,33 +630,30 @@ button.reset {
         );
 }
 
+button:hover {
+    filter: brightness(1.12);
+}
+
 
 /* =========================================================
-   MELDUNG
+   MELDUNGEN
 ========================================================= */
 
 .message {
 
-    margin-top:
-        13px;
+    margin-top: 13px;
 
-    padding:
-        12px;
+    padding: 12px;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 
-    line-height:
-        1.5;
+    line-height: 1.5;
 
-    display:
-        none;
+    display: none;
 }
 
 .message.show {
-
-    display:
-        block;
+    display: block;
 }
 
 .message.info {
@@ -806,74 +688,38 @@ button.reset {
 
 
 /* =========================================================
-   WEG
+   LÖSUNGSANZEIGE
 ========================================================= */
 
-.path {
+.solution-box {
 
-    margin-top:
-        15px;
+    margin-top: 15px;
 
-    padding:
-        12px;
+    padding: 13px;
 
-    border-radius:
-        10px;
+    border-radius: 10px;
 
     background:
-        rgba(0,0,0,.18);
-}
-
-.path-list {
-
-    display:
-        flex;
-
-    flex-wrap:
-        wrap;
-
-    gap:
-        5px;
-
-    margin-top:
-        8px;
-}
-
-.path-field {
-
-    padding:
-        4px 8px;
-
-    border-radius:
-        5px;
-
-    background:
-        #273b4e;
+        rgba(22,163,74,.12);
 
     border:
         1px solid
-        #526b81;
+        #22c55e;
 
-    font-size:
-        12px;
+    color:
+        #bbf7d0;
 }
 
-.path-field.active {
+.solution-title {
 
-    background:
-        #7c3aed;
-
-    border-color:
-        #c4b5fd;
-}
-
-.path-field.done {
-
-    background:
-        #166534;
-
-    border-color:
+    color:
         #4ade80;
+
+    font-weight:
+        bold;
+
+    margin-bottom:
+        6px;
 }
 
 
@@ -883,14 +729,11 @@ button.reset {
 
 .calculation {
 
-    margin-top:
-        15px;
+    margin-top: 15px;
 
-    padding:
-        13px;
+    padding: 13px;
 
-    border-radius:
-        10px;
+    border-radius: 10px;
 
     background:
         #09121d;
@@ -899,38 +742,9 @@ button.reset {
         Consolas,
         monospace;
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    line-height:
-        1.65;
-
-    display:
-        none;
-}
-
-.calculation.show {
-
-    display:
-        block;
-}
-
-.good {
-
-    color:
-        #86efac;
-}
-
-.warning {
-
-    color:
-        #facc15;
-}
-
-.bad {
-
-    color:
-        #fca5a5;
+    line-height: 1.65;
 }
 
 
@@ -941,21 +755,15 @@ button.reset {
 @media(max-width:850px) {
 
     .game-layout {
-
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
     h1 {
-
-        font-size:
-            30px;
+        font-size: 30px;
     }
 
     .board {
-
-        width:
-            100%;
+        width: 100%;
     }
 }
 
@@ -970,7 +778,7 @@ button.reset {
     <h1>⚖️ BALANCE-TEAM</h1>
 
     <div class="subtitle">
-        Das 5 × 5 Balance-Spiel
+        Probeversion – 4 × 4 Kugel-Balance
     </div>
 
 
@@ -992,7 +800,7 @@ button.reset {
 
 
         <!-- =================================================
-             SPIELSTEUERUNG
+             STEUERUNG
         ================================================== -->
 
         <div class="panel">
@@ -1001,37 +809,23 @@ button.reset {
             <div class="status">
 
                 <div class="status-title">
-                    Aktuelle Aufgabe
+                    Aufgabe
                 </div>
 
                 <div>
-                    Wähle eines der drei Gewichte.
-                </div>
-
-                <div>
-                    Danach kannst du auf ein
-                    hervorgehobenes Feld klicken.
+                    Wähle eine Kugelanzahl und
+                    lege sie auf ein hervorgehobenes Feld.
                 </div>
 
                 <br>
 
                 <div>
-                    Ist die Balance richtig,
-                    geht die Figur genau
-                    <strong>ein Feld weiter</strong>.
-                </div>
-
-                <div>
-                    Ist sie falsch,
-                    bleibt die Figur stehen.
+                    <strong>Probe:</strong>
+                    Die aktuelle Lösung wird rechts angezeigt.
                 </div>
 
             </div>
 
-
-            <!-- =================================================
-                 INFORMATIONEN
-            ================================================== -->
 
             <div class="info-grid">
 
@@ -1068,13 +862,12 @@ button.reset {
                 <div class="info">
 
                     <div class="info-label">
-                        Figur
+                        Waage
                     </div>
 
                     <div
                         id="figureWeight"
                         class="info-value">
-                        2,0 kg
                     </div>
 
                 </div>
@@ -1083,7 +876,7 @@ button.reset {
                 <div class="info">
 
                     <div class="info-label">
-                        aktuelles Feld
+                        Position
                     </div>
 
                     <div
@@ -1097,18 +890,33 @@ button.reset {
             </div>
 
 
-            <!-- =================================================
-                 GEWICHTE
-            ================================================== -->
-
             <h2>
-                ⚖️ 3 bereitliegende Gewichte
+                ⚪ Kugeln auswählen
             </h2>
 
 
             <div
                 id="weights"
                 class="weights">
+            </div>
+
+
+            <!-- =================================================
+                 PROBE-LÖSUNG
+            ================================================== -->
+
+            <div
+                id="solutionBox"
+                class="solution-box">
+
+                <div class="solution-title">
+                    🔎 PROBE-LÖSUNG
+                </div>
+
+                <div
+                    id="solutionText">
+                </div>
+
             </div>
 
 
@@ -1123,9 +931,9 @@ button.reset {
 
             <button
                 class="reset"
-                onclick="resetWeights()">
+                onclick="resetNonFrozenWeights()">
 
-                ↩ Alle Gewichte zurücknehmen
+                ↩ Falsche Gewichte zurücknehmen
 
             </button>
 
@@ -1141,20 +949,6 @@ button.reset {
                 class="calculation">
             </div>
 
-
-            <div class="path">
-
-                <strong>
-                    Zufälliger Weg
-                </strong>
-
-                <div
-                    id="pathList"
-                    class="path-list">
-                </div>
-
-            </div>
-
         </div>
 
     </div>
@@ -1165,37 +959,47 @@ button.reset {
 <script>
 
 /* =========================================================
-   GRUNDKONSTANTEN
+   EINSTELLUNG
 ========================================================= */
 
-const SIZE = 5;
+const SHOW_SOLUTION = true;
 
-const CENTER = 13;
 
-const FIGURE_WEIGHT = 2.0;
+/* =========================================================
+   SPIELKONSTANTEN
+========================================================= */
 
-const BALANCE_TOLERANCE = 0.001;
+const SIZE = 4;
+
+/*
+    4×4 Spielfeld.
+
+    Die geometrische Mitte liegt zwischen
+    den Feldern 6, 7, 10 und 11.
+
+    Wir rechnen daher mit Koordinaten:
+
+    -1.5  -0.5   0.5   1.5
+    -1.5  -0.5   0.5   1.5
+    -1.5  -0.5   0.5   1.5
+    -1.5  -0.5   0.5   1.5
+*/
+
+const FIGURE_BALLS = 2;
 
 
 /*
-    Drei Gewichte.
-    Das Programm berechnet bei jedem neuen
-    Schritt ein passendes Gewicht.
-
-    Die beiden anderen Gewichte sind
-    bewusst Ablenkungen.
+    Nur ganze Kugelzahlen.
 */
 
 const POSSIBLE_WEIGHTS = [
 
-    0.5,
-    1.0,
-    1.5,
-    2.0,
-    2.5,
-    3.0,
-    3.5,
-    4.0
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
 
 ];
 
@@ -1216,38 +1020,39 @@ let goalField = null;
 
 
 /*
-    Alle dauerhaft abgelegten Gewichte.
+    Gewichte, die bereits liegen.
+
+    frozen = true bedeutet:
+    Dieses Gewicht ist fest eingefroren.
 */
 
 let placedWeights = [];
 
 
 /*
-    Die drei momentan verfügbaren Gewichte.
+    Die drei Auswahlmöglichkeiten.
 */
 
 let availableWeights = [];
 
 
 /*
-    Ausgewähltes Gewicht.
+    Aktuell ausgewähltes Gewicht.
 */
 
 let selectedWeightIndex = null;
 
 
 /*
-    Intern bekannte Lösung.
-    Sie wird dem Spieler natürlich
-    NICHT angezeigt.
+    Aktuelle Lösung.
 */
 
 let currentSolution = null;
 
 
 /*
-    Verhindert Klicks während
-    der Erfolgsanimation.
+    Während der 1-Sekunden-Animation
+    wird das Spiel gesperrt.
 */
 
 let gameLocked = false;
@@ -1259,19 +1064,23 @@ let gameLocked = false;
 
 function fieldToCoordinate(field) {
 
-    const index = field - 1;
+    const index =
+        field - 1;
 
     const row =
-        Math.floor(index / SIZE);
+        Math.floor(
+            index / SIZE
+        );
 
     const col =
         index % SIZE;
 
+
     return {
 
-        x: col - 2,
+        x: col - 1.5,
 
-        y: row - 2
+        y: row - 1.5
 
     };
 }
@@ -1281,11 +1090,17 @@ function fieldToCoordinate(field) {
    KOORDINATE → FELD
 ========================================================= */
 
-function coordinateToField(x, y) {
+function coordinateToField(x,y) {
 
-    const col = x + 2;
+    const col =
+        Math.round(
+            x + 1.5
+        );
 
-    const row = y + 2;
+    const row =
+        Math.round(
+            y + 1.5
+        );
 
 
     if (
@@ -1308,57 +1123,80 @@ function coordinateToField(x, y) {
 
 
 /* =========================================================
-   NACHBARFELDER
+   NACHBARN
 ========================================================= */
 
 function getNeighbors(field) {
 
-    const position =
-        fieldToCoordinate(field);
+    const p =
+        fieldToCoordinate(
+            field
+        );
 
 
-    const directions = [
+    /*
+        Da die Koordinaten bei einem 4×4
+        Feld Halbwerte besitzen, verwenden
+        wir einfach Zeile/Spalte.
+    */
 
-        { x: 1, y: 0 },
+    const index =
+        field - 1;
 
-        { x: -1, y: 0 },
+    const row =
+        Math.floor(
+            index / SIZE
+        );
 
-        { x: 0, y: 1 },
-
-        { x: 0, y: -1 }
-
-    ];
+    const col =
+        index % SIZE;
 
 
     const result = [];
 
 
-    for (
-        const direction of directions
-    ) {
+    const directions = [
 
-        const neighbor =
-            coordinateToField(
+        [1,0],
 
-                position.x +
-                direction.x,
+        [-1,0],
 
-                position.y +
-                direction.y
+        [0,1],
 
-            );
+        [0,-1]
+
+    ];
 
 
-        if (
-            neighbor !== null
-        ) {
+    directions.forEach(
 
-            result.push(
-                neighbor
-            );
+        ([dr,dc]) => {
+
+            const r =
+                row + dr;
+
+            const c =
+                col + dc;
+
+
+            if (
+                r >= 0 &&
+                r < SIZE &&
+                c >= 0 &&
+                c < SIZE
+            ) {
+
+                result.push(
+                    r * SIZE +
+                    c +
+                    1
+                );
+
+            }
 
         }
-    }
+
+    );
 
 
     return result;
@@ -1366,19 +1204,26 @@ function getNeighbors(field) {
 
 
 /* =========================================================
-   ZUFÄLLIGEN WEG ERZEUGEN
+   ZUFÄLLIGER WEG
 ========================================================= */
 
 function generatePath() {
 
     startField =
-        randomInt(1,5);
+        randomInt(
+            1,
+            4
+        );
+
 
     goalField =
-        randomInt(21,25);
+        randomInt(
+            13,
+            16
+        );
 
 
-    let result = [
+    const result = [
 
         startField
 
@@ -1400,7 +1245,7 @@ function generatePath() {
 
         current !== goalField &&
 
-        safety < 500
+        safety < 300
 
     ) {
 
@@ -1408,16 +1253,27 @@ function generatePath() {
 
 
         let neighbors =
-            getNeighbors(current)
+            getNeighbors(
+                current
+            )
             .filter(
                 field =>
                     !used.has(field)
             );
 
 
+        if (
+            neighbors.length === 0
+        ) {
+
+            return generatePath();
+
+        }
+
+
         /*
-            Ziel direkt erreichen,
-            wenn möglich.
+            Ziel bevorzugen, wenn es
+            direkt erreichbar ist.
         */
 
         if (
@@ -1431,57 +1287,42 @@ function generatePath() {
 
         } else {
 
-            const currentPosition =
-                fieldToCoordinate(
-                    current
+            /*
+                Bewegung nach unten bevorzugen.
+            */
+
+            const currentRow =
+                Math.floor(
+                    (current - 1) / SIZE
                 );
 
 
-            /*
-                Bewegung nach unten
-                bevorzugen.
-            */
-
-            const downward =
+            const down =
                 neighbors.filter(
 
-                    field => {
-
-                        const position =
-                            fieldToCoordinate(
-                                field
-                            );
-
-
-                        return (
-                            position.y >=
-                            currentPosition.y
-                        );
-
-                    }
+                    field =>
+                        Math.floor(
+                            (field - 1) /
+                            SIZE
+                        ) >= currentRow
 
                 );
 
 
             if (
-
-                downward.length > 0 &&
-
+                down.length > 0 &&
                 Math.random() < 0.75
-
             ) {
 
                 current =
-                    downward[
+                    down[
                         randomInt(
                             0,
-                            downward.length - 1
+                            down.length - 1
                         )
                     ];
 
-            } else if (
-                neighbors.length > 0
-            ) {
+            } else {
 
                 current =
                     neighbors[
@@ -1491,11 +1332,8 @@ function generatePath() {
                         )
                     ];
 
-            } else {
-
-                return generatePath();
-
             }
+
         }
 
 
@@ -1523,39 +1361,32 @@ function generatePath() {
 
 
 /* =========================================================
-   VEREINFACHTE BALANCE-BERECHNUNG
+   BALANCE-ACHSE
 ========================================================= */
 
 /*
-    Für das vereinfachte Spiel verwenden wir
-    eine einzige Balance-Achse.
+    Die Waage arbeitet zweidimensional.
 
-    Die Achse richtet sich nach der Position
-    der Figur:
+    Die aktuelle Figur bestimmt,
+    ob die horizontale oder vertikale
+    Richtung stärker berücksichtigt wird.
 
-    - Figur links/rechts vom Mittelpunkt:
-      horizontale Balance
-
-    - Figur oberhalb/unterhalb:
-      vertikale Balance
-
-    - Figur genau in der Mitte:
-      horizontale Achse
-
-    Dadurch muss der Spieler keine
-    zweidimensionale Mathematik verstehen.
+    So bleibt die Bedienung einfach,
+    die Berechnung ist aber tatsächlich
+    räumlich.
 */
 
+function getBalanceAxis() {
 
-function getBalanceAxis(field) {
-
-    const position =
-        fieldToCoordinate(field);
+    const p =
+        fieldToCoordinate(
+            currentField
+        );
 
 
     if (
-        Math.abs(position.x) >=
-        Math.abs(position.y)
+        Math.abs(p.x) >=
+        Math.abs(p.y)
     ) {
 
         return "x";
@@ -1568,136 +1399,127 @@ function getBalanceAxis(field) {
 
 
 /* =========================================================
-   SIGNEDER HEBELARM
+   HEBELARM
 ========================================================= */
 
-function getSignedArm(
+function getArm(
     field,
     axis
 ) {
 
-    const position =
-        fieldToCoordinate(field);
+    const p =
+        fieldToCoordinate(
+            field
+        );
 
 
-    return position[axis];
+    return p[axis];
 }
 
 
 /* =========================================================
-   GESAMTBALANCE
+   BALANCE BERECHNEN
 ========================================================= */
 
 function calculateBalance(
-    testWeight = null,
-    testField = null
+    extraWeight = null,
+    extraField = null
 ) {
 
     const axis =
-        getBalanceAxis(
-            currentField
-        );
+        getBalanceAxis();
 
 
     let total = 0;
 
 
     /*
-        Figur
+        Figur.
     */
 
     total +=
 
-        FIGURE_WEIGHT *
+        FIGURE_BALLS *
 
-        getSignedArm(
+        getArm(
             currentField,
             axis
         );
 
 
     /*
-        Bereits abgelegte Gewichte
+        Bereits liegende Gewichte.
     */
 
-    for (
-        const item of placedWeights
-    ) {
+    placedWeights.forEach(
 
-        total +=
+        item => {
 
-            item.weight *
+            total +=
 
-            getSignedArm(
-                item.field,
-                axis
-            );
-    }
+                item.weight *
+
+                getArm(
+                    item.field,
+                    axis
+                );
+
+        }
+
+    );
 
 
     /*
-        Optional ein neues Gewicht
+        Testgewicht.
     */
 
     if (
-
-        testWeight !== null &&
-
-        testField !== null
-
+        extraWeight !== null &&
+        extraField !== null
     ) {
 
         total +=
 
-            testWeight *
+            extraWeight *
 
-            getSignedArm(
-                testField,
+            getArm(
+                extraField,
                 axis
             );
+
     }
 
 
     return {
 
-        value: total,
+        value:
+            total,
 
-        axis: axis
+        axis:
+            axis
 
     };
 }
 
 
 /* =========================================================
-   GÜLTIGE LÖSUNGSFELDER
+   FREIE FELDER
 ========================================================= */
 
-/*
-    Nur Felder auf der entgegengesetzten
-    Seite der aktuellen Balance werden
-    als sinnvolle Ablagefelder hervorgehoben.
+function getFreeFields() {
 
-    Dadurch wird das Spiel für den Spieler
-    deutlich übersichtlicher.
-*/
-
-function getPlaceableFields() {
-
-    const balance =
-        calculateBalance();
-
-
-    const fields = [];
+    const result = [];
 
 
     for (
         let field = 1;
-        field <= 25;
+        field <= 16;
         field++
     ) {
 
         /*
-            Figurfeld nicht benutzen.
+            Figurfeld darf nicht
+            belegt werden.
         */
 
         if (
@@ -1709,51 +1531,67 @@ function getPlaceableFields() {
 
 
         /*
-            Mittelpunkt ist kein
-            sinnvolles Gegengewicht.
+            Bereits gefrorene oder
+            normale Gewichte.
         */
 
         if (
-            field === CENTER
-        ) {
-
-            continue;
-        }
-
-
-        /*
-            Bereits belegte Felder
-            können nicht erneut belegt
-            werden.
-        */
-
-        const occupied =
             placedWeights.some(
-
                 item =>
                     item.field === field
-
-            );
-
-
-        if (
-            occupied
+            )
         ) {
 
             continue;
         }
 
 
+        result.push(
+            field
+        );
+
+    }
+
+
+    return result;
+}
+
+
+/* =========================================================
+   MÖGLICHE ABLAGEFELDER
+========================================================= */
+
+function getPlaceableFields() {
+
+    const balance =
+        calculateBalance();
+
+
+    const fields = [];
+
+
+    for (
+        const field of getFreeFields()
+    ) {
+
         const arm =
-            getSignedArm(
+            getArm(
                 field,
                 balance.axis
             );
 
 
+        if (
+            Math.abs(arm) < 0.0001
+        ) {
+
+            continue;
+
+        }
+
+
         /*
-            Ein Gegengewicht muss auf
-            der entgegengesetzten Seite liegen.
+            Gegenseite der Balance.
         */
 
         if (
@@ -1761,14 +1599,21 @@ function getPlaceableFields() {
             arm < 0
         ) {
 
-            fields.push(field);
+            fields.push(
+                field
+            );
 
-        } else if (
+        }
+
+
+        if (
             balance.value < 0 &&
             arm > 0
         ) {
 
-            fields.push(field);
+            fields.push(
+                field
+            );
 
         }
 
@@ -1780,7 +1625,7 @@ function getPlaceableFields() {
 
 
 /* =========================================================
-   PASSENDES GEWICHT FINDEN
+   LÖSUNG SUCHEN
 ========================================================= */
 
 function findSolution() {
@@ -1789,80 +1634,26 @@ function findSolution() {
         calculateBalance();
 
 
-    /*
-        Wenn die aktuelle Balance bereits
-        exakt 0 wäre, erzeugen wir eine
-        kleine neue Aufgabe.
-    */
-
-    if (
-        Math.abs(balance.value)
-        < BALANCE_TOLERANCE
-    ) {
-
-        /*
-            Ein Feld suchen, das die
-            Aufgabe verändert.
-        */
-
-        const candidates =
-            getAllFreeFields();
-
-
-        const field =
-            candidates[
-                randomInt(
-                    0,
-                    candidates.length - 1
-                )
-            ];
-
-
-        const arm =
-            getSignedArm(
-                field,
-                balance.axis
-            );
-
-
-        if (
-            arm !== 0
-        ) {
-
-            return {
-                field: field,
-                weight: 1.0
-            };
-        }
-    }
+    const solutions = [];
 
 
     /*
-        Wir suchen ein freies Feld,
-        auf dem ein gut spielbares Gewicht
-        die Balance exakt auf 0 bringt.
+        Alle freien Felder testen.
     */
-
-    const candidates =
-        getAllFreeFields();
-
-
-    const possibleSolutions = [];
-
 
     for (
-        const field of candidates
+        const field of getFreeFields()
     ) {
 
         const arm =
-            getSignedArm(
+            getArm(
                 field,
                 balance.axis
             );
 
 
         if (
-            arm === 0
+            Math.abs(arm) < 0.0001
         ) {
 
             continue;
@@ -1870,133 +1661,80 @@ function findSolution() {
 
 
         /*
-            Benötigtes Gewicht:
-
-            Gewicht =
-            -Balance / Hebelarm
+            benötigte Kugelanzahl
         */
 
         const needed =
-            -balance.value / arm;
+            -balance.value /
+            arm;
 
 
         /*
-            Auf ein sinnvolles Spielgewicht
-            runden.
+            Nur ganze Kugeln.
         */
 
         const rounded =
             Math.round(
-                needed * 2
-            ) / 2;
+                needed
+            );
 
 
         if (
-            rounded >= 0.5 &&
-            rounded <= 4.0
-        ) {
-
-            const check =
-                calculateBalance(
-                    rounded,
-                    field
-                );
-
-
-            if (
-                Math.abs(
-                    check.value
-                ) < BALANCE_TOLERANCE
-            ) {
-
-                possibleSolutions.push({
-
-                    field: field,
-
-                    weight: rounded
-
-                });
-
-            }
-
-        }
-
-    }
-
-
-    /*
-        Wenn mehrere Lösungen möglich sind,
-        eine zufällige auswählen.
-    */
-
-    if (
-        possibleSolutions.length > 0
-    ) {
-
-        return possibleSolutions[
-            randomInt(
-                0,
-                possibleSolutions.length - 1
-            )
-        ];
-    }
-
-
-    /*
-        Falls keine passende Lösung mit
-        0,5-Schritten existiert, erzeugen
-        wir eine neue Aufgabe.
-    */
-
-    return null;
-}
-
-
-/* =========================================================
-   FREIE FELDER
-========================================================= */
-
-function getAllFreeFields() {
-
-    const result = [];
-
-
-    for (
-        let field = 1;
-        field <= 25;
-        field++
-    ) {
-
-        if (
-            field === currentField ||
-            field === CENTER
+            rounded < 1 ||
+            rounded > 6
         ) {
 
             continue;
         }
 
 
-        const occupied =
-            placedWeights.some(
-
-                item =>
-                    item.field === field
-
+        const result =
+            calculateBalance(
+                rounded,
+                field
             );
 
 
         if (
-            !occupied
+            Math.abs(
+                result.value
+            ) < 0.0001
         ) {
 
-            result.push(field);
+            solutions.push({
+
+                field:
+                    field,
+
+                weight:
+                    rounded
+
+            });
 
         }
 
     }
 
 
-    return result;
+    if (
+        solutions.length === 0
+    ) {
+
+        return null;
+
+    }
+
+
+    /*
+        Zufällige Lösung.
+    */
+
+    return solutions[
+        randomInt(
+            0,
+            solutions.length - 1
+        )
+    ];
 }
 
 
@@ -2006,48 +1744,55 @@ function getAllFreeFields() {
 
 function createWeights() {
 
-    /*
-        Wir suchen eine Aufgabe,
-        bei der eine exakte Lösung existiert.
-    */
-
     let solution = null;
 
-    let attempts = 0;
+    let tries = 0;
 
+
+    /*
+        Eine echte Aufgabe suchen.
+    */
 
     while (
         solution === null &&
-        attempts < 100
+        tries < 200
     ) {
 
         solution =
             findSolution();
 
-        attempts++;
+        tries++;
 
     }
 
 
     /*
-        Sollte es wegen einer ungünstigen
-        Kombination keine Lösung geben,
-        erzeugen wir eine neue Runde.
+        Falls keine Lösung gefunden wurde,
+        wird das Spielfeld neu aufgebaut.
     */
 
     if (
         solution === null
     ) {
 
-        solution = {
+        /*
+            Fallback:
+            neues Spiel.
+        */
 
-            field:
-                getRandomOppositeField(),
+        path =
+            generatePath();
 
-            weight:
-                1.0
+        currentPathIndex =
+            0;
 
-        };
+        currentField =
+            path[0];
+
+        placedWeights =
+            [];
+
+        return createWeights();
 
     }
 
@@ -2057,8 +1802,7 @@ function createWeights() {
 
 
     /*
-        Das richtige Gewicht kommt
-        in die drei Auswahlmöglichkeiten.
+        Richtiges Gewicht.
     */
 
     const weights = [
@@ -2069,7 +1813,7 @@ function createWeights() {
 
 
     /*
-        Zwei falsche Gewichte auswählen.
+        Zwei falsche Kugelzahlen.
     */
 
     while (
@@ -2084,10 +1828,6 @@ function createWeights() {
                 )
             ];
 
-
-        /*
-            Nicht doppelt.
-        */
 
         if (
             !weights.includes(
@@ -2104,48 +1844,14 @@ function createWeights() {
     }
 
 
-    /*
-        Mischen.
-    */
-
     availableWeights =
-        shuffle(weights);
+        shuffle(
+            weights
+        );
 
 
     selectedWeightIndex =
         null;
-}
-
-
-/* =========================================================
-   ZUFÄLLIGES GEGENFELD
-========================================================= */
-
-function getRandomOppositeField() {
-
-    const balance =
-        calculateBalance();
-
-
-    const candidates =
-        getPlaceableFields();
-
-
-    if (
-        candidates.length > 0
-    ) {
-
-        return candidates[
-            randomInt(
-                0,
-                candidates.length - 1
-            )
-        ];
-
-    }
-
-
-    return 1;
 }
 
 
@@ -2167,39 +1873,17 @@ function selectWeight(index) {
         index;
 
 
-    document
-        .querySelectorAll(
-            ".weight-option"
-        )
-        .forEach(
-
-            (element, i) => {
-
-                element.classList.toggle(
-
-                    "selected",
-
-                    i === index
-
-                );
-
-            }
-
-        );
-
+    renderWeights();
 
     renderBoard();
 
 
     showMessage(
 
-        `Gewicht ${
-            formatKg(
-                availableWeights[index]
-            )
-        } ausgewählt.
-        Die möglichen Ablagefelder
-        sind jetzt hervorgehoben.`,
+        `${ballsText(
+            availableWeights[index]
+        )} ausgewählt.
+        Jetzt ein hervorgehobenes Feld anklicken.`,
 
         "info"
 
@@ -2208,7 +1892,7 @@ function selectWeight(index) {
 
 
 /* =========================================================
-   FELD ANGEKLICKT
+   FELD KLICK
 ========================================================= */
 
 function boardClicked(field) {
@@ -2222,38 +1906,60 @@ function boardClicked(field) {
 
 
     /*
-        -----------------------------------------------------
-        EXISTIERENDES GEWICHT
-        -----------------------------------------------------
+        Bereits liegendes Gewicht?
     */
 
-    const existingIndex =
-        placedWeights.findIndex(
-
+    const existing =
+        placedWeights.find(
             item =>
                 item.field === field
-
         );
 
 
     if (
-        existingIndex !== -1
+        existing
     ) {
 
-        const removed =
-            placedWeights[
-                existingIndex
-            ];
+        /*
+            Eingefrorene Gewichte
+            können NICHT entfernt werden.
+        */
+
+        if (
+            existing.frozen
+        ) {
+
+            showMessage(
+
+                "🔒 Dieses Gewicht ist eingefroren und kann nicht mehr entfernt werden.",
+
+                "info"
+
+            );
+
+            return;
+        }
 
 
-        availableWeights.push(
-            removed.weight
-        );
+        /*
+            Normales falsches Gewicht
+            darf zurückgenommen werden.
+        */
+
+        const index =
+            placedWeights.indexOf(
+                existing
+            );
 
 
         placedWeights.splice(
-            existingIndex,
+            index,
             1
+        );
+
+
+        availableWeights.push(
+            existing.weight
         );
 
 
@@ -2261,38 +1967,22 @@ function boardClicked(field) {
             null;
 
 
-        renderWeights();
-
-        renderBoard();
-
-
-        showMessage(
-
-            `↩ ${
-                formatKg(
-                    removed.weight
-                )
-            } wurde zurückgenommen.`,
-
-            "info"
-
-        );
-
-
-        showCalculation();
-
-
-        /*
-            Da sich die Balance durch das
-            Entfernen verändert hat,
-            wird eine neue Aufgabe berechnet.
-        */
-
         createWeights();
 
         renderWeights();
 
         renderBoard();
+
+        showCalculation();
+
+
+        showMessage(
+
+            "↩ Gewicht wurde zurückgenommen.",
+
+            "info"
+
+        );
 
 
         return;
@@ -2300,9 +1990,7 @@ function boardClicked(field) {
 
 
     /*
-        -----------------------------------------------------
-        KEIN GEWICHT AUSGEWÄHLT
-        -----------------------------------------------------
+        Noch kein Gewicht ausgewählt?
     */
 
     if (
@@ -2311,7 +1999,7 @@ function boardClicked(field) {
 
         showMessage(
 
-            "Bitte zuerst eines der drei Gewichte auswählen.",
+            "Bitte zuerst eine Kugelanzahl auswählen.",
 
             "error"
 
@@ -2322,53 +2010,7 @@ function boardClicked(field) {
 
 
     /*
-        -----------------------------------------------------
-        FIGURENFELD
-        -----------------------------------------------------
-    */
-
-    if (
-        field === currentField
-    ) {
-
-        showMessage(
-
-            "Auf dem Feld der Spielfigur kann kein Gewicht liegen.",
-
-            "error"
-
-        );
-
-        return;
-    }
-
-
-    /*
-        -----------------------------------------------------
-        MITTELPUNKT
-        -----------------------------------------------------
-    */
-
-    if (
-        field === CENTER
-    ) {
-
-        showMessage(
-
-            "Auf dem Mittelpunkt kann kein Gegengewicht abgelegt werden.",
-
-            "error"
-
-        );
-
-        return;
-    }
-
-
-    /*
-        -----------------------------------------------------
-        GEWICHT ABLEGEN
-        -----------------------------------------------------
+        Gewicht holen.
     */
 
     const weight =
@@ -2377,13 +2019,20 @@ function boardClicked(field) {
         ];
 
 
+    /*
+        Gewicht ablegen.
+    */
+
     placedWeights.push({
 
         field:
             field,
 
         weight:
-            weight
+            weight,
+
+        frozen:
+            false
 
     });
 
@@ -2407,63 +2056,73 @@ function boardClicked(field) {
 
 
     /*
-        Jetzt echte Balance prüfen.
+        Balance prüfen.
     */
 
-    evaluatePlacement();
+    evaluatePlacement(
+        field,
+        weight
+    );
 }
 
 
 /* =========================================================
-   BALANCE AUSWERTEN
+   PLATZIERUNG AUSWERTEN
 ========================================================= */
 
-function evaluatePlacement() {
+function evaluatePlacement(
+    field,
+    weight
+) {
 
     const balance =
         calculateBalance();
 
 
-    const balanced =
-
-        Math.abs(
-            balance.value
-        ) < BALANCE_TOLERANCE;
-
-
     /*
-        -----------------------------------------------------
         RICHTIG
-        -----------------------------------------------------
     */
 
     if (
-        balanced
+        Math.abs(
+            balance.value
+        ) < 0.0001
     ) {
 
         gameLocked =
             true;
 
 
-        const lastWeight =
-            placedWeights[
-                placedWeights.length - 1
-            ];
-
-
         /*
-            Grüner Haken auf dem
-            gerade gelegten Gewicht.
+            Das gerade platzierte Gewicht
+            wird eingefroren.
         */
 
+        const placed =
+            placedWeights.find(
+                item =>
+                    item.field === field
+            );
+
+
+        if (
+            placed
+        ) {
+
+            placed.frozen =
+                true;
+
+        }
+
+
         showCorrectMark(
-            lastWeight.field
+            field
         );
 
 
         showMessage(
 
-            "✓ Richtig! Die Balance stimmt.",
+            "✓ Richtig! Das Gewicht wird eingefroren.",
 
             "success"
 
@@ -2472,10 +2131,6 @@ function evaluatePlacement() {
 
         showCalculation();
 
-
-        /*
-            Eine Sekunde warten.
-        */
 
         setTimeout(
 
@@ -2497,80 +2152,27 @@ function evaluatePlacement() {
 
 
     /*
-        -----------------------------------------------------
         FALSCH
-        -----------------------------------------------------
     */
 
     showMessage(
 
-        "❌ Noch nicht im Gleichgewicht. Die Figur bleibt stehen.",
+        "❌ Noch nicht richtig. Die Figur bleibt stehen.",
 
         "error"
 
     );
 
 
+    showWrongAnimation();
+
+
     showCalculation();
 
 
     /*
-        Das Gewicht bleibt liegen.
-    */
-
-    const cells =
-        document.querySelectorAll(
-            ".cell"
-        );
-
-
-    cells.forEach(
-
-        cell => {
-
-            /*
-                Wir suchen das aktuelle
-                Figurenfeld.
-            */
-
-            if (
-                cell.classList.contains(
-                    "current"
-                )
-            ) {
-
-                cell.classList.add(
-                    "wrong"
-                );
-
-
-                setTimeout(
-
-                    () => {
-
-                        cell.classList.remove(
-                            "wrong"
-                        );
-
-                    },
-
-                    400
-
-                );
-
-            }
-
-        }
-
-    );
-
-
-    /*
-        Für die nächste Aufgabe wird
-        die neue Balance berücksichtigt.
-
-        Dadurch bleiben die Gewichte
-        dauerhaft relevant.
+        Das falsche Gewicht bleibt liegen.
+        Es kann später wieder entfernt werden.
     */
 
     createWeights();
@@ -2582,7 +2184,7 @@ function evaluatePlacement() {
 
 
 /* =========================================================
-   FIGUR EIN FELD WEITER
+   NÄCHSTES FELD
 ========================================================= */
 
 function advanceFigure() {
@@ -2602,12 +2204,7 @@ function advanceFigure() {
     }
 
 
-    /*
-        Genau ein Feld weiter.
-    */
-
     currentPathIndex++;
-
 
     currentField =
         path[
@@ -2615,21 +2212,18 @@ function advanceFigure() {
         ];
 
 
-    /*
-        Alle alten Gewichte bleiben liegen.
-    */
-
     gameLocked =
         false;
 
 
     /*
-        Neue drei Gewichte
-        für die neue Aufgabe.
+        Die gefrorenen Gewichte bleiben.
+
+        Normale falsche Gewichte bleiben
+        ebenfalls liegen.
     */
 
     createWeights();
-
 
     renderWeights();
 
@@ -2637,14 +2231,12 @@ function advanceFigure() {
 
     updateInformation();
 
-    updatePathDisplay();
-
     hideCalculation();
 
 
     showMessage(
 
-        `➡️ Die Figur geht ein Feld weiter.`,
+        "➡️ Die Figur ist ein Feld weiter.",
 
         "info"
 
@@ -2658,9 +2250,6 @@ function advanceFigure() {
 
 function showCorrectMark(field) {
 
-    removeCorrectMark();
-
-
     const cells =
         document.querySelectorAll(
             ".cell"
@@ -2669,21 +2258,10 @@ function showCorrectMark(field) {
 
     cells.forEach(
 
-        cell => {
-
-            /*
-                Das Feld anhand seiner Position
-                im Board bestimmen.
-            */
-
-            const fieldIndex =
-                Array.from(
-                    cell.parentNode.children
-                ).indexOf(cell) + 1;
-
+        (cell,index) => {
 
             if (
-                fieldIndex === field
+                index + 1 === field
             ) {
 
                 const check =
@@ -2723,11 +2301,50 @@ function removeCorrectMark() {
             ".correct-check"
         )
         .forEach(
-
             element =>
                 element.remove()
-
         );
+}
+
+
+/* =========================================================
+   FALSCHE ANIMATION
+========================================================= */
+
+function showWrongAnimation() {
+
+    const cell =
+        document.querySelector(
+            ".cell.current"
+        );
+
+
+    if (
+        !cell
+    ) {
+
+        return;
+    }
+
+
+    cell.classList.add(
+        "wrong"
+    );
+
+
+    setTimeout(
+
+        () => {
+
+            cell.classList.remove(
+                "wrong"
+            );
+
+        },
+
+        400
+
+    );
 }
 
 
@@ -2741,12 +2358,9 @@ function finishGame() {
         true;
 
 
-    renderBoard();
-
-
     showMessage(
 
-        "🏆 ZIEL ERREICHT! Die Balance wurde über den gesamten Weg gehalten.",
+        "🏆 ZIEL ERREICHT! Sehr gut gemacht!",
 
         "success"
 
@@ -2758,7 +2372,7 @@ function finishGame() {
 
 
 /* =========================================================
-   SPIELFELD ZEICHNEN
+   SPIELBRETT ZEICHNEN
 ========================================================= */
 
 function renderBoard() {
@@ -2773,14 +2387,7 @@ function renderBoard() {
         "";
 
 
-    /*
-        Mögliche Ablagefelder
-        nur anzeigen, wenn ein
-        Gewicht ausgewählt wurde.
-    */
-
-    const placeableFields =
-
+    const placeable =
         selectedWeightIndex !== null
 
             ? getPlaceableFields()
@@ -2790,7 +2397,7 @@ function renderBoard() {
 
     for (
         let field = 1;
-        field <= 25;
+        field <= 16;
         field++
     ) {
 
@@ -2850,7 +2457,7 @@ function renderBoard() {
 
 
         /*
-            Aktuelle Figur
+            Figur
         */
 
         if (
@@ -2865,42 +2472,41 @@ function renderBoard() {
 
 
         /*
-            Ist dort schon ein Gewicht?
+            Lösung hervorheben
         */
 
-        const weightsHere =
-            placedWeights.filter(
-
-                item =>
-                    item.field === field
-
-            );
-
-
         if (
-            weightsHere.length > 0
+            SHOW_SOLUTION &&
+            currentSolution &&
+            field === currentSolution.field
         ) {
 
             cell.classList.add(
-                "occupied"
+                "solution-field"
             );
 
         }
 
 
         /*
-            Mögliche Ablagefelder
+            Belegtes Feld
+        */
+
+        const weights =
+            placedWeights.filter(
+                item =>
+                    item.field === field
+            );
+
+
+        /*
+            Mögliche Ablage
         */
 
         if (
-            placeableFields.includes(
-                field
-            ) &&
-
-            field !== currentField &&
-
-            weightsHere.length === 0
-
+            placeable.includes(field) &&
+            weights.length === 0 &&
+            field !== currentField
         ) {
 
             cell.classList.add(
@@ -2911,7 +2517,7 @@ function renderBoard() {
 
 
         /*
-            Figur
+            Figur darstellen
         */
 
         if (
@@ -2920,7 +2526,7 @@ function renderBoard() {
 
             const figure =
                 document.createElement(
-                    "span"
+                    "div"
                 );
 
 
@@ -2928,8 +2534,13 @@ function renderBoard() {
                 "figure";
 
 
-            figure.textContent =
-                "⚖️";
+            figure.innerHTML =
+                `
+                <div>⚖️</div>
+                <div class="figure-label">
+                    ${ballsText(FIGURE_BALLS)}
+                </div>
+                `;
 
 
             cell.appendChild(
@@ -2940,11 +2551,11 @@ function renderBoard() {
 
 
         /*
-            Gewichte anzeigen
+            Gewichte darstellen
         */
 
         if (
-            weightsHere.length > 0
+            weights.length > 0
         ) {
 
             const stack =
@@ -2957,7 +2568,7 @@ function renderBoard() {
                 "weight-stack";
 
 
-            weightsHere.forEach(
+            weights.forEach(
 
                 item => {
 
@@ -2971,8 +2582,20 @@ function renderBoard() {
                         "weight-token";
 
 
-                    token.textContent =
-                        formatKg(
+                    if (
+                        item.frozen
+                    ) {
+
+                        token.classList.add(
+                            "frozen"
+                        );
+
+                    }
+
+
+                    token.innerHTML =
+
+                        ballsText(
                             item.weight
                         );
 
@@ -2993,10 +2616,6 @@ function renderBoard() {
         }
 
 
-        /*
-            Klick
-        */
-
         cell.addEventListener(
 
             "click",
@@ -3016,7 +2635,7 @@ function renderBoard() {
 
 
 /* =========================================================
-   GEWICHTE ZEIGEN
+   GEWICHTE RENDERN
 ========================================================= */
 
 function renderWeights() {
@@ -3035,13 +2654,13 @@ function renderWeights() {
 
         (weight,index) => {
 
-            const button =
+            const option =
                 document.createElement(
                     "div"
                 );
 
 
-            button.className =
+            option.className =
                 "weight-option";
 
 
@@ -3050,20 +2669,39 @@ function renderWeights() {
                 selectedWeightIndex
             ) {
 
-                button.classList.add(
+                option.classList.add(
                     "selected"
                 );
 
             }
 
 
-            button.textContent =
-                formatKg(
+            /*
+                Probe: richtige Auswahl
+                grün markieren.
+            */
+
+            if (
+                SHOW_SOLUTION &&
+                currentSolution &&
+                weight ===
+                    currentSolution.weight
+            ) {
+
+                option.classList.add(
+                    "solution-weight"
+                );
+
+            }
+
+
+            option.innerHTML =
+                ballsText(
                     weight
                 );
 
 
-            button.addEventListener(
+            option.addEventListener(
 
                 "click",
 
@@ -3074,7 +2712,7 @@ function renderWeights() {
 
 
             container.appendChild(
-                button
+                option
             );
 
         }
@@ -3103,9 +2741,9 @@ function updateInformation() {
 
     document.getElementById(
         "figureWeight"
-    ).textContent =
-        formatKg(
-            FIGURE_WEIGHT
+    ).innerHTML =
+        ballsText(
+            FIGURE_BALLS
         );
 
 
@@ -3117,93 +2755,55 @@ function updateInformation() {
 
 
 /* =========================================================
-   WEG ANZEIGEN
+   LÖSUNG ANZEIGEN
 ========================================================= */
 
-function updatePathDisplay() {
+function renderSolution() {
 
-    const container =
+    const box =
         document.getElementById(
-            "pathList"
+            "solutionText"
         );
 
 
-    container.innerHTML =
-        "";
+    if (
+        !SHOW_SOLUTION ||
+        !currentSolution
+    ) {
+
+        box.textContent =
+            "";
+
+        return;
+    }
 
 
-    path.forEach(
+    box.innerHTML =
 
-        (field,index) => {
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-
-            element.className =
-                "path-field";
-
-
-            if (
-                index <
-                currentPathIndex
-            ) {
-
-                element.classList.add(
-                    "done"
-                );
-
-            }
-
-
-            if (
-                index ===
-                currentPathIndex
-            ) {
-
-                element.classList.add(
-                    "active"
-                );
-
-            }
-
-
-            /*
-                Der Weg wird momentan
-                rechts noch als Kontrollanzeige
-                gezeigt.
-            */
-
-            element.textContent =
-                field;
-
-
-            container.appendChild(
-                element
-            );
-
-        }
-
-    );
+        `${ballsText(
+            currentSolution.weight
+        )}
+        → Feld ${currentSolution.field}
+        <br>
+        Das grüne Feld ist das richtige
+        Ablagefeld.`;
 }
 
 
 /* =========================================================
-   BERECHNUNG ANZEIGEN
+   BERECHNUNG
 ========================================================= */
 
 function showCalculation() {
-
-    const balance =
-        calculateBalance();
-
 
     const box =
         document.getElementById(
             "calculation"
         );
+
+
+    const balance =
+        calculateBalance();
 
 
     let html =
@@ -3213,21 +2813,22 @@ function showCalculation() {
 
     html +=
 
+        `Waage:
+        ${FIGURE_BALLS} Kugeln<br>`;
+
+
+    html +=
+
+        `Aktuelles Feld:
+        ${currentField}<br>`;
+
+
+    html +=
+
         `Balance-Achse:
         ${balance.axis === "x"
-            ? "horizontal"
-            : "vertikal"}<br>`;
-
-
-    html +=
-
-        `Figur:
-        ${formatKg(FIGURE_WEIGHT)}
-        auf Feld ${currentField}<br>`;
-
-
-    html +=
-        "<br>Abgelegte Gewichte:<br>";
+            ? "X"
+            : "Y"}<br><br>`;
 
 
     if (
@@ -3235,9 +2836,13 @@ function showCalculation() {
     ) {
 
         html +=
-            "Keine Gewichte<br>";
+            "Keine abgelegten Gewichte.<br>";
 
     } else {
+
+        html +=
+            "Abgelegte Gewichte:<br>";
+
 
         placedWeights.forEach(
 
@@ -3245,7 +2850,8 @@ function showCalculation() {
 
                 html +=
 
-                    `${formatKg(item.weight)}
+                    `${item.frozen ? "🔒" : "⚪"}
+                    ${item.weight} Kugeln
                     → Feld ${item.field}<br>`;
 
             }
@@ -3262,29 +2868,26 @@ function showCalculation() {
     html +=
 
         `Gesamtbalance:
-        ${balance.value.toFixed(3)}<br><br>`;
+        ${balance.value.toFixed(2)}<br>`;
 
 
     if (
-
         Math.abs(
             balance.value
-        ) < BALANCE_TOLERANCE
-
+        ) < 0.0001
     ) {
 
         html +=
 
-            `<span class="good">
-            ✓ BALANCE = 0
-            → GLEICHGEWICHT
+            `<span style="color:#4ade80">
+            ✓ Gleichgewicht
             </span>`;
 
     } else {
 
         html +=
 
-            `<span class="warning">
+            `<span style="color:#facc15">
             Noch nicht im Gleichgewicht
             </span>`;
 
@@ -3293,35 +2896,14 @@ function showCalculation() {
 
     box.innerHTML =
         html;
-
-
-    box.classList.add(
-        "show"
-    );
 }
 
 
 /* =========================================================
-   BERECHNUNG AUSBLENDEN
+   FALSCHE GEWICHTE ZURÜCKNEHMEN
 ========================================================= */
 
-function hideCalculation() {
-
-    document
-        .getElementById(
-            "calculation"
-        )
-        .classList.remove(
-            "show"
-        );
-}
-
-
-/* =========================================================
-   ALLE GEWICHTE ZURÜCKNEHMEN
-========================================================= */
-
-function resetWeights() {
+function resetNonFrozenWeights() {
 
     if (
         gameLocked
@@ -3331,11 +2913,14 @@ function resetWeights() {
     }
 
 
-    /*
-        Gewicht zurück in die Auswahl.
-    */
+    const removable =
+        placedWeights.filter(
+            item =>
+                !item.frozen
+        );
 
-    placedWeights.forEach(
+
+    removable.forEach(
 
         item => {
 
@@ -3349,7 +2934,10 @@ function resetWeights() {
 
 
     placedWeights =
-        [];
+        placedWeights.filter(
+            item =>
+                item.frozen
+        );
 
 
     selectedWeightIndex =
@@ -3358,17 +2946,18 @@ function resetWeights() {
 
     createWeights();
 
-
     renderWeights();
 
     renderBoard();
 
-    hideCalculation();
+    renderSolution();
+
+    showCalculation();
 
 
     showMessage(
 
-        "↩ Alle abgelegten Gewichte wurden zurückgenommen.",
+        "↩ Alle nicht eingefrorenen Gewichte wurden zurückgenommen.",
 
         "info"
 
@@ -3398,25 +2987,13 @@ function newGame() {
         0;
 
 
-    /*
-        Zufälligen Weg erzeugen.
-    */
-
     path =
         generatePath();
 
 
-    /*
-        Startposition.
-    */
-
     currentField =
         path[0];
 
-
-    /*
-        Drei Gewichte erzeugen.
-    */
 
     createWeights();
 
@@ -3427,14 +3004,14 @@ function newGame() {
 
     updateInformation();
 
-    updatePathDisplay();
+    renderSolution();
 
-    hideCalculation();
+    showCalculation();
 
 
     showMessage(
 
-        "🎲 Neue Runde gestartet. Wähle eines der drei Gewichte.",
+        "🎲 Neue Runde gestartet.",
 
         "info"
 
@@ -3443,7 +3020,59 @@ function newGame() {
 
 
 /* =========================================================
-   ZUFALLSZAHL
+   KUGELN DARSTELLEN
+========================================================= */
+
+function ballsHTML(count) {
+
+    let html = "";
+
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+
+        html +=
+            `<span class="ball"></span>`;
+
+    }
+
+
+    return html;
+}
+
+
+function ballsText(count) {
+
+    return `
+
+        <span
+            style="
+                display:inline-flex;
+                align-items:center;
+                gap:3px;
+            "
+        >
+
+            ${ballsHTML(count)}
+
+            <span>
+                ${count}
+                ${count === 1
+                    ? "Kugel"
+                    : "Kugeln"}
+            </span>
+
+        </span>
+
+    `;
+}
+
+
+/* =========================================================
+   ZUFALL
 ========================================================= */
 
 function randomInt(min,max) {
@@ -3458,18 +3087,18 @@ function randomInt(min,max) {
 
 
 /* =========================================================
-   ARRAY MISCHEN
+   MISCHEN
 ========================================================= */
 
 function shuffle(array) {
 
-    const copy =
+    const result =
         [...array];
 
 
     for (
         let i =
-            copy.length - 1;
+            result.length - 1;
 
         i > 0;
 
@@ -3478,47 +3107,26 @@ function shuffle(array) {
 
         const j =
             Math.floor(
-
                 Math.random() *
                 (i + 1)
-
             );
 
 
         [
-            copy[i],
-            copy[j]
+            result[i],
+            result[j]
 
         ] = [
 
-            copy[j],
-            copy[i]
+            result[j],
+            result[i]
 
         ];
 
     }
 
 
-    return copy;
-}
-
-
-/* =========================================================
-   GEWICHT FORMATIEREN
-========================================================= */
-
-function formatKg(value) {
-
-    return Number(value)
-
-        .toFixed(1)
-
-        .replace(
-            ".",
-            ","
-        )
-
-        + " kg";
+    return result;
 }
 
 
@@ -3538,8 +3146,7 @@ function showMessage(
 
 
     box.className =
-        "message show " +
-        type;
+        `message show ${type}`;
 
 
     box.textContent =
@@ -3548,7 +3155,7 @@ function showMessage(
 
 
 /* =========================================================
-   SPIEL STARTEN
+   START
 ========================================================= */
 
 newGame();
