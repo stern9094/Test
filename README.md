@@ -13,9 +13,8 @@
 body {
     margin: 0;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background:
-        radial-gradient(circle at top, #294765, #142333 55%, #09111a);
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #10253a, #173b55 50%, #0b1b2a);
     color: white;
 }
 
@@ -29,36 +28,35 @@ h1 {
     text-align: center;
     margin: 0;
     font-size: 38px;
-    letter-spacing: 2px;
 }
 
 .subtitle {
     text-align: center;
-    color: #b8c8d8;
+    color: #b9cad8;
     margin: 5px 0 20px;
 }
 
-/* ================================
-   LAYOUT
-================================ */
-
 .game {
     display: grid;
-    grid-template-columns: minmax(500px, 1fr) 350px;
+    grid-template-columns: minmax(500px, 1fr) 340px;
     gap: 20px;
 }
 
+/* =========================
+   PANEL
+========================= */
+
 .panel {
     background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 20px;
     padding: 18px;
-    box-shadow: 0 20px 45px rgba(0,0,0,.3);
+    box-shadow: 0 20px 50px rgba(0,0,0,.3);
 }
 
-/* ================================
+/* =========================
    SPIELBRETT
-================================ */
+========================= */
 
 .board-wrapper {
     position: relative;
@@ -67,14 +65,12 @@ h1 {
 }
 
 .board {
-    position: relative;
-
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
-
     gap: 7px;
 
+    width: 100%;
     aspect-ratio: 1;
 }
 
@@ -85,24 +81,34 @@ h1 {
     align-items: center;
     justify-content: center;
 
-    border-radius: 11px;
+    min-width: 0;
+    min-height: 0;
 
-    background:
-        linear-gradient(145deg, #344b60, #1d2e3e);
+    border-radius: 13px;
 
-    border: 2px solid #536b80;
+    background: linear-gradient(
+        145deg,
+        #344c60,
+        #1e3040
+    );
+
+    border: 2px solid #50687b;
 
     cursor: pointer;
 
-    transition: .15s;
+    transition:
+        transform .15s,
+        border-color .15s,
+        box-shadow .15s,
+        background .15s;
 
     overflow: visible;
 }
 
 .cell:hover {
     transform: scale(1.025);
-    border-color: #7dd3fc;
-    z-index: 5;
+    border-color: #8ddcff;
+    z-index: 10;
 }
 
 .cell.start {
@@ -110,21 +116,28 @@ h1 {
 }
 
 .cell.goal {
-    border-color: #22c55e;
+    border-color: #4ade80;
 }
 
 .cell.current {
-    background:
-        linear-gradient(145deg, #7040c0, #4c1d95);
+    background: linear-gradient(
+        145deg,
+        #7043bb,
+        #4c1d95
+    );
 
     border-color: #c4b5fd;
 
-    box-shadow: 0 0 24px rgba(139,92,246,.65);
+    box-shadow:
+        0 0 24px rgba(139,92,246,.65);
 }
 
 .cell.path {
-    background:
-        linear-gradient(145deg, #294b61, #1b3447);
+    background: linear-gradient(
+        145deg,
+        #29485e,
+        #1b3346
+    );
 }
 
 .cell.placeable {
@@ -132,32 +145,12 @@ h1 {
 
     box-shadow:
         inset 0 0 0 2px rgba(250,204,21,.15),
-        0 0 15px rgba(250,204,21,.25);
+        0 0 18px rgba(250,204,21,.25);
 }
 
-.cell.solution {
-    border-color: #22c55e;
-
-    box-shadow:
-        0 0 25px rgba(34,197,94,.65);
-}
-
-/* ================================
+/* =========================
    ROTER MITTELPUNKT
-================================ */
-
-/*
-   Der Mittelpunkt liegt NICHT in einem Feld.
-
-   Er liegt genau zwischen:
-
-   Feld 6 | Feld 7
-   -------●-------
-   Feld10 | Feld11
-
-   Deshalb wird der Kreis absolut
-   über der Brettmitte positioniert.
-*/
+========================= */
 
 .center-point {
     position: absolute;
@@ -175,66 +168,62 @@ h1 {
     background:
         radial-gradient(
             circle at 35% 30%,
-            #ffb4b4,
+            #ffb0b0,
             #ef4444 45%,
-            #991b1b 100%
+            #991b1b
         );
 
     border: 3px solid #fecaca;
 
     box-shadow:
-        0 0 0 4px rgba(239,68,68,.15),
-        0 0 20px rgba(239,68,68,.8);
+        0 0 0 4px rgba(239,68,68,.16),
+        0 0 22px rgba(239,68,68,.8);
 
-    z-index: 30;
+    z-index: 50;
 
     pointer-events: none;
 }
 
-.center-point::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 6px;
-
-    border-radius: 50%;
-
-    border: 1px solid rgba(255,255,255,.6);
-}
-
-/* ================================
+/* =========================
    FIGUR
-================================ */
+========================= */
 
 .figure {
+    position: relative;
+    z-index: 20;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
-    font-size: 32px;
+    font-size: 38px;
 
     filter:
         drop-shadow(0 4px 4px rgba(0,0,0,.45));
-
-    z-index: 10;
 }
 
-.figure-small {
-    font-size: 11px;
+.figure-weight {
+    margin-top: -5px;
+
+    padding: 3px 7px;
+
+    border-radius: 7px;
+
+    background: rgba(0,0,0,.4);
+
+    font-size: 10px;
     font-weight: bold;
 }
 
-/* ================================
-   GEWICHTSHÄUFEN
-================================ */
+/* =========================
+   GEWICHTE AUF FELD
+========================= */
 
 .weight-stack {
     position: absolute;
 
     left: 50%;
-    bottom: 4px;
+    bottom: 5px;
 
     transform: translateX(-50%);
 
@@ -242,7 +231,7 @@ h1 {
     flex-direction: column;
     align-items: center;
 
-    z-index: 12;
+    z-index: 15;
 
     pointer-events: none;
 }
@@ -253,87 +242,83 @@ h1 {
 }
 
 .weight-block {
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
 
     margin: 1px;
 
     border-radius: 4px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #93c5fd,
-            #3b82f6 55%,
-            #1d4ed8
-        );
+    background: linear-gradient(
+        145deg,
+        #bfdbfe,
+        #60a5fa 50%,
+        #2563eb
+    );
 
-    border: 1px solid #bfdbfe;
+    border: 1px solid #dbeafe;
 
     box-shadow:
-        inset 1px 1px 2px rgba(255,255,255,.5),
-        0 2px 3px rgba(0,0,0,.35);
+        inset 1px 1px 2px rgba(255,255,255,.55),
+        0 2px 3px rgba(0,0,0,.4);
 }
 
 .weight-stack.frozen .weight-block {
-    background:
-        linear-gradient(
-            145deg,
-            #86efac,
-            #22c55e 55%,
-            #15803d
-        );
+    background: linear-gradient(
+        145deg,
+        #bbf7d0,
+        #4ade80 50%,
+        #15803d
+    );
 
-    border-color: #bbf7d0;
+    border-color: #dcfce7;
 
     box-shadow:
-        0 0 7px rgba(34,197,94,.7);
+        0 0 8px rgba(34,197,94,.8);
 }
 
-/* ================================
+/* =========================
    HAKEN
-================================ */
+========================= */
 
 .correct-check {
     position: absolute;
 
-    top: 50%;
-    left: 50%;
+    right: 5px;
+    top: 5px;
 
-    transform: translate(-50%, -50%);
-
-    width: 48px;
-    height: 48px;
-
-    border-radius: 50%;
+    width: 31px;
+    height: 31px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border-radius: 50%;
+
     background: #16a34a;
 
-    border: 3px solid #bbf7d0;
+    border: 2px solid #bbf7d0;
 
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
 
     z-index: 40;
 
     box-shadow:
-        0 0 25px rgba(34,197,94,.9);
+        0 0 16px rgba(34,197,94,.9);
 }
 
-/* ================================
+/* =========================
    RECHTE SEITE
-================================ */
+========================= */
 
 .status {
     padding: 13px;
 
     background: rgba(0,0,0,.2);
 
-    border-radius: 11px;
+    border-radius: 12px;
 
     line-height: 1.5;
 }
@@ -345,47 +330,55 @@ h1 {
 }
 
 .info-grid {
-    margin-top: 13px;
-
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 8px;
+
+    margin-top: 13px;
 }
 
 .info {
-    background: rgba(0,0,0,.2);
-    border-radius: 9px;
     padding: 10px;
+
+    background: rgba(0,0,0,.2);
+
+    border-radius: 9px;
 }
 
 .info-label {
     font-size: 11px;
-    color: #8fa4b9;
+    color: #91a7ba;
 }
 
 .info-value {
+    margin-top: 3px;
+
     font-size: 17px;
     font-weight: bold;
-    margin-top: 3px;
 }
 
 h2 {
-    font-size: 18px;
     margin: 20px 0 10px;
+
+    font-size: 18px;
 }
 
-/* ================================
-   GEWICHT AUSWAHL
-================================ */
+/* =========================
+   GEWICHT-AUSWAHL
+========================= */
 
 .weights {
     display: grid;
+
     grid-template-columns: repeat(3, 1fr);
+
     gap: 8px;
 }
 
 .weight-option {
-    min-height: 105px;
+    min-height: 110px;
 
     display: flex;
     flex-direction: column;
@@ -393,11 +386,15 @@ h2 {
     justify-content: center;
 
     background:
-        linear-gradient(145deg, #334155, #1e293b);
+        linear-gradient(
+            145deg,
+            #334155,
+            #1e293b
+        );
 
     border: 2px solid #64748b;
 
-    border-radius: 10px;
+    border-radius: 11px;
 
     cursor: pointer;
 
@@ -405,48 +402,33 @@ h2 {
 }
 
 .weight-option:hover {
-    border-color: #60a5fa;
     transform: translateY(-2px);
+
+    border-color: #60a5fa;
 }
 
 .weight-option.selected {
     border-color: #facc15;
 
     box-shadow:
-        0 0 20px rgba(250,204,21,.5);
+        0 0 20px rgba(250,204,21,.55);
 }
 
 .weight-option.solution-weight {
     border-color: #22c55e;
-
-    box-shadow:
-        0 0 18px rgba(34,197,94,.55);
 }
 
-.weight-number {
+.weight-label {
     margin-top: 6px;
-    font-size: 12px;
+
+    font-size: 11px;
+
     color: #cbd5e1;
 }
 
-/* ================================
-   AUSWAHL-HÄUFEN
-================================ */
-
-.choice-stack {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.choice-stack .weight-block {
-    width: 19px;
-    height: 19px;
-}
-
-/* ================================
+/* =========================
    LÖSUNG
-================================ */
+========================= */
 
 .solution {
     margin-top: 14px;
@@ -463,14 +445,14 @@ h2 {
 }
 
 .solution-title {
-    font-weight: bold;
     color: #4ade80;
+    font-weight: bold;
     margin-bottom: 5px;
 }
 
-/* ================================
-   MELDUNG
-================================ */
+/* =========================
+   MELDUNGEN
+========================= */
 
 .message {
     display: none;
@@ -479,7 +461,7 @@ h2 {
 
     padding: 12px;
 
-    border-radius: 9px;
+    border-radius: 10px;
 }
 
 .message.show {
@@ -501,16 +483,16 @@ h2 {
     border: 1px solid #ef4444;
 }
 
-/* ================================
-   BERECHNUNG
-================================ */
+/* =========================
+   PROBE-BERECHNUNG
+========================= */
 
 .calculation {
     margin-top: 12px;
 
     padding: 12px;
 
-    border-radius: 9px;
+    border-radius: 10px;
 
     background: #08111b;
 
@@ -519,22 +501,24 @@ h2 {
     font-size: 11px;
 
     line-height: 1.6;
+
+    color: #cbd5e1;
 }
 
-/* ================================
+/* =========================
    BUTTONS
-================================ */
+========================= */
 
 button {
     width: 100%;
 
-    padding: 12px;
-
     margin-top: 9px;
+
+    padding: 12px;
 
     border: none;
 
-    border-radius: 9px;
+    border-radius: 10px;
 
     color: white;
 
@@ -544,23 +528,31 @@ button {
     cursor: pointer;
 }
 
-.new-game {
-    background:
-        linear-gradient(135deg, #7c3aed, #5b21b6);
-}
-
-.reset {
-    background:
-        linear-gradient(135deg, #475569, #334155);
-}
-
 button:hover {
     filter: brightness(1.12);
 }
 
-/* ================================
+.new-game {
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #5b21b6
+        );
+}
+
+.reset {
+    background:
+        linear-gradient(
+            135deg,
+            #475569,
+            #334155
+        );
+}
+
+/* =========================
    RESPONSIVE
-================================ */
+========================= */
 
 @media(max-width:850px) {
 
@@ -576,6 +568,31 @@ button:hover {
         width: 100%;
     }
 }
+
+@media(max-width:500px) {
+
+    .container {
+        padding-top: 10px;
+    }
+
+    .panel {
+        padding: 10px;
+    }
+
+    .weight-block {
+        width: 14px;
+        height: 14px;
+    }
+
+    .figure {
+        font-size: 30px;
+    }
+
+    .center-point {
+        width: 25px;
+        height: 25px;
+    }
+}
 </style>
 </head>
 
@@ -586,7 +603,7 @@ button:hover {
     <h1>⚖️ BALANCE-TEAM</h1>
 
     <div class="subtitle">
-        Das Balance-Abenteuer
+        Hilf der Figur, sicher zum Ziel zu kommen!
     </div>
 
     <div class="game">
@@ -604,7 +621,12 @@ button:hover {
                     class="board">
                 </div>
 
-                <!-- Roter Mittelpunkt -->
+                <!--
+                    Der rote Punkt liegt genau
+                    zwischen den vier mittleren
+                    Feldern.
+                -->
+
                 <div
                     class="center-point"
                     title="Mittelpunkt">
@@ -624,24 +646,25 @@ button:hover {
             <div class="status">
 
                 <div class="status-title">
-                    🧒 Hilf der Figur!
+                    🧒 Deine Aufgabe
                 </div>
 
-                Lege das richtige Gewicht auf ein
-                hervorgehobenes Feld.
+                Wähle einen Gewichtshaufen und
+                lege ihn auf ein freies Feld.
+
+                Die Gewichte bleiben liegen.
 
                 Wenn die Balance stimmt,
-                geht die Figur einen Schritt weiter.
-
-                Die Gewichte bleiben liegen!
+                geht die Figur ein Feld weiter.
             </div>
 
 
             <div class="info-grid">
 
                 <div class="info">
+
                     <div class="info-label">
-                        Startfeld
+                        Start
                     </div>
 
                     <div
@@ -649,11 +672,14 @@ button:hover {
                         class="info-value">
                         -
                     </div>
+
                 </div>
 
+
                 <div class="info">
+
                     <div class="info-label">
-                        Zielfeld
+                        Ziel
                     </div>
 
                     <div
@@ -661,23 +687,28 @@ button:hover {
                         class="info-value">
                         -
                     </div>
+
                 </div>
 
+
                 <div class="info">
+
                     <div class="info-label">
                         Figur
                     </div>
 
                     <div
-                        id="figureWeight"
                         class="info-value">
-                        -
+                        2
                     </div>
+
                 </div>
 
+
                 <div class="info">
+
                     <div class="info-label">
-                        Position
+                        Figur steht
                     </div>
 
                     <div
@@ -685,6 +716,7 @@ button:hover {
                         class="info-value">
                         -
                     </div>
+
                 </div>
 
             </div>
@@ -758,33 +790,16 @@ button:hover {
 <script>
 
 /* =========================================================
-   EINSTELLUNG
+   SPIEL-EINSTELLUNGEN
 ========================================================= */
-
-const SHOW_SOLUTION = true;
-
-
-/* =========================================================
-   GRUNDWERTE
-========================================================= */
-
-const SIZE = 4;
-
-/*
-   Gewicht der Figur.
-*/
 
 const FIGURE_WEIGHT = 2;
 
+const ALL_WEIGHTS = [1,2,3,4,5,6];
 
-/*
-   Erlaubte Gewichte.
+const BOARD_SIZE = 4;
 
-   Das Spiel stellt daraus immer
-   drei unterschiedliche Gewichte bereit.
-*/
-
-const WEIGHTS = [1,2,3,4,5,6];
+const SHOW_SOLUTION = true;
 
 
 /* =========================================================
@@ -813,32 +828,33 @@ let locked = false;
 
 
 /* =========================================================
-   KOORDINATEN
+   FELD → KOORDINATE
+=========================================================
+
+   Das Koordinatensystem sieht intern so aus:
+
+       -1.5  -0.5   0.5   1.5
+
+   -1.5
+   -0.5
+    0.5
+    1.5
+
+   Der rote Mittelpunkt ist:
+
+       X = 0
+       Y = 0
+
+   Für das Kind wird das NICHT angezeigt.
 ========================================================= */
-
-/*
-   Die vier mittleren Felder sind:
-
-   6 | 7
-   -------
-   10|11
-
-   Der rote Punkt liegt genau zwischen diesen Feldern.
-
-   Koordinaten:
-
-   -1.5   -0.5    0.5    1.5
-*/
 
 function getCoordinate(field) {
 
     const index = field - 1;
 
-    const row =
-        Math.floor(index / 4);
+    const row = Math.floor(index / 4);
 
-    const col =
-        index % 4;
+    const col = index % 4;
 
     return {
         x: col - 1.5,
@@ -848,20 +864,37 @@ function getCoordinate(field) {
 
 
 /* =========================================================
-   NACHBARN
+   GEGENÜBERLIEGENDES FELD
+=========================================================
+
+   1 ↔ 16
+   2 ↔ 15
+   3 ↔ 14
+   4 ↔ 13
+
+   5 ↔ 12
+   6 ↔ 11
+   7 ↔ 10
+   8 ↔  9
+========================================================= */
+
+function oppositeField(field) {
+
+    return 17 - field;
+}
+
+
+/* =========================================================
+   NACHBARFELDER
 ========================================================= */
 
 function getNeighbors(field) {
 
     const index = field - 1;
 
-    const row =
-        Math.floor(index / 4);
+    const row = Math.floor(index / 4);
 
-    const col =
-        index % 4;
-
-    const result = [];
+    const col = index % 4;
 
     const directions = [
         [1,0],
@@ -870,9 +903,12 @@ function getNeighbors(field) {
         [0,-1]
     ];
 
-    directions.forEach(([dr,dc]) => {
+    const result = [];
+
+    for (const [dr,dc] of directions) {
 
         const r = row + dr;
+
         const c = col + dc;
 
         if (
@@ -886,7 +922,7 @@ function getNeighbors(field) {
                 r * 4 + c + 1
             );
         }
-    });
+    }
 
     return result;
 }
@@ -898,24 +934,24 @@ function getNeighbors(field) {
 
 function generatePath() {
 
-    startField =
+    const start =
         randomInt(1,4);
 
-    goalField =
+    const goal =
         randomInt(13,16);
 
-    const result = [startField];
+    const result = [start];
 
-    let current = startField;
+    let current = start;
 
     const visited =
-        new Set(result);
+        new Set([start]);
 
     let safety = 0;
 
     while (
-        current !== goalField &&
-        safety < 300
+        current !== goal &&
+        safety < 100
     ) {
 
         safety++;
@@ -932,25 +968,26 @@ function generatePath() {
             return generatePath();
         }
 
+
         /*
-           Ziel bevorzugen, wenn
-           es direkt erreichbar ist.
+           Wenn das Zielfeld direkt
+           erreichbar ist, nehmen wir es.
         */
 
         if (
-            neighbors.includes(goalField)
+            neighbors.includes(goal)
         ) {
 
-            current = goalField;
+            current = goal;
 
         } else {
 
             /*
                Nach unten gerichtete
-               Bewegung bevorzugen.
+               Schritte werden bevorzugt.
             */
 
-            const row =
+            const currentRow =
                 Math.floor(
                     (current - 1) / 4
                 );
@@ -960,7 +997,7 @@ function generatePath() {
                     f =>
                         Math.floor(
                             (f - 1) / 4
-                        ) >= row
+                        ) >= currentRow
                 );
 
             if (
@@ -969,22 +1006,12 @@ function generatePath() {
             ) {
 
                 current =
-                    down[
-                        randomInt(
-                            0,
-                            down.length - 1
-                        )
-                    ];
+                    randomChoice(down);
 
             } else {
 
                 current =
-                    neighbors[
-                        randomInt(
-                            0,
-                            neighbors.length - 1
-                        )
-                    ];
+                    randomChoice(neighbors);
             }
         }
 
@@ -993,101 +1020,128 @@ function generatePath() {
         visited.add(current);
     }
 
+
     if (
-        current !== goalField
+        current !== goal
     ) {
+
         return generatePath();
     }
+
 
     return result;
 }
 
 
 /* =========================================================
-   BALANCE BERECHNEN
+   BALANCE-BERECHNUNG
+=========================================================
+
+   WICHTIG:
+
+   Hier wird KEINE komplizierte Hebelphysik
+   verwendet.
+
+   Jedes Gewicht wirkt vom Mittelpunkt
+   aus in Richtung seines Feldes.
+
+   Die Figur zählt als 2 Gewichtseinheiten.
+
+   Die Summe aller Wirkungen wird berechnet.
+
+   Ein neues Gegengewicht muss auf der
+   gegenüberliegenden Seite liegen.
+
 ========================================================= */
 
 function calculateBalance(
-    testWeight = null,
-    testField = null
+    additionalWeight = 0,
+    additionalField = null
 ) {
 
-    /*
-       Wir betrachten die Richtung
-       vom roten Mittelpunkt zur Figur.
+    let x = 0;
 
-       Das macht die Balance für Kinder
-       räumlich verständlich.
+    let y = 0;
+
+
+    /*
+       Wirkung der Figur
     */
 
     const figure =
-        getCoordinate(
-            currentField
-        );
+        getCoordinate(currentField);
+
+    x +=
+        figure.x *
+        FIGURE_WEIGHT;
+
+    y +=
+        figure.y *
+        FIGURE_WEIGHT;
+
 
     /*
-       Figur erzeugt ein Drehmoment.
-
-       Je weiter die Figur vom roten
-       Mittelpunkt entfernt ist,
-       desto größer ihr Einfluss.
+       Alle bereits liegenden Gewichte.
     */
 
-    let totalX =
-        FIGURE_WEIGHT *
-        figure.x;
+    for (
+        const item of placedWeights
+    ) {
 
-    let totalY =
-        FIGURE_WEIGHT *
-        figure.y;
+        const position =
+            getCoordinate(item.field);
 
+        x +=
+            position.x *
+            item.weight;
 
-    /*
-       Alle bereits liegenden Gewichte
-       bleiben aktiv!
-    */
-
-    placedWeights.forEach(item => {
-
-        const p =
-            getCoordinate(
-                item.field
-            );
-
-        totalX +=
-            item.weight * p.x;
-
-        totalY +=
-            item.weight * p.y;
-    });
+        y +=
+            position.y *
+            item.weight;
+    }
 
 
     /*
-       Testgewicht hinzufügen.
+       Testgewicht.
     */
 
     if (
-        testWeight !== null &&
-        testField !== null
+        additionalField !== null &&
+        additionalWeight > 0
     ) {
 
-        const p =
+        const position =
             getCoordinate(
-                testField
+                additionalField
             );
 
-        totalX +=
-            testWeight * p.x;
+        x +=
+            position.x *
+            additionalWeight;
 
-        totalY +=
-            testWeight * p.y;
+        y +=
+            position.y *
+            additionalWeight;
     }
 
 
     return {
-        x: totalX,
-        y: totalY
+        x,
+        y
     };
+}
+
+
+/* =========================================================
+   FEHLER DER BALANCE
+========================================================= */
+
+function balanceError(balance) {
+
+    return Math.sqrt(
+        balance.x * balance.x +
+        balance.y * balance.y
+    );
 }
 
 
@@ -1097,7 +1151,201 @@ function calculateBalance(
 
 function findSolution() {
 
-    const freeFields = [];
+    const candidates = [];
+
+
+    /*
+       Alle freien Felder ausprobieren.
+    */
+
+    for (
+        let field = 1;
+        field <= 16;
+        field++
+    ) {
+
+        if (
+            field === currentField
+        ) {
+            continue;
+        }
+
+
+        /*
+           Auf einem Feld darf nur
+           ein Gewichtshaufen liegen.
+        */
+
+        if (
+            placedWeights.some(
+                item =>
+                    item.field === field
+            )
+        ) {
+            continue;
+        }
+
+
+        /*
+           Nur Felder auf der
+           gegenüberliegenden Seite
+           sind sinnvoll.
+        */
+
+        const figurePosition =
+            getCoordinate(currentField);
+
+        const fieldPosition =
+            getCoordinate(field);
+
+
+        /*
+           Das Testgewicht muss
+           grundsätzlich in die
+           entgegengesetzte Richtung
+           zeigen.
+        */
+
+        const directionDot =
+            figurePosition.x *
+            fieldPosition.x +
+
+            figurePosition.y *
+            fieldPosition.y;
+
+
+        if (
+            directionDot > 0
+        ) {
+            continue;
+        }
+
+
+        for (
+            const weight of ALL_WEIGHTS
+        ) {
+
+            const balance =
+                calculateBalance(
+                    weight,
+                    field
+                );
+
+            const error =
+                balanceError(balance);
+
+
+            candidates.push({
+                field,
+                weight,
+                error
+            });
+        }
+    }
+
+
+    if (
+        candidates.length === 0
+    ) {
+
+        return null;
+    }
+
+
+    /*
+       Beste Lösung zuerst.
+    */
+
+    candidates.sort(
+        (a,b) =>
+            a.error - b.error
+    );
+
+
+    /*
+       Wir nehmen die mathematisch
+       beste Gegenbalance.
+    */
+
+    return candidates[0];
+}
+
+
+/* =========================================================
+   DREI GEWICHTE ERZEUGEN
+========================================================= */
+
+function createWeightChoices() {
+
+    currentSolution =
+        findSolution();
+
+
+    /*
+       Falls keine sinnvolle Lösung
+       gefunden wurde, verwenden wir
+       eine sichere Gegenseite.
+    */
+
+    if (
+        !currentSolution
+    ) {
+
+        currentSolution =
+            createFallbackSolution();
+    }
+
+
+    if (
+        !currentSolution
+    ) {
+
+        return;
+    }
+
+
+    const choices = [
+        currentSolution.weight
+    ];
+
+
+    /*
+       Zwei falsche Gewichte erzeugen.
+    */
+
+    while (
+        choices.length < 3
+    ) {
+
+        const candidate =
+            randomChoice(
+                ALL_WEIGHTS
+            );
+
+        if (
+            !choices.includes(candidate)
+        ) {
+
+            choices.push(candidate);
+        }
+    }
+
+
+    availableWeights =
+        shuffle(choices);
+
+    selectedWeight = null;
+}
+
+
+/* =========================================================
+   FALLBACK-LÖSUNG
+========================================================= */
+
+function createFallbackSolution() {
+
+    const possibleFields = [];
+
 
     for (
         let field = 1;
@@ -1120,137 +1368,53 @@ function findSolution() {
             continue;
         }
 
-        freeFields.push(field);
-    }
-
-
-    const solutions = [];
-
-
-    /*
-       Alle drei-dimensionalen Kombinationen
-       werden mathematisch geprüft.
-
-       Für eine kindgerechte Lösung reicht
-       eine sehr kleine Toleranz.
-    */
-
-    for (
-        const field of freeFields
-    ) {
-
-        for (
-            const weight of WEIGHTS
-        ) {
-
-            const result =
-                calculateBalance(
-                    weight,
-                    field
-                );
-
-            /*
-               Wir suchen eine möglichst
-               ausgewogene Position.
-
-               Da das 4×4-Brett nicht immer
-               eine exakte Null zulässt,
-               wird die kleinste Abweichung
-               ermittelt.
-            */
-
-            const error =
-                Math.sqrt(
-                    result.x * result.x +
-                    result.y * result.y
-                );
-
-            solutions.push({
-                field,
-                weight,
-                error
-            });
-        }
+        possibleFields.push(field);
     }
 
 
     if (
-        solutions.length === 0
+        possibleFields.length === 0
     ) {
         return null;
     }
 
 
     /*
-       Kleinste Abweichung zuerst.
+       Gegenüber der Figur bevorzugen.
     */
 
-    solutions.sort(
-        (a,b) =>
-            a.error - b.error
-    );
+    const opposite =
+        oppositeField(currentField);
 
-
-    /*
-       Nur Lösungen mit sinnvoller
-       Balance akzeptieren.
-
-       Falls keine perfekte Lösung
-       existiert, nehmen wir die beste.
-    */
-
-    const best =
-        solutions[0];
-
-    return best;
-}
-
-
-/* =========================================================
-   DREI AUSWAHLGEWICHTE
-========================================================= */
-
-function createWeightChoices() {
-
-    currentSolution =
-        findSolution();
 
     if (
-        !currentSolution
+        possibleFields.includes(opposite)
     ) {
-        return;
+
+        return {
+            field: opposite,
+            weight: FIGURE_WEIGHT,
+            error: 0
+        };
     }
 
 
-    const values = [
-        currentSolution.weight
-    ];
+    return {
+        field:
+            randomChoice(
+                possibleFields
+            ),
 
+        weight:
+            FIGURE_WEIGHT,
 
-    while (
-        values.length < 3
-    ) {
-
-        const candidate =
-            randomChoice(WEIGHTS);
-
-        if (
-            !values.includes(candidate)
-        ) {
-            values.push(candidate);
-        }
-    }
-
-
-    availableWeights =
-        shuffle(values);
-
-    selectedWeight = null;
+        error: 0
+    };
 }
 
 
 /* =========================================================
-   FELD KLICK
+   FELD ANKLICKEN
 ========================================================= */
 
 function clickField(field) {
@@ -1261,7 +1425,7 @@ function clickField(field) {
 
 
     /*
-       Liegt hier schon ein Gewicht?
+       Liegt bereits ein Gewicht dort?
     */
 
     const existing =
@@ -1274,8 +1438,9 @@ function clickField(field) {
     if (existing) {
 
         /*
-           Richtiges Gewicht wurde
-           eingefroren.
+           Eingefrorene Gewichte
+           können nicht mehr entfernt
+           werden.
         */
 
         if (
@@ -1283,7 +1448,7 @@ function clickField(field) {
         ) {
 
             showMessage(
-                "🔒 Dieses Gewicht bleibt liegen!",
+                "🔒 Dieses Gewicht ist richtig und bleibt liegen!",
                 "info"
             );
 
@@ -1292,8 +1457,7 @@ function clickField(field) {
 
 
         /*
-           Falsches Gewicht darf
-           entfernt werden.
+           Falsches Gewicht entfernen.
         */
 
         placedWeights =
@@ -1302,10 +1466,6 @@ function clickField(field) {
                     item !== existing
             );
 
-        availableWeights.push(
-            existing.weight
-        );
-
         selectedWeight = null;
 
         createWeightChoices();
@@ -1313,7 +1473,7 @@ function clickField(field) {
         render();
 
         showMessage(
-            "↩ Gewicht wurde entfernt.",
+            "↩ Das Gewicht wurde zurückgenommen.",
             "info"
         );
 
@@ -1326,7 +1486,7 @@ function clickField(field) {
     ) {
 
         showMessage(
-            "Wähle zuerst ein Gewicht aus.",
+            "🧱 Wähle zuerst einen Gewichtshaufen.",
             "error"
         );
 
@@ -1338,33 +1498,29 @@ function clickField(field) {
        Gewicht ablegen.
     */
 
-    placedWeights.push({
+    const newWeight = {
 
         field: field,
 
         weight: selectedWeight,
 
         frozen: false
-    });
+    };
+
+
+    placedWeights.push(
+        newWeight
+    );
 
 
     /*
-       Prüfen.
+       Richtig?
     */
 
-    const result =
-        calculateBalance();
+    const correct =
+        field ===
+            currentSolution.field &&
 
-
-    /*
-       Erlaubte Toleranz.
-
-       Für das Spiel wird die
-       bestmögliche Balance verwendet.
-    */
-
-    const isCorrect =
-        field === currentSolution.field &&
         selectedWeight ===
             currentSolution.weight;
 
@@ -1372,21 +1528,9 @@ function clickField(field) {
     selectedWeight = null;
 
 
-    if (
-        isCorrect
-    ) {
+    if (correct) {
 
-        /*
-           Gewicht einfrieren.
-        */
-
-        const placed =
-            placedWeights.find(
-                item =>
-                    item.field === field
-            );
-
-        placed.frozen = true;
+        newWeight.frozen = true;
 
         locked = true;
 
@@ -1395,25 +1539,28 @@ function clickField(field) {
         showCorrectMark(field);
 
         showMessage(
-            "🎉 Richtig! Die Balance stimmt. Die Figur geht weiter!",
+            "🎉 Richtig! Die Balance stimmt!",
             "success"
         );
 
 
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            removeCorrectMark();
+                removeCorrectMark();
 
-            moveFigure();
+                moveFigure();
 
-        },1000);
+            },
+            1000
+        );
 
     } else {
 
         render();
 
         showMessage(
-            "🤔 Noch nicht richtig. Die Figur bleibt stehen.",
+            "🤔 Noch nicht. Die Figur bleibt stehen.",
             "error"
         );
     }
@@ -1421,7 +1568,7 @@ function clickField(field) {
 
 
 /* =========================================================
-   FIGUR WEITERBEWEGEN
+   FIGUR BEWEGT SICH
 ========================================================= */
 
 function moveFigure() {
@@ -1438,9 +1585,10 @@ function moveFigure() {
 
 
     /*
-       Nur die Figur bewegt sich.
+       NUR die Figur wird bewegt.
 
-       ALLE GEWICHTE BLEIBEN LIEGEN.
+       Die Gewichte bleiben exakt
+       dort liegen, wo sie waren.
     */
 
     currentIndex++;
@@ -1453,25 +1601,82 @@ function moveFigure() {
 
 
     /*
-       Neue Balance!
-
-       Die alten Gewichte werden
-       automatisch erneut berücksichtigt.
+       Jetzt wird die komplette
+       Balance mit der neuen
+       Figurenposition neu berechnet.
     */
 
     createWeightChoices();
 
     render();
 
+
+    if (
+        currentField === goalField
+    ) {
+
+        finishGame();
+
+        return;
+    }
+
+
     showMessage(
-        "➡️ Die Figur ist ein Feld weiter. Die Balance hat sich verändert!",
+        "➡️ Die Figur ist weitergegangen. Die Gewichte bleiben liegen!",
         "info"
     );
 }
 
 
 /* =========================================================
-   GEWICHT ENTFERNEN
+   RICHTIGES GEWICHT EINFRIEREN
+========================================================= */
+
+function showCorrectMark(field) {
+
+    const cells =
+        document.querySelectorAll(".cell");
+
+
+    cells.forEach(
+        (cell,index) => {
+
+            if (
+                index + 1 === field
+            ) {
+
+                const mark =
+                    document.createElement(
+                        "div"
+                    );
+
+                mark.className =
+                    "correct-check";
+
+                mark.textContent = "✓";
+
+                cell.appendChild(mark);
+            }
+        }
+    );
+}
+
+
+function removeCorrectMark() {
+
+    document
+        .querySelectorAll(
+            ".correct-check"
+        )
+        .forEach(
+            item =>
+                item.remove()
+        );
+}
+
+
+/* =========================================================
+   FALSCHE GEWICHTE ENTFERNEN
 ========================================================= */
 
 function removeWrongWeights() {
@@ -1493,14 +1698,14 @@ function removeWrongWeights() {
     render();
 
     showMessage(
-        "↩ Alle nicht eingefrorenen Gewichte wurden entfernt.",
+        "↩ Falsche Gewichte wurden entfernt.",
         "info"
     );
 }
 
 
 /* =========================================================
-   SPIEL BEENDET
+   SPIEL FERTIG
 ========================================================= */
 
 function finishGame() {
@@ -1515,62 +1720,154 @@ function finishGame() {
 
 
 /* =========================================================
-   RICHTIG-HÄKCHEN
+   GEWICHTSSTAPEL DARSTELLEN
+=========================================================
+
+   1:
+       ■
+
+   2:
+       ■
+       ■
+
+   3:
+        ■
+       ■ ■
+
+   4:
+       ■ ■
+       ■ ■
+
+   5:
+        ■
+       ■ ■
+       ■ ■
+
+   6:
+       ■ ■ ■
+       ■ ■ ■
 ========================================================= */
 
-function showCorrectMark(field) {
+function createWeightStack(
+    count,
+    frozen = false
+) {
 
-    const cells =
-        document.querySelectorAll(".cell");
-
-    cells.forEach((cell,index) => {
-
-        if (
-            index + 1 === field
-        ) {
-
-            const mark =
-                document.createElement("div");
-
-            mark.className =
-                "correct-check";
-
-            mark.textContent = "✓";
-
-            cell.appendChild(mark);
-        }
-    });
-}
-
-
-function removeCorrectMark() {
-
-    document
-        .querySelectorAll(".correct-check")
-        .forEach(
-            item =>
-                item.remove()
+    const stack =
+        document.createElement(
+            "div"
         );
+
+    stack.className =
+        "weight-stack";
+
+
+    if (frozen) {
+        stack.classList.add(
+            "frozen"
+        );
+    }
+
+
+    let rows;
+
+
+    switch(count) {
+
+        case 1:
+            rows = [1];
+            break;
+
+        case 2:
+            rows = [1,1];
+            break;
+
+        case 3:
+            rows = [1,2];
+            break;
+
+        case 4:
+            rows = [2,2];
+            break;
+
+        case 5:
+            rows = [1,2,2];
+            break;
+
+        case 6:
+            rows = [3,3];
+            break;
+
+        default:
+            rows = [1];
+    }
+
+
+    rows.forEach(
+        rowCount => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "weight-row";
+
+
+            for (
+                let i = 0;
+                i < rowCount;
+                i++
+            ) {
+
+                const block =
+                    document.createElement(
+                        "div"
+                    );
+
+                block.className =
+                    "weight-block";
+
+                row.appendChild(
+                    block
+                );
+            }
+
+
+            stack.appendChild(
+                row
+            );
+        }
+    );
+
+
+    return stack;
 }
 
 
 /* =========================================================
-   SPIELBRETT RENDERN
+   SPIELBRETT DARSTELLEN
 ========================================================= */
 
 function render() {
 
     const board =
-        document.getElementById("board");
+        document.getElementById(
+            "board"
+        );
 
     board.innerHTML = "";
 
 
     /*
-       Mögliche Felder hervorheben.
+       Felder hervorheben,
+       auf denen das Kind ein
+       Gewicht ablegen kann.
     */
 
-    let placeable = [];
+    const placeable = [];
+
 
     if (
         selectedWeight !== null
@@ -1609,63 +1906,85 @@ function render() {
     ) {
 
         const cell =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         cell.className = "cell";
 
 
-        if (
-            path.includes(field)
-        ) {
-            cell.classList.add("path");
-        }
-
+        /*
+           Start
+        */
 
         if (
             field === startField
         ) {
-            cell.classList.add("start");
-        }
 
-
-        if (
-            field === goalField
-        ) {
-            cell.classList.add("goal");
-        }
-
-
-        if (
-            field === currentField
-        ) {
-            cell.classList.add("current");
+            cell.classList.add(
+                "start"
+            );
         }
 
 
         /*
-           Lösung sichtbar.
+           Ziel
         */
 
         if (
-            SHOW_SOLUTION &&
-            currentSolution &&
-            field === currentSolution.field
+            field === goalField
         ) {
 
-            cell.classList.add("solution");
+            cell.classList.add(
+                "goal"
+            );
         }
 
+
+        /*
+           Aktuelle Figur
+        */
+
+        if (
+            field === currentField
+        ) {
+
+            cell.classList.add(
+                "current"
+            );
+        }
+
+
+        /*
+           Weg
+        */
+
+        if (
+            path.includes(field)
+        ) {
+
+            cell.classList.add(
+                "path"
+            );
+        }
+
+
+        /*
+           Mögliche Ablagefelder
+        */
 
         if (
             placeable.includes(field)
         ) {
 
-            cell.classList.add("placeable");
+            cell.classList.add(
+                "placeable"
+            );
         }
 
 
         /*
-           Figur.
+           Figur darstellen
         */
 
         if (
@@ -1673,56 +1992,63 @@ function render() {
         ) {
 
             const figure =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            figure.className = "figure";
+            figure.className =
+                "figure";
 
             figure.innerHTML = `
                 🧒
-                <div class="figure-small">
-                    ${FIGURE_WEIGHT} Gewicht
+                <div class="figure-weight">
+                    2
                 </div>
             `;
 
-            cell.appendChild(figure);
+            cell.appendChild(
+                figure
+            );
         }
 
 
         /*
-           Gewichte.
+           Gewichte darstellen
         */
 
-        const weights =
+        const fieldWeights =
             placedWeights.filter(
                 item =>
                     item.field === field
             );
 
 
-        if (
-            weights.length
+        for (
+            const item of fieldWeights
         ) {
 
-            weights.forEach(item => {
+            const stack =
+                createWeightStack(
+                    item.weight,
+                    item.frozen
+                );
 
-                const stack =
-                    createWeightStack(
-                        item.weight,
-                        item.frozen
-                    );
-
-                cell.appendChild(stack);
-            });
+            cell.appendChild(
+                stack
+            );
         }
 
 
         cell.addEventListener(
             "click",
-            () => clickField(field)
+            () =>
+                clickField(field)
         );
 
 
-        board.appendChild(cell);
+        board.appendChild(
+            cell
+        );
     }
 
 
@@ -1737,126 +2063,27 @@ function render() {
 
 
 /* =========================================================
-   GEWICHTSSTAPEL
-========================================================= */
-
-function createWeightStack(
-    count,
-    frozen = false
-) {
-
-    const stack =
-        document.createElement("div");
-
-    stack.className =
-        "weight-stack";
-
-
-    if (
-        frozen
-    ) {
-        stack.classList.add("frozen");
-    }
-
-
-    /*
-       Die gewünschten Formen:
-
-       1 = 1
-
-       2 = 1 oben + 1 unten
-
-       3 = 1 + 2
-
-       4 = 2 + 2
-
-       5 = 1 + 2 + 2
-
-       6 = 3 + 3
-    */
-
-    let rows = [];
-
-    switch(count) {
-
-        case 1:
-            rows = [1];
-            break;
-
-        case 2:
-            rows = [1,1];
-            break;
-
-        case 3:
-            rows = [1,2];
-            break;
-
-        case 4:
-            rows = [2,2];
-            break;
-
-        case 5:
-            rows = [1,2,2];
-            break;
-
-        case 6:
-            rows = [3,3];
-            break;
-
-        default:
-            rows = [1];
-    }
-
-
-    rows.forEach(rowCount => {
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "weight-row";
-
-
-        for (
-            let i = 0;
-            i < rowCount;
-            i++
-        ) {
-
-            const block =
-                document.createElement("div");
-
-            block.className =
-                "weight-block";
-
-            row.appendChild(block);
-        }
-
-
-        stack.appendChild(row);
-    });
-
-
-    return stack;
-}
-
-
-/* =========================================================
-   AUSWAHL RENDERN
+   AUSWAHL DER 3 GEWICHTE
 ========================================================= */
 
 function renderChoices() {
 
     const container =
-        document.getElementById("weights");
+        document.getElementById(
+            "weights"
+        );
 
     container.innerHTML = "";
 
 
-    availableWeights.forEach(weight => {
+    for (
+        const weight of availableWeights
+    ) {
 
         const option =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         option.className =
             "weight-option";
@@ -1866,14 +2093,22 @@ function renderChoices() {
             selectedWeight === weight
         ) {
 
-            option.classList.add("selected");
+            option.classList.add(
+                "selected"
+            );
         }
 
+
+        /*
+           Probeversion:
+           richtige Auswahl grün
+        */
 
         if (
             SHOW_SOLUTION &&
             currentSolution &&
-            weight === currentSolution.weight
+            weight ===
+                currentSolution.weight
         ) {
 
             option.classList.add(
@@ -1883,30 +2118,33 @@ function renderChoices() {
 
 
         const stack =
-            createWeightStack(weight);
+            createWeightStack(
+                weight
+            );
 
 
-        stack.classList.add(
-            "choice-stack"
+        option.appendChild(
+            stack
         );
 
 
-        option.appendChild(stack);
-
-
         const label =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         label.className =
-            "weight-number";
+            "weight-label";
 
         label.textContent =
-            `${weight} Gewicht${
-                weight === 1 ? "" : "e"
-            }`;
+            weight === 1
+                ? "1 Gewicht"
+                : `${weight} Gewichte`;
 
 
-        option.appendChild(label);
+        option.appendChild(
+            label
+        );
 
 
         option.addEventListener(
@@ -1917,25 +2155,31 @@ function renderChoices() {
                     return;
                 }
 
-                selectedWeight = weight;
+
+                selectedWeight =
+                    weight;
+
 
                 render();
 
+
                 showMessage(
-                    "Jetzt ein hervorgehobenes Feld anklicken.",
+                    "👆 Jetzt ein Feld auswählen.",
                     "info"
                 );
             }
         );
 
 
-        container.appendChild(option);
-    });
+        container.appendChild(
+            option
+        );
+    }
 }
 
 
 /* =========================================================
-   INFORMATIONEN
+   INFORMATION
 ========================================================= */
 
 function updateInfo() {
@@ -1949,11 +2193,6 @@ function updateInfo() {
         "goalField"
     ).textContent =
         goalField;
-
-    document.getElementById(
-        "figureWeight"
-    ).textContent =
-        `${FIGURE_WEIGHT} Gewichte`;
 
     document.getElementById(
         "currentField"
@@ -1985,21 +2224,36 @@ function renderSolution() {
     }
 
 
+    const opposite =
+        oppositeField(
+            currentField
+        );
+
+
     box.innerHTML = `
-        Richtig ist:
+        Figur steht auf Feld
+        <strong>${currentField}</strong>.<br><br>
+
+        Lösung:
         <strong>
             ${currentSolution.weight} Gewichte
         </strong>
-        auf
+        auf Feld
         <strong>
-            Feld ${currentSolution.field}
+            ${currentSolution.field}
         </strong>.
+
+        <br><br>
+
+        Gegenüberliegend zu Feld
+        ${currentField} ist Feld
+        ${opposite}.
     `;
 }
 
 
 /* =========================================================
-   BERECHNUNG ANZEIGEN
+   PROBE-BERECHNUNG
 ========================================================= */
 
 function showCalculation() {
@@ -2026,42 +2280,69 @@ function showCalculation() {
 
 
     html +=
-        `Figur: ${FIGURE_WEIGHT} Gewichte<br>`;
+        `Figur = 2 Gewichte<br>`;
 
     html +=
-        `Figur steht auf Feld: ${currentField}<br>`;
-
-    html +=
-        `Balance X: ${balance.x.toFixed(2)}<br>`;
-
-    html +=
-        `Balance Y: ${balance.y.toFixed(2)}<br><br>`;
+        `Figur auf Feld ${currentField}<br><br>`;
 
 
     if (
-        placedWeights.length
+        placedWeights.length === 0
     ) {
 
         html +=
-            "<strong>Liegende Gewichte:</strong><br>";
+            "Noch keine Gewichte liegen.<br>";
+
+    } else {
+
+        html +=
+            "<strong>Bereits liegende Gewichte:</strong><br>";
 
 
-        placedWeights.forEach(item => {
+        for (
+            const item of placedWeights
+        ) {
 
             html +=
                 `${item.frozen ? "✓" : "○"}
                  ${item.weight}
                  → Feld ${item.field}<br>`;
-        });
-
-    } else {
-
-        html +=
-            "Noch keine Gewichte auf dem Brett.<br>";
+        }
     }
 
 
-    box.innerHTML = html;
+    html += "<br>";
+
+    html +=
+        `Balance X = ${balance.x.toFixed(2)}<br>`;
+
+    html +=
+        `Balance Y = ${balance.y.toFixed(2)}<br>`;
+
+    html +=
+        `Abweichung = ${balanceError(balance).toFixed(2)}<br>`;
+
+
+    if (
+        currentSolution
+    ) {
+
+        html += "<br>";
+
+        html +=
+            `<strong>
+                Richtige Lösung:
+            </strong><br>`;
+
+        html +=
+            `${currentSolution.weight}
+             Gewichte →
+             Feld ${currentSolution.field}`;
+    }
+
+
+    box.innerHTML =
+        html;
 }
 
 
@@ -2101,18 +2382,30 @@ function newGame() {
 
     currentIndex = 0;
 
+
     path =
         generatePath();
 
-    currentField =
+
+    startField =
         path[0];
+
+
+    goalField =
+        path[path.length - 1];
+
+
+    currentField =
+        startField;
+
 
     createWeightChoices();
 
     render();
 
+
     showMessage(
-        "🎲 Neue Runde! Wähle ein Gewicht.",
+        "🎲 Neue Runde! Wähle einen Gewichtshaufen.",
         "info"
     );
 }
