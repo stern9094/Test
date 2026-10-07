@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BALANCE-TEAM – 4×4 Kugel-Version</title>
+<title>BALANCE-TEAM</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -15,127 +13,95 @@
 body {
     margin: 0;
     min-height: 100vh;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    color: white;
-
+    font-family: Arial, sans-serif;
     background:
-        radial-gradient(
-            circle at top,
-            #29445f,
-            #172638 45%,
-            #0b111a 100%
-        );
+        radial-gradient(circle at top, #294765, #142333 55%, #09111a);
+    color: white;
 }
 
 .container {
-    width: min(1150px, 96%);
+    width: min(1100px, 96%);
     margin: auto;
-    padding: 22px 0 40px;
+    padding: 20px 0 40px;
 }
 
 h1 {
-    margin: 0;
     text-align: center;
+    margin: 0;
     font-size: 38px;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 }
 
 .subtitle {
     text-align: center;
-    color: #aebfd1;
-    margin: 6px 0 22px;
+    color: #b8c8d8;
+    margin: 5px 0 20px;
 }
 
-.game-layout {
-    display: grid;
-    grid-template-columns:
-        minmax(450px, 1fr)
-        360px;
+/* ================================
+   LAYOUT
+================================ */
 
-    gap: 22px;
+.game {
+    display: grid;
+    grid-template-columns: minmax(500px, 1fr) 350px;
+    gap: 20px;
 }
 
 .panel {
-    background: rgba(255,255,255,.075);
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
     border-radius: 18px;
-
     padding: 18px;
-
-    box-shadow:
-        0 20px 50px
-        rgba(0,0,0,.28);
-
-    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 45px rgba(0,0,0,.3);
 }
 
+/* ================================
+   SPIELBRETT
+================================ */
 
-/* =========================================================
-   SPIELFELD
-========================================================= */
+.board-wrapper {
+    position: relative;
+    width: min(650px, 100%);
+    margin: auto;
+}
 
 .board {
-
-    width: min(650px, 100%);
-
-    aspect-ratio: 1;
-
-    margin: auto;
+    position: relative;
 
     display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
 
-    grid-template-columns:
-        repeat(4, 1fr);
+    gap: 7px;
 
-    grid-template-rows:
-        repeat(4, 1fr);
-
-    gap: 6px;
+    aspect-ratio: 1;
 }
 
 .cell {
-
     position: relative;
 
     display: flex;
-
+    align-items: center;
     justify-content: center;
 
-    align-items: center;
+    border-radius: 11px;
 
     background:
-        linear-gradient(
-            145deg,
-            #30465b,
-            #1c2c3c
-        );
+        linear-gradient(145deg, #344b60, #1d2e3e);
 
-    border:
-        2px solid
-        #536b82;
-
-    border-radius: 10px;
+    border: 2px solid #536b80;
 
     cursor: pointer;
 
-    transition:
-        .15s;
+    transition: .15s;
 
-    user-select: none;
+    overflow: visible;
 }
 
 .cell:hover {
     transform: scale(1.025);
-    border-color: #65d8ff;
+    border-color: #7dd3fc;
     z-index: 5;
 }
 
@@ -148,401 +114,290 @@ h1 {
 }
 
 .cell.current {
-
     background:
-        linear-gradient(
-            145deg,
-            #7c3aed,
-            #4c1d95
-        );
+        linear-gradient(145deg, #7040c0, #4c1d95);
 
     border-color: #c4b5fd;
 
-    box-shadow:
-        0 0 25px
-        rgba(139,92,246,.65);
-
-    z-index: 4;
+    box-shadow: 0 0 24px rgba(139,92,246,.65);
 }
 
 .cell.path {
-
     background:
-        linear-gradient(
-            145deg,
-            #28506a,
-            #1a3549
-        );
+        linear-gradient(145deg, #294b61, #1b3447);
 }
-
-
-/* mögliche Ablagefelder */
 
 .cell.placeable {
-
     border-color: #facc15;
 
-    background:
-        linear-gradient(
-            145deg,
-            #3b4b43,
-            #26382f
-        );
-
     box-shadow:
-        inset 0 0 0 2px
-        rgba(250,204,21,.18),
-
-        0 0 12px
-        rgba(250,204,21,.15);
+        inset 0 0 0 2px rgba(250,204,21,.15),
+        0 0 15px rgba(250,204,21,.25);
 }
 
-.cell.placeable:hover {
-
-    border-color: #fde047;
-
-    box-shadow:
-        0 0 20px
-        rgba(250,204,21,.35);
-
-    transform: scale(1.035);
-}
-
-
-/* richtiges Lösungsfeld */
-
-.cell.solution-field {
-
+.cell.solution {
     border-color: #22c55e;
 
     box-shadow:
-        0 0 20px
-        rgba(34,197,94,.55);
-
+        0 0 25px rgba(34,197,94,.65);
 }
 
+/* ================================
+   ROTER MITTELPUNKT
+================================ */
 
-/* falsch */
+/*
+   Der Mittelpunkt liegt NICHT in einem Feld.
 
-.cell.wrong {
-    animation: wrong .35s;
-}
+   Er liegt genau zwischen:
 
-@keyframes wrong {
+   Feld 6 | Feld 7
+   -------●-------
+   Feld10 | Feld11
 
-    0%,100% {
-        transform: translateX(0);
-    }
+   Deshalb wird der Kreis absolut
+   über der Brettmitte positioniert.
+*/
 
-    25% {
-        transform: translateX(-7px);
-    }
+.center-point {
+    position: absolute;
 
-    75% {
-        transform: translateX(7px);
-    }
-}
+    left: 50%;
+    top: 50%;
 
+    width: 30px;
+    height: 30px;
 
-/* =========================================================
-   FIGUR
-========================================================= */
-
-.figure {
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 2px;
-
-    font-size: 30px;
-
-    filter:
-        drop-shadow(
-            0 4px 5px
-            rgba(0,0,0,.4)
-        );
-
-    z-index: 5;
-}
-
-.figure-label {
-
-    font-size: 12px;
-
-    font-weight: bold;
-
-    color: #ffffff;
-}
-
-
-/* =========================================================
-   KUGELN
-========================================================= */
-
-.balls {
-
-    display: flex;
-
-    justify-content: center;
-
-    flex-wrap: wrap;
-
-    gap: 3px;
-
-    max-width: 80px;
-}
-
-.ball {
-
-    width: 14px;
-    height: 14px;
+    transform: translate(-50%, -50%);
 
     border-radius: 50%;
 
     background:
         radial-gradient(
-            circle at 30% 25%,
-            #ffffff,
-            #dbeafe 35%,
-            #60a5fa 70%,
-            #1d4ed8
+            circle at 35% 30%,
+            #ffb4b4,
+            #ef4444 45%,
+            #991b1b 100%
         );
 
-    border:
-        1px solid
-        #bfdbfe;
+    border: 3px solid #fecaca;
 
     box-shadow:
-        0 2px 4px
-        rgba(0,0,0,.4);
+        0 0 0 4px rgba(239,68,68,.15),
+        0 0 20px rgba(239,68,68,.8);
+
+    z-index: 30;
+
+    pointer-events: none;
 }
 
-
-/* Kugeln auf Spielfeld */
-
-.weight-stack {
+.center-point::after {
+    content: "";
 
     position: absolute;
 
-    bottom: 6px;
-    right: 6px;
+    inset: 6px;
 
-    display: flex;
+    border-radius: 50%;
 
-    flex-direction: column;
-
-    align-items: flex-end;
-
-    gap: 2px;
-
-    z-index: 6;
+    border: 1px solid rgba(255,255,255,.6);
 }
 
-.weight-token {
+/* ================================
+   FIGUR
+================================ */
 
+.figure {
     display: flex;
-
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
 
-    gap: 3px;
+    font-size: 32px;
 
-    background:
-        rgba(15,23,42,.92);
+    filter:
+        drop-shadow(0 4px 4px rgba(0,0,0,.45));
 
-    border:
-        1px solid
-        #60a5fa;
+    z-index: 10;
+}
 
-    border-radius: 6px;
-
-    padding:
-        3px 5px;
-
-    font-size: 10px;
-
+.figure-small {
+    font-size: 11px;
     font-weight: bold;
 }
 
+/* ================================
+   GEWICHTSHÄUFEN
+================================ */
 
-/* eingefrorenes Gewicht */
+.weight-stack {
+    position: absolute;
 
-.weight-token.frozen {
+    left: 50%;
+    bottom: 4px;
 
-    background:
-        #166534;
+    transform: translateX(-50%);
 
-    border-color:
-        #4ade80;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    box-shadow:
-        0 0 9px
-        rgba(34,197,94,.45);
+    z-index: 12;
+
+    pointer-events: none;
 }
 
+.weight-row {
+    display: flex;
+    justify-content: center;
+}
 
-/* =========================================================
+.weight-block {
+    width: 17px;
+    height: 17px;
+
+    margin: 1px;
+
+    border-radius: 4px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #93c5fd,
+            #3b82f6 55%,
+            #1d4ed8
+        );
+
+    border: 1px solid #bfdbfe;
+
+    box-shadow:
+        inset 1px 1px 2px rgba(255,255,255,.5),
+        0 2px 3px rgba(0,0,0,.35);
+}
+
+.weight-stack.frozen .weight-block {
+    background:
+        linear-gradient(
+            145deg,
+            #86efac,
+            #22c55e 55%,
+            #15803d
+        );
+
+    border-color: #bbf7d0;
+
+    box-shadow:
+        0 0 7px rgba(34,197,94,.7);
+}
+
+/* ================================
    HAKEN
-========================================================= */
+================================ */
 
 .correct-check {
-
     position: absolute;
 
     top: 50%;
     left: 50%;
 
-    transform:
-        translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
-    width: 52px;
-    height: 52px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
+    width: 48px;
+    height: 48px;
 
     border-radius: 50%;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     background: #16a34a;
 
-    border:
-        3px solid
-        #bbf7d0;
+    border: 3px solid #bbf7d0;
 
-    color: white;
-
-    font-size: 34px;
-
+    font-size: 30px;
     font-weight: bold;
 
-    z-index: 20;
+    z-index: 40;
 
     box-shadow:
-        0 0 25px
-        rgba(34,197,94,.9);
+        0 0 25px rgba(34,197,94,.9);
 }
 
-
-/* =========================================================
-   STATUS
-========================================================= */
+/* ================================
+   RECHTE SEITE
+================================ */
 
 .status {
+    padding: 13px;
 
-    background:
-        rgba(0,0,0,.2);
+    background: rgba(0,0,0,.2);
 
-    border-radius: 12px;
+    border-radius: 11px;
 
-    padding: 14px;
-
-    line-height: 1.55;
-
-    margin-bottom: 15px;
+    line-height: 1.5;
 }
 
 .status-title {
-
     color: #67e8f9;
-
     font-weight: bold;
-
-    font-size: 17px;
+    margin-bottom: 5px;
 }
 
-
-/* =========================================================
-   INFO
-========================================================= */
-
 .info-grid {
+    margin-top: 13px;
 
     display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 9px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
 }
 
 .info {
-
-    background:
-        rgba(0,0,0,.18);
-
-    padding: 11px;
-
+    background: rgba(0,0,0,.2);
     border-radius: 9px;
+    padding: 10px;
 }
 
 .info-label {
-
+    font-size: 11px;
     color: #8fa4b9;
-
-    font-size: 12px;
 }
 
 .info-value {
-
-    font-size: 18px;
-
+    font-size: 17px;
     font-weight: bold;
-
     margin-top: 3px;
 }
 
-
-/* =========================================================
-   GEWICHTSAUSWAHL
-========================================================= */
-
 h2 {
-
     font-size: 18px;
-
-    margin:
-        20px 0 10px;
+    margin: 20px 0 10px;
 }
 
+/* ================================
+   GEWICHT AUSWAHL
+================================ */
+
 .weights {
-
     display: grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
 }
 
 .weight-option {
+    min-height: 105px;
 
-    padding: 12px 5px;
-
-    border-radius: 9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     background:
-        linear-gradient(
-            145deg,
-            #334155,
-            #1e293b
-        );
+        linear-gradient(145deg, #334155, #1e293b);
 
-    border:
-        2px solid
-        #64748b;
+    border: 2px solid #64748b;
 
-    color: white;
-
-    font-weight: bold;
-
-    text-align: center;
+    border-radius: 10px;
 
     cursor: pointer;
 
@@ -550,106 +405,81 @@ h2 {
 }
 
 .weight-option:hover {
-
-    transform:
-        translateY(-2px);
-
-    border-color:
-        #60a5fa;
+    border-color: #60a5fa;
+    transform: translateY(-2px);
 }
 
 .weight-option.selected {
-
-    border-color:
-        #facc15;
+    border-color: #facc15;
 
     box-shadow:
-        0 0 20px
-        rgba(250,204,21,.55);
-
-    transform:
-        scale(1.04);
+        0 0 20px rgba(250,204,21,.5);
 }
-
-
-/* richtige Auswahl in Probe */
 
 .weight-option.solution-weight {
-
-    border-color:
-        #22c55e;
+    border-color: #22c55e;
 
     box-shadow:
-        0 0 18px
-        rgba(34,197,94,.6);
+        0 0 18px rgba(34,197,94,.55);
 }
 
+.weight-number {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #cbd5e1;
+}
 
-/* =========================================================
-   BUTTONS
-========================================================= */
+/* ================================
+   AUSWAHL-HÄUFEN
+================================ */
 
-button {
+.choice-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    width: 100%;
+.choice-stack .weight-block {
+    width: 19px;
+    height: 19px;
+}
 
-    border: none;
+/* ================================
+   LÖSUNG
+================================ */
 
-    border-radius: 9px;
+.solution {
+    margin-top: 14px;
 
     padding: 12px;
 
-    margin-top: 9px;
+    border-radius: 10px;
 
-    color: white;
+    background: rgba(22,163,74,.12);
 
-    font-size: 15px;
+    border: 1px solid #22c55e;
 
+    color: #bbf7d0;
+}
+
+.solution-title {
     font-weight: bold;
-
-    cursor: pointer;
+    color: #4ade80;
+    margin-bottom: 5px;
 }
 
-button.new {
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #5b21b6
-        );
-}
-
-button.reset {
-
-    background:
-        linear-gradient(
-            135deg,
-            #475569,
-            #334155
-        );
-}
-
-button:hover {
-    filter: brightness(1.12);
-}
-
-
-/* =========================================================
-   MELDUNGEN
-========================================================= */
+/* ================================
+   MELDUNG
+================================ */
 
 .message {
+    display: none;
 
-    margin-top: 13px;
+    margin-top: 12px;
 
     padding: 12px;
 
     border-radius: 9px;
-
-    line-height: 1.5;
-
-    display: none;
 }
 
 .message.show {
@@ -657,104 +487,84 @@ button:hover {
 }
 
 .message.info {
-
-    background:
-        rgba(14,116,144,.2);
-
-    border:
-        1px solid
-        #22d3ee;
+    background: rgba(14,116,144,.2);
+    border: 1px solid #22d3ee;
 }
 
 .message.success {
-
-    background:
-        rgba(22,163,74,.2);
-
-    border:
-        1px solid
-        #22c55e;
+    background: rgba(22,163,74,.2);
+    border: 1px solid #22c55e;
 }
 
 .message.error {
-
-    background:
-        rgba(220,38,38,.2);
-
-    border:
-        1px solid
-        #ef4444;
+    background: rgba(220,38,38,.2);
+    border: 1px solid #ef4444;
 }
 
-
-/* =========================================================
-   LÖSUNGSANZEIGE
-========================================================= */
-
-.solution-box {
-
-    margin-top: 15px;
-
-    padding: 13px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(22,163,74,.12);
-
-    border:
-        1px solid
-        #22c55e;
-
-    color:
-        #bbf7d0;
-}
-
-.solution-title {
-
-    color:
-        #4ade80;
-
-    font-weight:
-        bold;
-
-    margin-bottom:
-        6px;
-}
-
-
-/* =========================================================
+/* ================================
    BERECHNUNG
-========================================================= */
+================================ */
 
 .calculation {
+    margin-top: 12px;
 
-    margin-top: 15px;
+    padding: 12px;
 
-    padding: 13px;
+    border-radius: 9px;
 
-    border-radius: 10px;
+    background: #08111b;
 
-    background:
-        #09121d;
+    font-family: Consolas, monospace;
 
-    font-family:
-        Consolas,
-        monospace;
+    font-size: 11px;
 
-    font-size: 12px;
-
-    line-height: 1.65;
+    line-height: 1.6;
 }
 
+/* ================================
+   BUTTONS
+================================ */
 
-/* =========================================================
+button {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 9px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.new-game {
+    background:
+        linear-gradient(135deg, #7c3aed, #5b21b6);
+}
+
+.reset {
+    background:
+        linear-gradient(135deg, #475569, #334155);
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+/* ================================
    RESPONSIVE
-========================================================= */
+================================ */
 
 @media(max-width:850px) {
 
-    .game-layout {
+    .game {
         grid-template-columns: 1fr;
     }
 
@@ -762,14 +572,12 @@ button:hover {
         font-size: 30px;
     }
 
-    .board {
+    .board-wrapper {
         width: 100%;
     }
 }
-
 </style>
 </head>
-
 
 <body>
 
@@ -778,61 +586,62 @@ button:hover {
     <h1>⚖️ BALANCE-TEAM</h1>
 
     <div class="subtitle">
-        Probeversion – 4 × 4 Kugel-Balance
+        Das Balance-Abenteuer
     </div>
 
+    <div class="game">
 
-    <div class="game-layout">
-
-
-        <!-- =================================================
-             SPIELFELD
-        ================================================== -->
+        <!-- =========================
+             SPIELBRETT
+        ========================== -->
 
         <div class="panel">
 
-            <div
-                id="board"
-                class="board">
+            <div class="board-wrapper">
+
+                <div
+                    id="board"
+                    class="board">
+                </div>
+
+                <!-- Roter Mittelpunkt -->
+                <div
+                    class="center-point"
+                    title="Mittelpunkt">
+                </div>
+
             </div>
 
         </div>
 
 
-        <!-- =================================================
+        <!-- =========================
              STEUERUNG
-        ================================================== -->
+        ========================== -->
 
         <div class="panel">
-
 
             <div class="status">
 
                 <div class="status-title">
-                    Aufgabe
+                    🧒 Hilf der Figur!
                 </div>
 
-                <div>
-                    Wähle eine Kugelanzahl und
-                    lege sie auf ein hervorgehobenes Feld.
-                </div>
+                Lege das richtige Gewicht auf ein
+                hervorgehobenes Feld.
 
-                <br>
+                Wenn die Balance stimmt,
+                geht die Figur einen Schritt weiter.
 
-                <div>
-                    <strong>Probe:</strong>
-                    Die aktuelle Lösung wird rechts angezeigt.
-                </div>
-
+                Die Gewichte bleiben liegen!
             </div>
 
 
             <div class="info-grid">
 
                 <div class="info">
-
                     <div class="info-label">
-                        Start
+                        Startfeld
                     </div>
 
                     <div
@@ -840,14 +649,11 @@ button:hover {
                         class="info-value">
                         -
                     </div>
-
                 </div>
 
-
                 <div class="info">
-
                     <div class="info-label">
-                        Ziel
+                        Zielfeld
                     </div>
 
                     <div
@@ -855,26 +661,21 @@ button:hover {
                         class="info-value">
                         -
                     </div>
-
                 </div>
 
-
                 <div class="info">
-
                     <div class="info-label">
-                        Waage
+                        Figur
                     </div>
 
                     <div
                         id="figureWeight"
                         class="info-value">
+                        -
                     </div>
-
                 </div>
 
-
                 <div class="info">
-
                     <div class="info-label">
                         Position
                     </div>
@@ -884,16 +685,14 @@ button:hover {
                         class="info-value">
                         -
                     </div>
-
                 </div>
 
             </div>
 
 
             <h2>
-                ⚪ Kugeln auswählen
+                🧱 Gewicht auswählen
             </h2>
-
 
             <div
                 id="weights"
@@ -901,13 +700,13 @@ button:hover {
             </div>
 
 
-            <!-- =================================================
+            <!-- =====================
                  PROBE-LÖSUNG
-            ================================================== -->
+            ====================== -->
 
             <div
                 id="solutionBox"
-                class="solution-box">
+                class="solution">
 
                 <div class="solution-title">
                     🔎 PROBE-LÖSUNG
@@ -921,7 +720,7 @@ button:hover {
 
 
             <button
-                class="new"
+                class="new-game"
                 onclick="newGame()">
 
                 🎲 Neue Runde
@@ -931,9 +730,9 @@ button:hover {
 
             <button
                 class="reset"
-                onclick="resetNonFrozenWeights()">
+                onclick="removeWrongWeights()">
 
-                ↩ Falsche Gewichte zurücknehmen
+                ↩ Falsche Gewichte entfernen
 
             </button>
 
@@ -966,42 +765,26 @@ const SHOW_SOLUTION = true;
 
 
 /* =========================================================
-   SPIELKONSTANTEN
+   GRUNDWERTE
 ========================================================= */
 
 const SIZE = 4;
 
 /*
-    4×4 Spielfeld.
-
-    Die geometrische Mitte liegt zwischen
-    den Feldern 6, 7, 10 und 11.
-
-    Wir rechnen daher mit Koordinaten:
-
-    -1.5  -0.5   0.5   1.5
-    -1.5  -0.5   0.5   1.5
-    -1.5  -0.5   0.5   1.5
-    -1.5  -0.5   0.5   1.5
+   Gewicht der Figur.
 */
 
-const FIGURE_BALLS = 2;
+const FIGURE_WEIGHT = 2;
 
 
 /*
-    Nur ganze Kugelzahlen.
+   Erlaubte Gewichte.
+
+   Das Spiel stellt daraus immer
+   drei unterschiedliche Gewichte bereit.
 */
 
-const POSSIBLE_WEIGHTS = [
-
-    1,
-    2,
-    3,
-    4,
-    5,
-    6
-
-];
+const WEIGHTS = [1,2,3,4,5,6];
 
 
 /* =========================================================
@@ -1010,7 +793,7 @@ const POSSIBLE_WEIGHTS = [
 
 let path = [];
 
-let currentPathIndex = 0;
+let currentIndex = 0;
 
 let currentField = null;
 
@@ -1018,107 +801,49 @@ let startField = null;
 
 let goalField = null;
 
-
-/*
-    Gewichte, die bereits liegen.
-
-    frozen = true bedeutet:
-    Dieses Gewicht ist fest eingefroren.
-*/
-
 let placedWeights = [];
-
-
-/*
-    Die drei Auswahlmöglichkeiten.
-*/
 
 let availableWeights = [];
 
-
-/*
-    Aktuell ausgewähltes Gewicht.
-*/
-
-let selectedWeightIndex = null;
-
-
-/*
-    Aktuelle Lösung.
-*/
+let selectedWeight = null;
 
 let currentSolution = null;
 
+let locked = false;
+
+
+/* =========================================================
+   KOORDINATEN
+========================================================= */
 
 /*
-    Während der 1-Sekunden-Animation
-    wird das Spiel gesperrt.
+   Die vier mittleren Felder sind:
+
+   6 | 7
+   -------
+   10|11
+
+   Der rote Punkt liegt genau zwischen diesen Feldern.
+
+   Koordinaten:
+
+   -1.5   -0.5    0.5    1.5
 */
 
-let gameLocked = false;
+function getCoordinate(field) {
 
-
-/* =========================================================
-   FELD → KOORDINATE
-========================================================= */
-
-function fieldToCoordinate(field) {
-
-    const index =
-        field - 1;
+    const index = field - 1;
 
     const row =
-        Math.floor(
-            index / SIZE
-        );
+        Math.floor(index / 4);
 
     const col =
-        index % SIZE;
-
+        index % 4;
 
     return {
-
         x: col - 1.5,
-
         y: row - 1.5
-
     };
-}
-
-
-/* =========================================================
-   KOORDINATE → FELD
-========================================================= */
-
-function coordinateToField(x,y) {
-
-    const col =
-        Math.round(
-            x + 1.5
-        );
-
-    const row =
-        Math.round(
-            y + 1.5
-        );
-
-
-    if (
-        col < 0 ||
-        col >= SIZE ||
-        row < 0 ||
-        row >= SIZE
-    ) {
-
-        return null;
-    }
-
-
-    return (
-        row * SIZE +
-        col +
-        1
-    );
 }
 
 
@@ -1128,76 +853,40 @@ function coordinateToField(x,y) {
 
 function getNeighbors(field) {
 
-    const p =
-        fieldToCoordinate(
-            field
-        );
-
-
-    /*
-        Da die Koordinaten bei einem 4×4
-        Feld Halbwerte besitzen, verwenden
-        wir einfach Zeile/Spalte.
-    */
-
-    const index =
-        field - 1;
+    const index = field - 1;
 
     const row =
-        Math.floor(
-            index / SIZE
-        );
+        Math.floor(index / 4);
 
     const col =
-        index % SIZE;
-
+        index % 4;
 
     const result = [];
 
-
     const directions = [
-
         [1,0],
-
         [-1,0],
-
         [0,1],
-
         [0,-1]
-
     ];
 
+    directions.forEach(([dr,dc]) => {
 
-    directions.forEach(
+        const r = row + dr;
+        const c = col + dc;
 
-        ([dr,dc]) => {
+        if (
+            r >= 0 &&
+            r < 4 &&
+            c >= 0 &&
+            c < 4
+        ) {
 
-            const r =
-                row + dr;
-
-            const c =
-                col + dc;
-
-
-            if (
-                r >= 0 &&
-                r < SIZE &&
-                c >= 0 &&
-                c < SIZE
-            ) {
-
-                result.push(
-                    r * SIZE +
-                    c +
-                    1
-                );
-
-            }
-
+            result.push(
+                r * 4 + c + 1
+            );
         }
-
-    );
-
+    });
 
     return result;
 }
@@ -1210,108 +899,73 @@ function getNeighbors(field) {
 function generatePath() {
 
     startField =
-        randomInt(
-            1,
-            4
-        );
-
+        randomInt(1,4);
 
     goalField =
-        randomInt(
-            13,
-            16
-        );
+        randomInt(13,16);
 
+    const result = [startField];
 
-    const result = [
+    let current = startField;
 
-        startField
-
-    ];
-
-
-    let current =
-        startField;
-
-
-    const used =
+    const visited =
         new Set(result);
-
 
     let safety = 0;
 
-
     while (
-
         current !== goalField &&
-
         safety < 300
-
     ) {
 
         safety++;
 
-
         let neighbors =
-            getNeighbors(
-                current
-            )
+            getNeighbors(current)
             .filter(
-                field =>
-                    !used.has(field)
+                f => !visited.has(f)
             );
-
 
         if (
             neighbors.length === 0
         ) {
-
             return generatePath();
-
         }
 
-
         /*
-            Ziel bevorzugen, wenn es
-            direkt erreichbar ist.
+           Ziel bevorzugen, wenn
+           es direkt erreichbar ist.
         */
 
         if (
-            neighbors.includes(
-                goalField
-            )
+            neighbors.includes(goalField)
         ) {
 
-            current =
-                goalField;
+            current = goalField;
 
         } else {
 
             /*
-                Bewegung nach unten bevorzugen.
+               Nach unten gerichtete
+               Bewegung bevorzugen.
             */
 
-            const currentRow =
+            const row =
                 Math.floor(
-                    (current - 1) / SIZE
+                    (current - 1) / 4
                 );
-
 
             const down =
                 neighbors.filter(
-
-                    field =>
+                    f =>
                         Math.floor(
-                            (field - 1) /
-                            SIZE
-                        ) >= currentRow
-
+                            (f - 1) / 4
+                        ) >= row
                 );
 
-
             if (
-                down.length > 0 &&
-                Math.random() < 0.75
+                down.length &&
+                Math.random() < .75
             ) {
 
                 current =
@@ -1331,89 +985,21 @@ function generatePath() {
                             neighbors.length - 1
                         )
                     ];
-
             }
-
         }
 
+        result.push(current);
 
-        result.push(
-            current
-        );
-
-        used.add(
-            current
-        );
+        visited.add(current);
     }
-
 
     if (
         current !== goalField
     ) {
-
         return generatePath();
-
     }
-
 
     return result;
-}
-
-
-/* =========================================================
-   BALANCE-ACHSE
-========================================================= */
-
-/*
-    Die Waage arbeitet zweidimensional.
-
-    Die aktuelle Figur bestimmt,
-    ob die horizontale oder vertikale
-    Richtung stärker berücksichtigt wird.
-
-    So bleibt die Bedienung einfach,
-    die Berechnung ist aber tatsächlich
-    räumlich.
-*/
-
-function getBalanceAxis() {
-
-    const p =
-        fieldToCoordinate(
-            currentField
-        );
-
-
-    if (
-        Math.abs(p.x) >=
-        Math.abs(p.y)
-    ) {
-
-        return "x";
-
-    }
-
-
-    return "y";
-}
-
-
-/* =========================================================
-   HEBELARM
-========================================================= */
-
-function getArm(
-    field,
-    axis
-) {
-
-    const p =
-        fieldToCoordinate(
-            field
-        );
-
-
-    return p[axis];
 }
 
 
@@ -1422,205 +1008,86 @@ function getArm(
 ========================================================= */
 
 function calculateBalance(
-    extraWeight = null,
-    extraField = null
+    testWeight = null,
+    testField = null
 ) {
 
-    const axis =
-        getBalanceAxis();
-
-
-    let total = 0;
-
-
     /*
-        Figur.
+       Wir betrachten die Richtung
+       vom roten Mittelpunkt zur Figur.
+
+       Das macht die Balance für Kinder
+       räumlich verständlich.
     */
 
-    total +=
-
-        FIGURE_BALLS *
-
-        getArm(
-            currentField,
-            axis
+    const figure =
+        getCoordinate(
+            currentField
         );
 
-
     /*
-        Bereits liegende Gewichte.
+       Figur erzeugt ein Drehmoment.
+
+       Je weiter die Figur vom roten
+       Mittelpunkt entfernt ist,
+       desto größer ihr Einfluss.
     */
 
-    placedWeights.forEach(
+    let totalX =
+        FIGURE_WEIGHT *
+        figure.x;
 
-        item => {
-
-            total +=
-
-                item.weight *
-
-                getArm(
-                    item.field,
-                    axis
-                );
-
-        }
-
-    );
+    let totalY =
+        FIGURE_WEIGHT *
+        figure.y;
 
 
     /*
-        Testgewicht.
+       Alle bereits liegenden Gewichte
+       bleiben aktiv!
+    */
+
+    placedWeights.forEach(item => {
+
+        const p =
+            getCoordinate(
+                item.field
+            );
+
+        totalX +=
+            item.weight * p.x;
+
+        totalY +=
+            item.weight * p.y;
+    });
+
+
+    /*
+       Testgewicht hinzufügen.
     */
 
     if (
-        extraWeight !== null &&
-        extraField !== null
+        testWeight !== null &&
+        testField !== null
     ) {
 
-        total +=
-
-            extraWeight *
-
-            getArm(
-                extraField,
-                axis
+        const p =
+            getCoordinate(
+                testField
             );
 
+        totalX +=
+            testWeight * p.x;
+
+        totalY +=
+            testWeight * p.y;
     }
 
 
     return {
-
-        value:
-            total,
-
-        axis:
-            axis
-
+        x: totalX,
+        y: totalY
     };
-}
-
-
-/* =========================================================
-   FREIE FELDER
-========================================================= */
-
-function getFreeFields() {
-
-    const result = [];
-
-
-    for (
-        let field = 1;
-        field <= 16;
-        field++
-    ) {
-
-        /*
-            Figurfeld darf nicht
-            belegt werden.
-        */
-
-        if (
-            field === currentField
-        ) {
-
-            continue;
-        }
-
-
-        /*
-            Bereits gefrorene oder
-            normale Gewichte.
-        */
-
-        if (
-            placedWeights.some(
-                item =>
-                    item.field === field
-            )
-        ) {
-
-            continue;
-        }
-
-
-        result.push(
-            field
-        );
-
-    }
-
-
-    return result;
-}
-
-
-/* =========================================================
-   MÖGLICHE ABLAGEFELDER
-========================================================= */
-
-function getPlaceableFields() {
-
-    const balance =
-        calculateBalance();
-
-
-    const fields = [];
-
-
-    for (
-        const field of getFreeFields()
-    ) {
-
-        const arm =
-            getArm(
-                field,
-                balance.axis
-            );
-
-
-        if (
-            Math.abs(arm) < 0.0001
-        ) {
-
-            continue;
-
-        }
-
-
-        /*
-            Gegenseite der Balance.
-        */
-
-        if (
-            balance.value > 0 &&
-            arm < 0
-        ) {
-
-            fields.push(
-                field
-            );
-
-        }
-
-
-        if (
-            balance.value < 0 &&
-            arm > 0
-        ) {
-
-            fields.push(
-                field
-            );
-
-        }
-
-    }
-
-
-    return fields;
 }
 
 
@@ -1630,264 +1097,155 @@ function getPlaceableFields() {
 
 function findSolution() {
 
-    const balance =
-        calculateBalance();
+    const freeFields = [];
+
+    for (
+        let field = 1;
+        field <= 16;
+        field++
+    ) {
+
+        if (
+            field === currentField
+        ) {
+            continue;
+        }
+
+        if (
+            placedWeights.some(
+                item =>
+                    item.field === field
+            )
+        ) {
+            continue;
+        }
+
+        freeFields.push(field);
+    }
 
 
     const solutions = [];
 
 
     /*
-        Alle freien Felder testen.
+       Alle drei-dimensionalen Kombinationen
+       werden mathematisch geprüft.
+
+       Für eine kindgerechte Lösung reicht
+       eine sehr kleine Toleranz.
     */
 
     for (
-        const field of getFreeFields()
+        const field of freeFields
     ) {
 
-        const arm =
-            getArm(
-                field,
-                balance.axis
-            );
-
-
-        if (
-            Math.abs(arm) < 0.0001
+        for (
+            const weight of WEIGHTS
         ) {
 
-            continue;
-        }
+            const result =
+                calculateBalance(
+                    weight,
+                    field
+                );
 
+            /*
+               Wir suchen eine möglichst
+               ausgewogene Position.
 
-        /*
-            benötigte Kugelanzahl
-        */
+               Da das 4×4-Brett nicht immer
+               eine exakte Null zulässt,
+               wird die kleinste Abweichung
+               ermittelt.
+            */
 
-        const needed =
-            -balance.value /
-            arm;
-
-
-        /*
-            Nur ganze Kugeln.
-        */
-
-        const rounded =
-            Math.round(
-                needed
-            );
-
-
-        if (
-            rounded < 1 ||
-            rounded > 6
-        ) {
-
-            continue;
-        }
-
-
-        const result =
-            calculateBalance(
-                rounded,
-                field
-            );
-
-
-        if (
-            Math.abs(
-                result.value
-            ) < 0.0001
-        ) {
+            const error =
+                Math.sqrt(
+                    result.x * result.x +
+                    result.y * result.y
+                );
 
             solutions.push({
-
-                field:
-                    field,
-
-                weight:
-                    rounded
-
+                field,
+                weight,
+                error
             });
-
         }
-
     }
 
 
     if (
         solutions.length === 0
     ) {
-
         return null;
-
     }
 
 
     /*
-        Zufällige Lösung.
+       Kleinste Abweichung zuerst.
     */
 
-    return solutions[
-        randomInt(
-            0,
-            solutions.length - 1
-        )
-    ];
+    solutions.sort(
+        (a,b) =>
+            a.error - b.error
+    );
+
+
+    /*
+       Nur Lösungen mit sinnvoller
+       Balance akzeptieren.
+
+       Falls keine perfekte Lösung
+       existiert, nehmen wir die beste.
+    */
+
+    const best =
+        solutions[0];
+
+    return best;
 }
 
 
 /* =========================================================
-   DREI GEWICHTE ERZEUGEN
+   DREI AUSWAHLGEWICHTE
 ========================================================= */
 
-function createWeights() {
-
-    let solution = null;
-
-    let tries = 0;
-
-
-    /*
-        Eine echte Aufgabe suchen.
-    */
-
-    while (
-        solution === null &&
-        tries < 200
-    ) {
-
-        solution =
-            findSolution();
-
-        tries++;
-
-    }
-
-
-    /*
-        Falls keine Lösung gefunden wurde,
-        wird das Spielfeld neu aufgebaut.
-    */
-
-    if (
-        solution === null
-    ) {
-
-        /*
-            Fallback:
-            neues Spiel.
-        */
-
-        path =
-            generatePath();
-
-        currentPathIndex =
-            0;
-
-        currentField =
-            path[0];
-
-        placedWeights =
-            [];
-
-        return createWeights();
-
-    }
-
+function createWeightChoices() {
 
     currentSolution =
-        solution;
-
-
-    /*
-        Richtiges Gewicht.
-    */
-
-    const weights = [
-
-        solution.weight
-
-    ];
-
-
-    /*
-        Zwei falsche Kugelzahlen.
-    */
-
-    while (
-        weights.length < 3
-    ) {
-
-        const candidate =
-            POSSIBLE_WEIGHTS[
-                randomInt(
-                    0,
-                    POSSIBLE_WEIGHTS.length - 1
-                )
-            ];
-
-
-        if (
-            !weights.includes(
-                candidate
-            )
-        ) {
-
-            weights.push(
-                candidate
-            );
-
-        }
-
-    }
-
-
-    availableWeights =
-        shuffle(
-            weights
-        );
-
-
-    selectedWeightIndex =
-        null;
-}
-
-
-/* =========================================================
-   GEWICHT AUSWÄHLEN
-========================================================= */
-
-function selectWeight(index) {
+        findSolution();
 
     if (
-        gameLocked
+        !currentSolution
     ) {
-
         return;
     }
 
 
-    selectedWeightIndex =
-        index;
+    const values = [
+        currentSolution.weight
+    ];
 
 
-    renderWeights();
+    while (
+        values.length < 3
+    ) {
 
-    renderBoard();
+        const candidate =
+            randomChoice(WEIGHTS);
+
+        if (
+            !values.includes(candidate)
+        ) {
+            values.push(candidate);
+        }
+    }
 
 
-    showMessage(
+    availableWeights =
+        shuffle(values);
 
-        `${ballsText(
-            availableWeights[index]
-        )} ausgewählt.
-        Jetzt ein hervorgehobenes Feld anklicken.`,
-
-        "info"
-
-    );
+    selectedWeight = null;
 }
 
 
@@ -1895,18 +1253,15 @@ function selectWeight(index) {
    FELD KLICK
 ========================================================= */
 
-function boardClicked(field) {
+function clickField(field) {
 
-    if (
-        gameLocked
-    ) {
-
+    if (locked) {
         return;
     }
 
 
     /*
-        Bereits liegendes Gewicht?
+       Liegt hier schon ein Gewicht?
     */
 
     const existing =
@@ -1916,13 +1271,11 @@ function boardClicked(field) {
         );
 
 
-    if (
-        existing
-    ) {
+    if (existing) {
 
         /*
-            Eingefrorene Gewichte
-            können NICHT entfernt werden.
+           Richtiges Gewicht wurde
+           eingefroren.
         */
 
         if (
@@ -1930,11 +1283,8 @@ function boardClicked(field) {
         ) {
 
             showMessage(
-
-                "🔒 Dieses Gewicht ist eingefroren und kann nicht mehr entfernt werden.",
-
+                "🔒 Dieses Gewicht bleibt liegen!",
                 "info"
-
             );
 
             return;
@@ -1942,67 +1292,42 @@ function boardClicked(field) {
 
 
         /*
-            Normales falsches Gewicht
-            darf zurückgenommen werden.
+           Falsches Gewicht darf
+           entfernt werden.
         */
 
-        const index =
-            placedWeights.indexOf(
-                existing
+        placedWeights =
+            placedWeights.filter(
+                item =>
+                    item !== existing
             );
-
-
-        placedWeights.splice(
-            index,
-            1
-        );
-
 
         availableWeights.push(
             existing.weight
         );
 
+        selectedWeight = null;
 
-        selectedWeightIndex =
-            null;
+        createWeightChoices();
 
-
-        createWeights();
-
-        renderWeights();
-
-        renderBoard();
-
-        showCalculation();
-
+        render();
 
         showMessage(
-
-            "↩ Gewicht wurde zurückgenommen.",
-
+            "↩ Gewicht wurde entfernt.",
             "info"
-
         );
-
 
         return;
     }
 
 
-    /*
-        Noch kein Gewicht ausgewählt?
-    */
-
     if (
-        selectedWeightIndex === null
+        selectedWeight === null
     ) {
 
         showMessage(
-
-            "Bitte zuerst eine Kugelanzahl auswählen.",
-
+            "Wähle zuerst ein Gewicht aus.",
             "error"
-
         );
 
         return;
@@ -2010,92 +1335,49 @@ function boardClicked(field) {
 
 
     /*
-        Gewicht holen.
-    */
-
-    const weight =
-        availableWeights[
-            selectedWeightIndex
-        ];
-
-
-    /*
-        Gewicht ablegen.
+       Gewicht ablegen.
     */
 
     placedWeights.push({
 
-        field:
-            field,
+        field: field,
 
-        weight:
-            weight,
+        weight: selectedWeight,
 
-        frozen:
-            false
-
+        frozen: false
     });
 
 
-    availableWeights.splice(
-
-        selectedWeightIndex,
-
-        1
-
-    );
-
-
-    selectedWeightIndex =
-        null;
-
-
-    renderWeights();
-
-    renderBoard();
-
-
     /*
-        Balance prüfen.
+       Prüfen.
     */
 
-    evaluatePlacement(
-        field,
-        weight
-    );
-}
-
-
-/* =========================================================
-   PLATZIERUNG AUSWERTEN
-========================================================= */
-
-function evaluatePlacement(
-    field,
-    weight
-) {
-
-    const balance =
+    const result =
         calculateBalance();
 
 
     /*
-        RICHTIG
+       Erlaubte Toleranz.
+
+       Für das Spiel wird die
+       bestmögliche Balance verwendet.
     */
 
+    const isCorrect =
+        field === currentSolution.field &&
+        selectedWeight ===
+            currentSolution.weight;
+
+
+    selectedWeight = null;
+
+
     if (
-        Math.abs(
-            balance.value
-        ) < 0.0001
+        isCorrect
     ) {
 
-        gameLocked =
-            true;
-
-
         /*
-            Das gerade platzierte Gewicht
-            wird eingefroren.
+           Gewicht einfrieren.
         */
 
         const placed =
@@ -2104,97 +1386,48 @@ function evaluatePlacement(
                     item.field === field
             );
 
+        placed.frozen = true;
 
-        if (
-            placed
-        ) {
+        locked = true;
 
-            placed.frozen =
-                true;
+        render();
 
-        }
-
-
-        showCorrectMark(
-            field
-        );
-
+        showCorrectMark(field);
 
         showMessage(
-
-            "✓ Richtig! Das Gewicht wird eingefroren.",
-
+            "🎉 Richtig! Die Balance stimmt. Die Figur geht weiter!",
             "success"
-
         );
 
 
-        showCalculation();
+        setTimeout(() => {
 
+            removeCorrectMark();
 
-        setTimeout(
+            moveFigure();
 
-            () => {
+        },1000);
 
-                removeCorrectMark();
+    } else {
 
-                advanceFigure();
+        render();
 
-            },
-
-            1000
-
+        showMessage(
+            "🤔 Noch nicht richtig. Die Figur bleibt stehen.",
+            "error"
         );
-
-
-        return;
     }
-
-
-    /*
-        FALSCH
-    */
-
-    showMessage(
-
-        "❌ Noch nicht richtig. Die Figur bleibt stehen.",
-
-        "error"
-
-    );
-
-
-    showWrongAnimation();
-
-
-    showCalculation();
-
-
-    /*
-        Das falsche Gewicht bleibt liegen.
-        Es kann später wieder entfernt werden.
-    */
-
-    createWeights();
-
-    renderWeights();
-
-    renderBoard();
 }
 
 
 /* =========================================================
-   NÄCHSTES FELD
+   FIGUR WEITERBEWEGEN
 ========================================================= */
 
-function advanceFigure() {
-
-    /*
-        Ziel erreicht?
-    */
+function moveFigure() {
 
     if (
-        currentPathIndex >=
+        currentIndex >=
         path.length - 1
     ) {
 
@@ -2204,42 +1437,79 @@ function advanceFigure() {
     }
 
 
-    currentPathIndex++;
+    /*
+       Nur die Figur bewegt sich.
+
+       ALLE GEWICHTE BLEIBEN LIEGEN.
+    */
+
+    currentIndex++;
 
     currentField =
-        path[
-            currentPathIndex
-        ];
+        path[currentIndex];
 
 
-    gameLocked =
-        false;
+    locked = false;
 
 
     /*
-        Die gefrorenen Gewichte bleiben.
+       Neue Balance!
 
-        Normale falsche Gewichte bleiben
-        ebenfalls liegen.
+       Die alten Gewichte werden
+       automatisch erneut berücksichtigt.
     */
 
-    createWeights();
+    createWeightChoices();
 
-    renderWeights();
-
-    renderBoard();
-
-    updateInformation();
-
-    hideCalculation();
-
+    render();
 
     showMessage(
-
-        "➡️ Die Figur ist ein Feld weiter.",
-
+        "➡️ Die Figur ist ein Feld weiter. Die Balance hat sich verändert!",
         "info"
+    );
+}
 
+
+/* =========================================================
+   GEWICHT ENTFERNEN
+========================================================= */
+
+function removeWrongWeights() {
+
+    if (locked) {
+        return;
+    }
+
+
+    placedWeights =
+        placedWeights.filter(
+            item =>
+                item.frozen
+        );
+
+
+    createWeightChoices();
+
+    render();
+
+    showMessage(
+        "↩ Alle nicht eingefrorenen Gewichte wurden entfernt.",
+        "info"
+    );
+}
+
+
+/* =========================================================
+   SPIEL BEENDET
+========================================================= */
+
+function finishGame() {
+
+    locked = true;
+
+    showMessage(
+        "🏆 SUPER! Die Figur hat das Ziel erreicht!",
+        "success"
     );
 }
 
@@ -2251,148 +1521,85 @@ function advanceFigure() {
 function showCorrectMark(field) {
 
     const cells =
-        document.querySelectorAll(
-            ".cell"
-        );
+        document.querySelectorAll(".cell");
 
+    cells.forEach((cell,index) => {
 
-    cells.forEach(
+        if (
+            index + 1 === field
+        ) {
 
-        (cell,index) => {
+            const mark =
+                document.createElement("div");
 
-            if (
-                index + 1 === field
-            ) {
+            mark.className =
+                "correct-check";
 
-                const check =
-                    document.createElement(
-                        "div"
-                    );
+            mark.textContent = "✓";
 
-
-                check.className =
-                    "correct-check";
-
-
-                check.textContent =
-                    "✓";
-
-
-                cell.appendChild(
-                    check
-                );
-
-            }
-
+            cell.appendChild(mark);
         }
-
-    );
+    });
 }
 
-
-/* =========================================================
-   HÄKCHEN ENTFERNEN
-========================================================= */
 
 function removeCorrectMark() {
 
     document
-        .querySelectorAll(
-            ".correct-check"
-        )
+        .querySelectorAll(".correct-check")
         .forEach(
-            element =>
-                element.remove()
+            item =>
+                item.remove()
         );
 }
 
 
 /* =========================================================
-   FALSCHE ANIMATION
+   SPIELBRETT RENDERN
 ========================================================= */
 
-function showWrongAnimation() {
-
-    const cell =
-        document.querySelector(
-            ".cell.current"
-        );
-
-
-    if (
-        !cell
-    ) {
-
-        return;
-    }
-
-
-    cell.classList.add(
-        "wrong"
-    );
-
-
-    setTimeout(
-
-        () => {
-
-            cell.classList.remove(
-                "wrong"
-            );
-
-        },
-
-        400
-
-    );
-}
-
-
-/* =========================================================
-   SPIEL BEENDET
-========================================================= */
-
-function finishGame() {
-
-    gameLocked =
-        true;
-
-
-    showMessage(
-
-        "🏆 ZIEL ERREICHT! Sehr gut gemacht!",
-
-        "success"
-
-    );
-
-
-    showCalculation();
-}
-
-
-/* =========================================================
-   SPIELBRETT ZEICHNEN
-========================================================= */
-
-function renderBoard() {
+function render() {
 
     const board =
-        document.getElementById(
-            "board"
-        );
+        document.getElementById("board");
+
+    board.innerHTML = "";
 
 
-    board.innerHTML =
-        "";
+    /*
+       Mögliche Felder hervorheben.
+    */
 
+    let placeable = [];
 
-    const placeable =
-        selectedWeightIndex !== null
+    if (
+        selectedWeight !== null
+    ) {
 
-            ? getPlaceableFields()
+        for (
+            let field = 1;
+            field <= 16;
+            field++
+        ) {
 
-            : [];
+            if (
+                field === currentField
+            ) {
+                continue;
+            }
+
+            if (
+                placedWeights.some(
+                    item =>
+                        item.field === field
+                )
+            ) {
+                continue;
+            }
+
+            placeable.push(field);
+        }
+    }
 
 
     for (
@@ -2402,77 +1609,41 @@ function renderBoard() {
     ) {
 
         const cell =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
+        cell.className = "cell";
 
-        cell.className =
-            "cell";
-
-
-        /*
-            Weg
-        */
 
         if (
             path.includes(field)
         ) {
-
-            cell.classList.add(
-                "path"
-            );
-
+            cell.classList.add("path");
         }
 
-
-        /*
-            Start
-        */
 
         if (
             field === startField
         ) {
-
-            cell.classList.add(
-                "start"
-            );
-
+            cell.classList.add("start");
         }
 
-
-        /*
-            Ziel
-        */
 
         if (
             field === goalField
         ) {
-
-            cell.classList.add(
-                "goal"
-            );
-
+            cell.classList.add("goal");
         }
 
-
-        /*
-            Figur
-        */
 
         if (
             field === currentField
         ) {
-
-            cell.classList.add(
-                "current"
-            );
-
+            cell.classList.add("current");
         }
 
 
         /*
-            Lösung hervorheben
+           Lösung sichtbar.
         */
 
         if (
@@ -2481,15 +1652,44 @@ function renderBoard() {
             field === currentSolution.field
         ) {
 
-            cell.classList.add(
-                "solution-field"
-            );
+            cell.classList.add("solution");
+        }
 
+
+        if (
+            placeable.includes(field)
+        ) {
+
+            cell.classList.add("placeable");
         }
 
 
         /*
-            Belegtes Feld
+           Figur.
+        */
+
+        if (
+            field === currentField
+        ) {
+
+            const figure =
+                document.createElement("div");
+
+            figure.className = "figure";
+
+            figure.innerHTML = `
+                🧒
+                <div class="figure-small">
+                    ${FIGURE_WEIGHT} Gewicht
+                </div>
+            `;
+
+            cell.appendChild(figure);
+        }
+
+
+        /*
+           Gewichte.
         */
 
         const weights =
@@ -2499,225 +1699,238 @@ function renderBoard() {
             );
 
 
-        /*
-            Mögliche Ablage
-        */
-
         if (
-            placeable.includes(field) &&
-            weights.length === 0 &&
-            field !== currentField
+            weights.length
         ) {
 
-            cell.classList.add(
-                "placeable"
-            );
+            weights.forEach(item => {
 
-        }
-
-
-        /*
-            Figur darstellen
-        */
-
-        if (
-            field === currentField
-        ) {
-
-            const figure =
-                document.createElement(
-                    "div"
-                );
-
-
-            figure.className =
-                "figure";
-
-
-            figure.innerHTML =
-                `
-                <div>⚖️</div>
-                <div class="figure-label">
-                    ${ballsText(FIGURE_BALLS)}
-                </div>
-                `;
-
-
-            cell.appendChild(
-                figure
-            );
-
-        }
-
-
-        /*
-            Gewichte darstellen
-        */
-
-        if (
-            weights.length > 0
-        ) {
-
-            const stack =
-                document.createElement(
-                    "div"
-                );
-
-
-            stack.className =
-                "weight-stack";
-
-
-            weights.forEach(
-
-                item => {
-
-                    const token =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    token.className =
-                        "weight-token";
-
-
-                    if (
+                const stack =
+                    createWeightStack(
+                        item.weight,
                         item.frozen
-                    ) {
-
-                        token.classList.add(
-                            "frozen"
-                        );
-
-                    }
-
-
-                    token.innerHTML =
-
-                        ballsText(
-                            item.weight
-                        );
-
-
-                    stack.appendChild(
-                        token
                     );
 
-                }
-
-            );
-
-
-            cell.appendChild(
-                stack
-            );
-
+                cell.appendChild(stack);
+            });
         }
 
 
         cell.addEventListener(
-
             "click",
-
-            () =>
-                boardClicked(field)
-
+            () => clickField(field)
         );
 
 
-        board.appendChild(
-            cell
-        );
-
+        board.appendChild(cell);
     }
+
+
+    updateInfo();
+
+    renderChoices();
+
+    renderSolution();
+
+    showCalculation();
 }
 
 
 /* =========================================================
-   GEWICHTE RENDERN
+   GEWICHTSSTAPEL
 ========================================================= */
 
-function renderWeights() {
+function createWeightStack(
+    count,
+    frozen = false
+) {
+
+    const stack =
+        document.createElement("div");
+
+    stack.className =
+        "weight-stack";
+
+
+    if (
+        frozen
+    ) {
+        stack.classList.add("frozen");
+    }
+
+
+    /*
+       Die gewünschten Formen:
+
+       1 = 1
+
+       2 = 1 oben + 1 unten
+
+       3 = 1 + 2
+
+       4 = 2 + 2
+
+       5 = 1 + 2 + 2
+
+       6 = 3 + 3
+    */
+
+    let rows = [];
+
+    switch(count) {
+
+        case 1:
+            rows = [1];
+            break;
+
+        case 2:
+            rows = [1,1];
+            break;
+
+        case 3:
+            rows = [1,2];
+            break;
+
+        case 4:
+            rows = [2,2];
+            break;
+
+        case 5:
+            rows = [1,2,2];
+            break;
+
+        case 6:
+            rows = [3,3];
+            break;
+
+        default:
+            rows = [1];
+    }
+
+
+    rows.forEach(rowCount => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "weight-row";
+
+
+        for (
+            let i = 0;
+            i < rowCount;
+            i++
+        ) {
+
+            const block =
+                document.createElement("div");
+
+            block.className =
+                "weight-block";
+
+            row.appendChild(block);
+        }
+
+
+        stack.appendChild(row);
+    });
+
+
+    return stack;
+}
+
+
+/* =========================================================
+   AUSWAHL RENDERN
+========================================================= */
+
+function renderChoices() {
 
     const container =
-        document.getElementById(
-            "weights"
+        document.getElementById("weights");
+
+    container.innerHTML = "";
+
+
+    availableWeights.forEach(weight => {
+
+        const option =
+            document.createElement("div");
+
+        option.className =
+            "weight-option";
+
+
+        if (
+            selectedWeight === weight
+        ) {
+
+            option.classList.add("selected");
+        }
+
+
+        if (
+            SHOW_SOLUTION &&
+            currentSolution &&
+            weight === currentSolution.weight
+        ) {
+
+            option.classList.add(
+                "solution-weight"
+            );
+        }
+
+
+        const stack =
+            createWeightStack(weight);
+
+
+        stack.classList.add(
+            "choice-stack"
         );
 
 
-    container.innerHTML =
-        "";
+        option.appendChild(stack);
 
 
-    availableWeights.forEach(
+        const label =
+            document.createElement("div");
 
-        (weight,index) => {
+        label.className =
+            "weight-number";
 
-            const option =
-                document.createElement(
-                    "div"
+        label.textContent =
+            `${weight} Gewicht${
+                weight === 1 ? "" : "e"
+            }`;
+
+
+        option.appendChild(label);
+
+
+        option.addEventListener(
+            "click",
+            () => {
+
+                if (locked) {
+                    return;
+                }
+
+                selectedWeight = weight;
+
+                render();
+
+                showMessage(
+                    "Jetzt ein hervorgehobenes Feld anklicken.",
+                    "info"
                 );
-
-
-            option.className =
-                "weight-option";
-
-
-            if (
-                index ===
-                selectedWeightIndex
-            ) {
-
-                option.classList.add(
-                    "selected"
-                );
-
             }
+        );
 
 
-            /*
-                Probe: richtige Auswahl
-                grün markieren.
-            */
-
-            if (
-                SHOW_SOLUTION &&
-                currentSolution &&
-                weight ===
-                    currentSolution.weight
-            ) {
-
-                option.classList.add(
-                    "solution-weight"
-                );
-
-            }
-
-
-            option.innerHTML =
-                ballsText(
-                    weight
-                );
-
-
-            option.addEventListener(
-
-                "click",
-
-                () =>
-                    selectWeight(index)
-
-            );
-
-
-            container.appendChild(
-                option
-            );
-
-        }
-
-    );
+        container.appendChild(option);
+    });
 }
 
 
@@ -2725,27 +1938,22 @@ function renderWeights() {
    INFORMATIONEN
 ========================================================= */
 
-function updateInformation() {
+function updateInfo() {
 
     document.getElementById(
         "startField"
     ).textContent =
         startField;
 
-
     document.getElementById(
         "goalField"
     ).textContent =
         goalField;
 
-
     document.getElementById(
         "figureWeight"
-    ).innerHTML =
-        ballsText(
-            FIGURE_BALLS
-        );
-
+    ).textContent =
+        `${FIGURE_WEIGHT} Gewichte`;
 
     document.getElementById(
         "currentField"
@@ -2755,7 +1963,7 @@ function updateInformation() {
 
 
 /* =========================================================
-   LÖSUNG ANZEIGEN
+   LÖSUNG
 ========================================================= */
 
 function renderSolution() {
@@ -2771,27 +1979,27 @@ function renderSolution() {
         !currentSolution
     ) {
 
-        box.textContent =
-            "";
+        box.textContent = "";
 
         return;
     }
 
 
-    box.innerHTML =
-
-        `${ballsText(
-            currentSolution.weight
-        )}
-        → Feld ${currentSolution.field}
-        <br>
-        Das grüne Feld ist das richtige
-        Ablagefeld.`;
+    box.innerHTML = `
+        Richtig ist:
+        <strong>
+            ${currentSolution.weight} Gewichte
+        </strong>
+        auf
+        <strong>
+            Feld ${currentSolution.field}
+        </strong>.
+    `;
 }
 
 
 /* =========================================================
-   BERECHNUNG
+   BERECHNUNG ANZEIGEN
 ========================================================= */
 
 function showCalculation() {
@@ -2802,166 +2010,80 @@ function showCalculation() {
         );
 
 
+    if (
+        !currentField
+    ) {
+        return;
+    }
+
+
     const balance =
         calculateBalance();
 
 
     let html =
-
-        "<strong>MATHEMATISCHE BERECHNUNG</strong><br><br>";
-
-
-    html +=
-
-        `Waage:
-        ${FIGURE_BALLS} Kugeln<br>`;
+        "<strong>PROBE-BERECHNUNG</strong><br><br>";
 
 
     html +=
-
-        `Aktuelles Feld:
-        ${currentField}<br>`;
-
+        `Figur: ${FIGURE_WEIGHT} Gewichte<br>`;
 
     html +=
+        `Figur steht auf Feld: ${currentField}<br>`;
 
-        `Balance-Achse:
-        ${balance.axis === "x"
-            ? "X"
-            : "Y"}<br><br>`;
+    html +=
+        `Balance X: ${balance.x.toFixed(2)}<br>`;
+
+    html +=
+        `Balance Y: ${balance.y.toFixed(2)}<br><br>`;
 
 
     if (
-        placedWeights.length === 0
+        placedWeights.length
     ) {
 
         html +=
-            "Keine abgelegten Gewichte.<br>";
+            "<strong>Liegende Gewichte:</strong><br>";
+
+
+        placedWeights.forEach(item => {
+
+            html +=
+                `${item.frozen ? "✓" : "○"}
+                 ${item.weight}
+                 → Feld ${item.field}<br>`;
+        });
 
     } else {
 
         html +=
-            "Abgelegte Gewichte:<br>";
-
-
-        placedWeights.forEach(
-
-            item => {
-
-                html +=
-
-                    `${item.frozen ? "🔒" : "⚪"}
-                    ${item.weight} Kugeln
-                    → Feld ${item.field}<br>`;
-
-            }
-
-        );
-
+            "Noch keine Gewichte auf dem Brett.<br>";
     }
 
 
-    html +=
-        "<br>";
-
-
-    html +=
-
-        `Gesamtbalance:
-        ${balance.value.toFixed(2)}<br>`;
-
-
-    if (
-        Math.abs(
-            balance.value
-        ) < 0.0001
-    ) {
-
-        html +=
-
-            `<span style="color:#4ade80">
-            ✓ Gleichgewicht
-            </span>`;
-
-    } else {
-
-        html +=
-
-            `<span style="color:#facc15">
-            Noch nicht im Gleichgewicht
-            </span>`;
-
-    }
-
-
-    box.innerHTML =
-        html;
+    box.innerHTML = html;
 }
 
 
 /* =========================================================
-   FALSCHE GEWICHTE ZURÜCKNEHMEN
+   MELDUNG
 ========================================================= */
 
-function resetNonFrozenWeights() {
+function showMessage(
+    text,
+    type
+) {
 
-    if (
-        gameLocked
-    ) {
-
-        return;
-    }
-
-
-    const removable =
-        placedWeights.filter(
-            item =>
-                !item.frozen
+    const box =
+        document.getElementById(
+            "message"
         );
 
+    box.className =
+        `message show ${type}`;
 
-    removable.forEach(
-
-        item => {
-
-            availableWeights.push(
-                item.weight
-            );
-
-        }
-
-    );
-
-
-    placedWeights =
-        placedWeights.filter(
-            item =>
-                item.frozen
-        );
-
-
-    selectedWeightIndex =
-        null;
-
-
-    createWeights();
-
-    renderWeights();
-
-    renderBoard();
-
-    renderSolution();
-
-    showCalculation();
-
-
-    showMessage(
-
-        "↩ Alle nicht eingefrorenen Gewichte wurden zurückgenommen.",
-
-        "info"
-
-    );
+    box.textContent =
+        text;
 }
 
 
@@ -2971,103 +2093,28 @@ function resetNonFrozenWeights() {
 
 function newGame() {
 
-    gameLocked =
-        false;
+    locked = false;
 
+    placedWeights = [];
 
-    placedWeights =
-        [];
+    selectedWeight = null;
 
-
-    selectedWeightIndex =
-        null;
-
-
-    currentPathIndex =
-        0;
-
+    currentIndex = 0;
 
     path =
         generatePath();
 
-
     currentField =
         path[0];
 
+    createWeightChoices();
 
-    createWeights();
-
-
-    renderWeights();
-
-    renderBoard();
-
-    updateInformation();
-
-    renderSolution();
-
-    showCalculation();
-
+    render();
 
     showMessage(
-
-        "🎲 Neue Runde gestartet.",
-
+        "🎲 Neue Runde! Wähle ein Gewicht.",
         "info"
-
     );
-}
-
-
-/* =========================================================
-   KUGELN DARSTELLEN
-========================================================= */
-
-function ballsHTML(count) {
-
-    let html = "";
-
-
-    for (
-        let i = 0;
-        i < count;
-        i++
-    ) {
-
-        html +=
-            `<span class="ball"></span>`;
-
-    }
-
-
-    return html;
-}
-
-
-function ballsText(count) {
-
-    return `
-
-        <span
-            style="
-                display:inline-flex;
-                align-items:center;
-                gap:3px;
-            "
-        >
-
-            ${ballsHTML(count)}
-
-            <span>
-                ${count}
-                ${count === 1
-                    ? "Kugel"
-                    : "Kugeln"}
-            </span>
-
-        </span>
-
-    `;
 }
 
 
@@ -3078,11 +2125,20 @@ function ballsText(count) {
 function randomInt(min,max) {
 
     return Math.floor(
-
         Math.random() *
         (max - min + 1)
-
     ) + min;
+}
+
+
+function randomChoice(array) {
+
+    return array[
+        randomInt(
+            0,
+            array.length - 1
+        )
+    ];
 }
 
 
@@ -3115,42 +2171,15 @@ function shuffle(array) {
         [
             result[i],
             result[j]
-
-        ] = [
-
+        ] =
+        [
             result[j],
             result[i]
-
         ];
-
     }
 
 
     return result;
-}
-
-
-/* =========================================================
-   MELDUNG
-========================================================= */
-
-function showMessage(
-    text,
-    type
-) {
-
-    const box =
-        document.getElementById(
-            "message"
-        );
-
-
-    box.className =
-        `message show ${type}`;
-
-
-    box.textContent =
-        text;
 }
 
 
