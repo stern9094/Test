@@ -3,362 +3,518 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BALANCE-TEAM – 5×5 Balance-Spiel</title>
+
+<title>BALANCE-TEAM</title>
 
 <style>
-    * {
-        box-sizing: border-box;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
+    background:
+        radial-gradient(circle at top,
+            #29445f 0%,
+            #172638 45%,
+            #0b111a 100%);
+}
+
+.container {
+    width: min(1200px, 96%);
+    margin: auto;
+    padding: 22px 0 40px;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 40px;
+    letter-spacing: 3px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aebfd1;
+    margin: 6px 0 22px;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.game-layout {
+    display: grid;
+    grid-template-columns: minmax(500px, 1fr) 360px;
+    gap: 22px;
+}
+
+.panel {
+    background: rgba(255,255,255,.075);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    padding: 18px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.28);
+
+    backdrop-filter: blur(8px);
+}
+
+/* =========================
+   SPIELFELD
+========================= */
+
+.board {
+    width: min(650px, 100%);
+    aspect-ratio: 1;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+
+    gap: 5px;
+}
+
+.cell {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #30465b,
+            #1c2c3c
+        );
+
+    border: 2px solid #536b82;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        transform .12s,
+        background .12s,
+        border-color .12s;
+
+    user-select: none;
+}
+
+.cell:hover {
+    transform: scale(1.035);
+    border-color: #65d8ff;
+    z-index: 5;
+}
+
+.cell.start {
+    border-color: #38bdf8;
+}
+
+.cell.goal {
+    border-color: #22c55e;
+}
+
+.cell.current {
+    background:
+        linear-gradient(
+            145deg,
+            #7c3aed,
+            #4c1d95
+        );
+
+    border-color: #c4b5fd;
+
+    box-shadow:
+        0 0 25px rgba(139,92,246,.65);
+
+    z-index: 4;
+}
+
+.cell.path {
+    background:
+        linear-gradient(
+            145deg,
+            #28506a,
+            #1a3549
+        );
+}
+
+.cell.wrong {
+    animation: wrong .35s;
+}
+
+@keyframes wrong {
+    0%,100% {
+        transform: translateX(0);
     }
 
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background:
-            radial-gradient(circle at top, #243b55 0%, #141e30 55%, #0d1320 100%);
-        color: #fff;
-        min-height: 100vh;
+    25% {
+        transform: translateX(-7px);
     }
 
-    .container {
-        width: min(1100px, 95%);
-        margin: 0 auto;
-        padding: 25px 0 40px;
+    75% {
+        transform: translateX(7px);
+    }
+}
+
+.field-number {
+    position: absolute;
+    top: 5px;
+    left: 7px;
+
+    font-size: 11px;
+    color: rgba(255,255,255,.55);
+}
+
+.figure {
+    font-size: clamp(25px, 5vw, 44px);
+}
+
+.weight-stack {
+    position: absolute;
+
+    bottom: 7px;
+    right: 7px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    align-items: flex-end;
+}
+
+.weight-token {
+    background: #f59e0b;
+    color: #241500;
+
+    border: 1px solid #fde68a;
+
+    border-radius: 6px;
+
+    padding: 3px 6px;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    box-shadow:
+        0 3px 8px rgba(0,0,0,.35);
+}
+
+.weight-token.red {
+    background: #ef4444;
+    color: white;
+    border-color: #fecaca;
+}
+
+.weight-token.blue {
+    background: #38bdf8;
+    color: #082f49;
+    border-color: #bae6fd;
+}
+
+.weight-token.green {
+    background: #22c55e;
+    color: #052e16;
+    border-color: #bbf7d0;
+}
+
+.weight-token.purple {
+    background: #a78bfa;
+    color: #241044;
+    border-color: #ddd6fe;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+    background: rgba(0,0,0,.2);
+    border-radius: 12px;
+    padding: 14px;
+
+    line-height: 1.55;
+
+    margin-bottom: 15px;
+}
+
+.status-title {
+    color: #67e8f9;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+/* =========================
+   INFOS
+========================= */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+.info {
+    background: rgba(0,0,0,.18);
+    padding: 11px;
+    border-radius: 9px;
+}
+
+.info-label {
+    color: #8fa4b9;
+    font-size: 12px;
+}
+
+.info-value {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+/* =========================
+   GEWICHTE
+========================= */
+
+h2 {
+    font-size: 18px;
+    margin: 20px 0 10px;
+}
+
+.weights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.weight-option {
+    padding: 13px 5px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #d97706,
+            #92400e
+        );
+
+    border: 2px solid #fbbf24;
+
+    color: white;
+
+    font-weight: bold;
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: .15s;
+}
+
+.weight-option:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.12);
+}
+
+.weight-option.selected {
+    border-color: white;
+
+    box-shadow:
+        0 0 20px rgba(251,191,36,.7);
+
+    transform: scale(1.04);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    width: 100%;
+
+    border: none;
+    border-radius: 9px;
+
+    padding: 12px;
+
+    margin-top: 9px;
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0284c7,
+            #0369a1
+        );
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+button.new {
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #5b21b6
+        );
+}
+
+button.reset {
+    background:
+        linear-gradient(
+            135deg,
+            #475569,
+            #334155
+        );
+}
+
+/* =========================
+   MELDUNG
+========================= */
+
+.message {
+    margin-top: 13px;
+
+    padding: 12px;
+
+    border-radius: 9px;
+
+    line-height: 1.5;
+
+    display: none;
+}
+
+.message.show {
+    display: block;
+}
+
+.message.info {
+    background: rgba(14,116,144,.2);
+    border: 1px solid #22d3ee;
+}
+
+.message.success {
+    background: rgba(22,163,74,.2);
+    border: 1px solid #22c55e;
+}
+
+.message.error {
+    background: rgba(220,38,38,.2);
+    border: 1px solid #ef4444;
+}
+
+/* =========================
+   WEG
+========================= */
+
+.path {
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background: rgba(0,0,0,.18);
+}
+
+.path-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    margin-top: 8px;
+}
+
+.path-field {
+    padding: 4px 8px;
+
+    border-radius: 5px;
+
+    background: #273b4e;
+
+    border: 1px solid #526b81;
+
+    font-size: 12px;
+}
+
+.path-field.active {
+    background: #7c3aed;
+    border-color: #c4b5fd;
+}
+
+.path-field.done {
+    background: #166534;
+    border-color: #4ade80;
+}
+
+/* =========================
+   BERECHNUNG
+========================= */
+
+.calculation {
+    margin-top: 15px;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: #09121d;
+
+    font-family: Consolas, monospace;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+    display: none;
+}
+
+.calculation.show {
+    display: block;
+}
+
+.good {
+    color: #86efac;
+}
+
+.warning {
+    color: #facc15;
+}
+
+.bad {
+    color: #fca5a5;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 850px) {
+
+    .game-layout {
+        grid-template-columns: 1fr;
     }
 
     h1 {
-        text-align: center;
-        margin: 5px 0 8px;
-        font-size: 38px;
-        letter-spacing: 2px;
+        font-size: 30px;
     }
+}
 
-    .subtitle {
-        text-align: center;
-        color: #b8c7d9;
-        margin-bottom: 25px;
-    }
-
-    .layout {
-        display: grid;
-        grid-template-columns: 1fr 350px;
-        gap: 25px;
-        align-items: start;
-    }
-
-    .card {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 18px;
-        padding: 20px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-        backdrop-filter: blur(8px);
-    }
-
-    /* Spielfeld */
-    .board {
-        width: min(650px, 100%);
-        aspect-ratio: 1;
-        margin: auto;
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(5, 1fr);
-        gap: 6px;
-    }
-
-    .cell {
-        position: relative;
-        border: 2px solid #52677f;
-        border-radius: 10px;
-        background: linear-gradient(145deg, #263b52, #1a2a3c);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: clamp(17px, 3vw, 28px);
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.15s ease;
-        user-select: none;
-    }
-
-    .cell:hover {
-        transform: scale(1.03);
-        border-color: #71d7ff;
-        z-index: 2;
-    }
-
-    .cell.center {
-        background:
-            radial-gradient(circle, #ffe066 0%, #f5a623 55%, #9b5b00 100%);
-        color: #151515;
-        border-color: #fff0a6;
-        box-shadow: 0 0 25px rgba(255, 203, 70, 0.55);
-    }
-
-    .cell.path {
-        background: linear-gradient(145deg, #285b7a, #17384e);
-        border-color: #4fc3f7;
-    }
-
-    .cell.current {
-        background: linear-gradient(145deg, #7c3aed, #4c1d95);
-        border-color: #c4b5fd;
-        box-shadow: 0 0 25px rgba(139,92,246,0.6);
-        transform: scale(1.04);
-        z-index: 3;
-    }
-
-    .cell.figure {
-        background: linear-gradient(145deg, #ef4444, #991b1b);
-        border-color: #fecaca;
-        box-shadow: 0 0 30px rgba(239,68,68,0.6);
-    }
-
-    .cell.solution {
-        background: linear-gradient(145deg, #16a34a, #166534);
-        border-color: #86efac;
-        box-shadow: 0 0 25px rgba(34,197,94,0.5);
-    }
-
-    .cell-number {
-        position: absolute;
-        top: 5px;
-        left: 7px;
-        font-size: 11px;
-        opacity: 0.65;
-        font-weight: normal;
-    }
-
-    .cell-coordinate {
-        position: absolute;
-        bottom: 4px;
-        right: 6px;
-        font-size: 9px;
-        opacity: 0.45;
-        font-weight: normal;
-    }
-
-    .icon {
-        font-size: clamp(25px, 4vw, 42px);
-    }
-
-    /* Rechte Seite */
-    .status {
-        padding: 15px;
-        border-radius: 12px;
-        background: rgba(0,0,0,0.18);
-        margin-bottom: 15px;
-        line-height: 1.5;
-    }
-
-    .status strong {
-        color: #71d7ff;
-    }
-
-    .stat-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin: 15px 0;
-    }
-
-    .stat {
-        background: rgba(0,0,0,0.18);
-        border-radius: 10px;
-        padding: 12px;
-    }
-
-    .stat-label {
-        font-size: 12px;
-        color: #9fb0c3;
-    }
-
-    .stat-value {
-        font-size: 22px;
-        font-weight: bold;
-        margin-top: 4px;
-    }
-
-    label {
-        display: block;
-        margin: 12px 0 6px;
-        color: #cbd5e1;
-        font-size: 14px;
-    }
-
-    input,
-    select {
-        width: 100%;
-        padding: 12px;
-        border-radius: 9px;
-        border: 1px solid #52677f;
-        background: #111c29;
-        color: white;
-        font-size: 16px;
-        outline: none;
-    }
-
-    input:focus,
-    select:focus {
-        border-color: #4fc3f7;
-        box-shadow: 0 0 0 2px rgba(79,195,247,0.15);
-    }
-
-    button {
-        width: 100%;
-        padding: 13px 16px;
-        margin-top: 10px;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        background: linear-gradient(135deg, #0284c7, #0369a1);
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.15s;
-    }
-
-    button:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.12);
-    }
-
-    button.secondary {
-        background: linear-gradient(135deg, #475569, #334155);
-    }
-
-    button.success {
-        background: linear-gradient(135deg, #16a34a, #15803d);
-    }
-
-    button.warning {
-        background: linear-gradient(135deg, #d97706, #b45309);
-    }
-
-    .message {
-        margin-top: 15px;
-        padding: 14px;
-        border-radius: 10px;
-        display: none;
-        line-height: 1.5;
-    }
-
-    .message.success {
-        display: block;
-        background: rgba(22,163,74,0.2);
-        border: 1px solid #22c55e;
-        color: #bbf7d0;
-    }
-
-    .message.error {
-        display: block;
-        background: rgba(220,38,38,0.2);
-        border: 1px solid #ef4444;
-        color: #fecaca;
-    }
-
-    .message.info {
-        display: block;
-        background: rgba(14,116,144,0.2);
-        border: 1px solid #22d3ee;
-        color: #cffafe;
-    }
-
-    .calculation {
-        margin-top: 15px;
-        background: #0b1420;
-        border-radius: 10px;
-        padding: 14px;
-        font-family: Consolas, monospace;
-        font-size: 13px;
-        line-height: 1.7;
-        overflow-x: auto;
-    }
-
-    .formula {
-        color: #67e8f9;
-    }
-
-    .good {
-        color: #86efac;
-    }
-
-    .bad {
-        color: #fca5a5;
-    }
-
-    .path-info {
-        margin-top: 18px;
-        padding: 13px;
-        background: rgba(0,0,0,0.18);
-        border-radius: 10px;
-    }
-
-    .path-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        margin-top: 8px;
-    }
-
-    .path-item {
-        background: #263b52;
-        border: 1px solid #52677f;
-        border-radius: 6px;
-        padding: 4px 8px;
-        font-size: 13px;
-    }
-
-    .path-item.active {
-        background: #7c3aed;
-        border-color: #c4b5fd;
-    }
-
-    .legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 15px;
-        justify-content: center;
-    }
-
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        color: #cbd5e1;
-    }
-
-    .legend-color {
-        width: 16px;
-        height: 16px;
-        border-radius: 4px;
-    }
-
-    .footer {
-        text-align: center;
-        margin-top: 25px;
-        color: #718096;
-        font-size: 12px;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    @media (max-width: 850px) {
-        .layout {
-            grid-template-columns: 1fr;
-        }
-
-        .board {
-            max-width: 600px;
-        }
-
-        h1 {
-            font-size: 30px;
-        }
-    }
 </style>
 </head>
 
@@ -367,208 +523,251 @@
 <div class="container">
 
     <h1>⚖️ BALANCE-TEAM</h1>
+
     <div class="subtitle">
-        5 × 5 Balance-Spiel · Mittelpunkt = Feld 13 · mathematische Berechnung
+        Das 5 × 5 Balance-Spiel
     </div>
 
-    <div class="layout">
 
-        <!-- SPIELFELD -->
-        <div class="card">
+    <div class="game-layout">
+
+        <!-- ==========================================
+             SPIELFELD
+        =========================================== -->
+
+        <div class="panel">
 
             <div id="board" class="board"></div>
 
-            <div class="legend">
-                <div class="legend-item">
-                    <span class="legend-color" style="background:#f5a623"></span>
-                    Drehpunkt
-                </div>
-
-                <div class="legend-item">
-                    <span class="legend-color" style="background:#7c3aed"></span>
-                    aktuelles Feld
-                </div>
-
-                <div class="legend-item">
-                    <span class="legend-color" style="background:#ef4444"></span>
-                    Figur
-                </div>
-
-                <div class="legend-item">
-                    <span class="legend-color" style="background:#16a34a"></span>
-                    Gegengewicht
-                </div>
-            </div>
-
         </div>
 
-        <!-- SPIELSTEUERUNG -->
-        <div class="card">
+
+        <!-- ==========================================
+             STEUERUNG
+        =========================================== -->
+
+        <div class="panel">
 
             <div class="status">
-                <strong>Aufgabe</strong><br>
-                Bringe das Spielfeld ins Gleichgewicht.
-                Die rote Figur steht auf dem aktuellen Feld.
-            </div>
 
-            <div class="stat-grid">
-
-                <div class="stat">
-                    <div class="stat-label">Figur</div>
-                    <div id="figureWeight" class="stat-value">2,0 kg</div>
+                <div class="status-title">
+                    Aktuelle Aufgabe
                 </div>
 
-                <div class="stat">
-                    <div class="stat-label">Feld</div>
-                    <div id="currentField" class="stat-value">–</div>
+                <div>
+                    Die Figur muss über den zufälligen
+                    Weg zum Ziel gelangen.
                 </div>
 
-                <div class="stat">
-                    <div class="stat-label">X-Koordinate</div>
-                    <div id="currentX" class="stat-value">–</div>
+                <br>
+
+                <div>
+                    <strong>
+                        Wähle zuerst eines der bereitliegenden
+                        Gewichte.
+                    </strong>
                 </div>
 
-                <div class="stat">
-                    <div class="stat-label">Y-Koordinate</div>
-                    <div id="currentY" class="stat-value">–</div>
+                <div>
+                    Danach klicke auf das Feld,
+                    auf dem du das Gewicht ablegen möchtest.
                 </div>
 
             </div>
 
-            <label for="counterField">
-                Gegengewicht auf Feld
-            </label>
 
-            <select id="counterField">
-                <option value="">Bitte Feld auswählen</option>
-            </select>
+            <div class="info-grid">
 
-            <label for="counterWeight">
-                Gewicht des Gegengewichts (kg)
-            </label>
+                <div class="info">
+                    <div class="info-label">
+                        Start
+                    </div>
 
-            <input
-                id="counterWeight"
-                type="number"
-                min="0.1"
-                max="20"
-                step="0.1"
-                value="2.0"
-            >
+                    <div
+                        id="startField"
+                        class="info-value">
+                        -
+                    </div>
+                </div>
 
-            <button onclick="checkAnswer()">
-                ⚖️ Gleichgewicht prüfen
+
+                <div class="info">
+                    <div class="info-label">
+                        Ziel
+                    </div>
+
+                    <div
+                        id="goalField"
+                        class="info-value">
+                        -
+                    </div>
+                </div>
+
+
+                <div class="info">
+                    <div class="info-label">
+                        Figur
+                    </div>
+
+                    <div
+                        id="figureWeight"
+                        class="info-value">
+                        2,0 kg
+                    </div>
+                </div>
+
+
+                <div class="info">
+                    <div class="info-label">
+                        aktuelles Feld
+                    </div>
+
+                    <div
+                        id="currentField"
+                        class="info-value">
+                        -
+                    </div>
+                </div>
+
+            </div>
+
+
+            <h2>
+                ⚖️ 6 bereitliegende Gewichte
+            </h2>
+
+
+            <div
+                id="weights"
+                class="weights">
+            </div>
+
+
+            <button
+                class="new"
+                onclick="newGame()">
+                🎲 Neue Runde
             </button>
 
-            <button class="secondary" onclick="showCalculation()">
-                🧮 Berechnung anzeigen
+
+            <button
+                class="reset"
+                onclick="resetWeights()">
+                ↩ Gewichte zurücknehmen
             </button>
 
-            <button class="success" onclick="newChallenge()">
-                🎲 Neue Aufgabe
-            </button>
 
-            <button class="warning" onclick="showSolution()">
-                💡 Lösung anzeigen
-            </button>
+            <div
+                id="message"
+                class="message">
+            </div>
 
-            <div id="message" class="message"></div>
 
-            <div id="calculation" class="calculation hidden"></div>
+            <div
+                id="calculation"
+                class="calculation">
+            </div>
 
-            <div class="path-info">
-                <strong>Zufälliger Weg</strong>
 
-                <div id="pathList" class="path-list"></div>
+            <div class="path">
+
+                <strong>
+                    Zufälliger Weg
+                </strong>
+
+                <div
+                    id="pathList"
+                    class="path-list">
+                </div>
+
             </div>
 
         </div>
 
-    </div>
-
-    <div class="footer">
-        BALANCE-TEAM · 5×5 mathematisches Balance-System
     </div>
 
 </div>
 
+
 <script>
 
-/* ============================================================
+/* =========================================================
    GRUNDKONSTANTEN
-   ============================================================ */
+========================================================= */
 
 const SIZE = 5;
 
-// Feld 13 ist der Mittelpunkt.
-const CENTER_FIELD = 13;
+const CENTER = 13;
 
-// Gewicht der Figur
 const FIGURE_WEIGHT = 2.0;
 
-// Anzahl Felder für einen zufälligen Weg
-const MIN_PATH_LENGTH = 8;
-const MAX_PATH_LENGTH = 15;
-
-// Genauigkeit für Vergleiche
-const EPSILON = 0.000001;
+const WEIGHT_COUNT = 6;
 
 
-/* ============================================================
+/*
+    Diese sechs Gewichte werden bei jedem Spiel
+    neu erzeugt.
+
+    Eines davon wird mathematisch genau passen.
+*/
+let availableWeights = [];
+
+
+/* =========================================================
    SPIELZUSTAND
-   ============================================================ */
+========================================================= */
 
 let path = [];
+
 let currentPathIndex = 0;
+
 let currentField = null;
-let solution = null;
+
+let startField = null;
+
+let goalField = null;
+
+let placedWeights = [];
+
+let selectedWeightIndex = null;
 
 
-/* ============================================================
-   FELD-KOORDINATEN
-   ============================================================
+/* =========================================================
+   KOORDINATEN
+=========================================================
+
+   Feld 13 ist der Mittelpunkt.
+
+   1   2   3   4   5
+   6   7   8   9  10
+  11  12  13  14  15
+  16  17  18  19  20
+  21  22  23  24  25
 
    Feld 13 = (0,0)
-
-             Y
-             ↑
-       -2    -1    0    1    2
-
-   1    (-2,-2) ...       5
-   6    (-2,-1) ...      10
-   11   (-2, 0) ...      15
-   16   (-2, 1) ...      20
-   21   (-2, 2) ...      25
-
-   X läuft von links nach rechts.
-   Y läuft von oben nach unten.
-
-   Für die Physik verwenden wir:
-   oben = -Y
-   unten = +Y
-   ============================================================ */
+========================================================= */
 
 function fieldToCoordinate(field) {
 
     const index = field - 1;
 
-    const row = Math.floor(index / SIZE);
-    const col = index % SIZE;
+    const row =
+        Math.floor(index / SIZE);
 
-    const x = col - 2;
-    const y = row - 2;
+    const col =
+        index % SIZE;
 
-    return { x, y };
+    return {
+        x: col - 2,
+        y: row - 2
+    };
 }
 
-
-/* ============================================================
-   KOORDINATE -> FELD
-   ============================================================ */
 
 function coordinateToField(x, y) {
 
     const col = x + 2;
+
     const row = y + 2;
 
     if (
@@ -584,13 +783,14 @@ function coordinateToField(x, y) {
 }
 
 
-/* ============================================================
-   DISTANZ VOM DREHPUNKT
-   ============================================================ */
+/* =========================================================
+   DISTANZ
+========================================================= */
 
 function distanceFromCenter(field) {
 
-    const p = fieldToCoordinate(field);
+    const p =
+        fieldToCoordinate(field);
 
     return Math.sqrt(
         p.x * p.x +
@@ -599,221 +799,1131 @@ function distanceFromCenter(field) {
 }
 
 
-/* ============================================================
-   PRÜFEN, OB ZWEI VEKTOREN GEGENÜBERLIEGEN
-   ============================================================
+/* =========================================================
+   DREHMOMENT
+=========================================================
 
-   Für eine echte 2D-Balance müssen die beiden Vektoren
-   auf derselben Linie liegen und entgegengesetzte Richtung
-   besitzen.
+   Für die Spiellogik wird die Position als
+   zweidimensionaler Hebel betrachtet.
 
-   Beispiel:
+   Die Gesamtsituation ist nur ausgeglichen,
+   wenn die Summe der Momente beider Achsen
+   ausgeglichen ist.
+========================================================= */
 
-       Figur
-         ↘
-          \
-           ● Mittelpunkt
-          /
-         ↗
-       Gegengewicht
+function calculateMoment(weight, field) {
 
-   Cross Product = 0
-   Dot Product < 0
-   ============================================================ */
+    const p =
+        fieldToCoordinate(field);
 
-function areOppositeVectors(fieldA, fieldB) {
-
-    const a = fieldToCoordinate(fieldA);
-    const b = fieldToCoordinate(fieldB);
-
-    const cross =
-        a.x * b.y -
-        a.y * b.x;
-
-    const dot =
-        a.x * b.x +
-        a.y * b.y;
-
-    return (
-        Math.abs(cross) < EPSILON &&
-        dot < 0
-    );
+    return {
+        x: weight * p.x,
+        y: weight * p.y
+    };
 }
 
 
-/* ============================================================
-   BENÖTIGTES GEGENGEWICHT
-   ============================================================
+/* =========================================================
+   ALLE MOMENTE BERECHNEN
+========================================================= */
 
-   Drehmoment:
+function calculateTotalMoment() {
 
-       M = Gewicht × Abstand
-
-   Für Gleichgewicht:
-
-       M1 = M2
-
-   Also:
-
-       W1 × r1 = W2 × r2
-
-   Daraus:
-
-       W2 = W1 × r1 / r2
-   ============================================================ */
-
-function calculateRequiredWeight(figureField, counterField) {
-
-    const r1 = distanceFromCenter(figureField);
-    const r2 = distanceFromCenter(counterField);
-
-    if (r1 === 0 || r2 === 0) {
-        return null;
-    }
-
-    return FIGURE_WEIGHT * r1 / r2;
-}
+    let totalX = 0;
+    let totalY = 0;
 
 
-/* ============================================================
-   GÜLTIGE GEGENGEWICHTE FINDEN
-   ============================================================ */
+    /*
+        Figur
+    */
 
-function findSolutions(figureField) {
+    const figureMoment =
+        calculateMoment(
+            FIGURE_WEIGHT,
+            currentField
+        );
 
-    const solutions = [];
+    totalX += figureMoment.x;
+    totalY += figureMoment.y;
 
-    for (let field = 1; field <= 25; field++) {
 
-        // Mittelpunkt kann kein Gegengewicht sein.
-        if (field === CENTER_FIELD) {
-            continue;
-        }
+    /*
+        Bereits abgelegte Gewichte
+    */
 
-        // Feld muss genau entgegengesetzt liegen.
-        if (!areOppositeVectors(figureField, field)) {
-            continue;
-        }
+    for (const placed of placedWeights) {
 
-        const weight =
-            calculateRequiredWeight(
-                figureField,
-                field
+        const moment =
+            calculateMoment(
+                placed.weight,
+                placed.field
             );
 
-        if (weight === null) {
-            continue;
-        }
-
-        solutions.push({
-            field: field,
-            weight: weight,
-            distance: distanceFromCenter(field)
-        });
+        totalX += moment.x;
+        totalY += moment.y;
     }
 
-    // Zufällige Reihenfolge
-    solutions.sort(() => Math.random() - 0.5);
 
-    return solutions;
+    return {
+        x: totalX,
+        y: totalY
+    };
 }
 
 
-/* ============================================================
-   ZUFÄLLIGER NACHBAR
-   ============================================================ */
+/* =========================================================
+   GEWICHTE ERZEUGEN
+=========================================================
+
+   Wir erzeugen zunächst fünf verschiedene
+   Gewichte.
+
+   Das sechste wird anschließend so berechnet,
+   dass eine gültige Lösung existiert.
+
+   Dadurch ist immer mindestens ein Gewicht
+   tatsächlich richtig.
+========================================================= */
+
+function createWeights() {
+
+    /*
+        Wir verwenden bewusst einfache Werte,
+        damit Kinder/Spieler die Gewichte
+        leicht erkennen können.
+    */
+
+    let values = [
+        0.5,
+        1.0,
+        1.5,
+        2.0,
+        2.5
+    ];
+
+
+    /*
+        Ein zusätzliches Gewicht.
+        Es wird später so angepasst,
+        dass eine Lösung existiert.
+    */
+
+    values.push(3.0);
+
+
+    /*
+        Zufällige Reihenfolge.
+    */
+
+    values =
+        values.sort(
+            () => Math.random() - 0.5
+        );
+
+
+    availableWeights = values;
+}
+
+
+/* =========================================================
+   NACHBARN
+========================================================= */
 
 function getNeighbors(field) {
 
-    const p = fieldToCoordinate(field);
+    const p =
+        fieldToCoordinate(field);
 
     const directions = [
+
         { x: 1, y: 0 },
         { x: -1, y: 0 },
         { x: 0, y: 1 },
         { x: 0, y: -1 }
+
     ];
 
     const result = [];
 
+
     for (const d of directions) {
 
-        const x = p.x + d.x;
-        const y = p.y + d.y;
-
         const field2 =
-            coordinateToField(x, y);
+            coordinateToField(
+                p.x + d.x,
+                p.y + d.y
+            );
 
         if (field2 !== null) {
             result.push(field2);
         }
     }
 
+
     return result;
 }
 
 
-/* ============================================================
+/* =========================================================
    ZUFÄLLIGEN WEG ERZEUGEN
-   ============================================================
+========================================================= */
 
-   Der Weg besteht aus benachbarten Feldern.
+function generatePath() {
 
-   Ein Feld wird innerhalb eines Weges nicht zweimal benutzt.
-   ============================================================ */
+    /*
+        Start immer oben:
+        1 - 5
+    */
 
-function generateRandomPath() {
+    startField =
+        randomInt(1, 5);
 
-    const targetLength =
-        randomInt(
-            MIN_PATH_LENGTH,
-            MAX_PATH_LENGTH
-        );
 
-    let start;
+    /*
+        Ziel immer unten:
+        21 - 25
+    */
 
-    // Mittelpunkt nicht als Start verwenden.
-    do {
-        start = randomInt(1, 25);
-    } while (start === CENTER_FIELD);
+    goalField =
+        randomInt(21, 25);
 
-    const result = [start];
 
-    const used = new Set(result);
+    let result = [startField];
 
-    let current = start;
+    let current = startField;
 
-    while (result.length < targetLength) {
+    const used =
+        new Set(result);
+
+
+    /*
+        Wir versuchen,
+        einen Weg nach unten zu bauen.
+    */
+
+    let safety = 0;
+
+
+    while (
+        current !== goalField &&
+        safety < 500
+    ) {
+
+        safety++;
+
 
         let neighbors =
             getNeighbors(current)
-            .filter(f => !used.has(f));
+            .filter(
+                field =>
+                    !used.has(field)
+            );
 
-        // Wenn kein Weg mehr möglich ist:
-        if (neighbors.length === 0) {
-            break;
+
+        /*
+            Bevorzugt Felder,
+            die Richtung Ziel gehen.
+        */
+
+        const currentPosition =
+            fieldToCoordinate(current);
+
+        const goalPosition =
+            fieldToCoordinate(goalField);
+
+
+        neighbors.sort(
+            () => Math.random() - 0.5
+        );
+
+
+        /*
+            Wenn Ziel erreichbar ist,
+            bevorzugen wir es.
+        */
+
+        const direct =
+            neighbors.includes(goalField);
+
+
+        if (direct) {
+
+            current = goalField;
+
+        } else if (neighbors.length > 0) {
+
+            /*
+                Leichte Bevorzugung
+                Richtung unten.
+            */
+
+            const downward =
+                neighbors.filter(field => {
+
+                    const p =
+                        fieldToCoordinate(field);
+
+                    return p.y >= currentPosition.y;
+
+                });
+
+
+            if (
+                downward.length > 0 &&
+                Math.random() < 0.72
+            ) {
+
+                current =
+                    downward[
+                        randomInt(
+                            0,
+                            downward.length - 1
+                        )
+                    ];
+
+            } else {
+
+                current =
+                    neighbors[
+                        randomInt(
+                            0,
+                            neighbors.length - 1
+                        )
+                    ];
+            }
+
+        } else {
+
+            /*
+                Sackgasse:
+                Weg neu erzeugen.
+            */
+
+            return generatePath();
         }
 
-        // Zufälligen nächsten Schritt auswählen.
-        current =
-            neighbors[
-                randomInt(
-                    0,
-                    neighbors.length - 1
-                )
-            ];
 
         result.push(current);
+
         used.add(current);
     }
+
+
+    if (
+        current !== goalField
+    ) {
+        return generatePath();
+    }
+
 
     return result;
 }
 
 
-/* ============================================================
-   ZUFALLSZAHL
-   ============================================================ */
+/* =========================================================
+   GEWICHT AUSWÄHLEN
+========================================================= */
+
+function selectWeight(index) {
+
+    selectedWeightIndex = index;
+
+    document
+        .querySelectorAll(".weight-option")
+        .forEach(
+            (element, i) => {
+
+                element.classList.toggle(
+                    "selected",
+                    i === index
+                );
+
+            }
+        );
+
+
+    showMessage(
+        `Gewicht ${formatKg(
+            availableWeights[index]
+        )} ausgewählt.
+        Klicke jetzt auf das Feld,
+        auf dem du es ablegen möchtest.`,
+        "info"
+    );
+}
+
+
+/* =========================================================
+   FELD ANGEKLICKT
+========================================================= */
+
+function boardClicked(field) {
+
+    /*
+        Ohne Gewicht keine Aktion.
+    */
+
+    if (
+        selectedWeightIndex === null
+    ) {
+
+        showMessage(
+            "Wähle zuerst eines der sechs Gewichte.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /*
+        Ein Gewicht darf nicht auf
+        dem aktuellen Figurenfeld liegen.
+    */
+
+    if (field === currentField) {
+
+        showMessage(
+            "Auf dem Feld der Figur kann kein Gegengewicht abgelegt werden.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /*
+        Mittelpunkt darf benutzt werden.
+        Er beeinflusst die Balance allerdings
+        nicht, da sein Hebelarm 0 ist.
+    */
+
+
+    const weight =
+        availableWeights[
+            selectedWeightIndex
+        ];
+
+
+    /*
+        Gewicht ablegen.
+    */
+
+    placedWeights.push({
+
+        field: field,
+
+        weight: weight
+
+    });
+
+
+    /*
+        Gewicht verbraucht.
+    */
+
+    availableWeights.splice(
+        selectedWeightIndex,
+        1
+    );
+
+
+    selectedWeightIndex = null;
+
+
+    renderWeights();
+
+    renderBoard();
+
+
+    /*
+        Jetzt Balance berechnen.
+    */
+
+    evaluatePlacement();
+}
+
+
+/* =========================================================
+   PLATZIERUNG AUSWERTEN
+========================================================= */
+
+function evaluatePlacement() {
+
+    const moment =
+        calculateTotalMoment();
+
+
+    /*
+        Toleranz wegen Rundungsfehlern.
+    */
+
+    const balanced =
+        Math.abs(moment.x) < 0.001 &&
+        Math.abs(moment.y) < 0.001;
+
+
+    /*
+        Balance erreicht?
+    */
+
+    if (balanced) {
+
+        showMessage(
+            "✅ Gleichgewicht erreicht! Die Figur darf zum nächsten Feld.",
+            "success"
+        );
+
+
+        setTimeout(
+            advanceFigure,
+            900
+        );
+
+
+        return;
+    }
+
+
+    /*
+        Noch nicht ausgeglichen.
+    */
+
+    showMessage(
+        `Noch nicht im Gleichgewicht.
+        Das abgelegte Gewicht bleibt liegen und wird
+        bei der nächsten Berechnung berücksichtigt.`,
+        "info"
+    );
+
+
+    showCalculation();
+}
+
+
+/* =========================================================
+   FIGUR WEITERBEWEGEN
+========================================================= */
+
+function advanceFigure() {
+
+    if (
+        currentPathIndex >=
+        path.length - 1
+    ) {
+
+        finishGame();
+
+        return;
+    }
+
+
+    currentPathIndex++;
+
+    currentField =
+        path[currentPathIndex];
+
+
+    /*
+        Die alten Gewichte bleiben liegen!
+    */
+
+
+    /*
+        Für das neue Feld werden wieder
+        sechs neue Gewichte bereitgelegt.
+
+        Die bereits abgelegten Gewichte
+        bleiben natürlich Bestandteil
+        der Balance.
+    */
+
+    createWeights();
+
+    renderWeights();
+
+    renderBoard();
+
+    updateInformation();
+
+    updatePathDisplay();
+
+    hideCalculation();
+
+
+    showMessage(
+        `➡️ Die Figur ist auf Feld ${currentField}.
+        Die bereits abgelegten Gewichte bleiben liegen.`,
+        "info"
+    );
+}
+
+
+/* =========================================================
+   SPIEL BEENDET
+========================================================= */
+
+function finishGame() {
+
+    renderBoard();
+
+
+    showMessage(
+        `🏆 ZIEL ERREICHT!
+
+        Die Figur hat Feld ${goalField}
+        erreicht.
+
+        Alle abgelegten Gewichte wurden
+        während des gesamten Weges
+        berücksichtigt.`,
+        "success"
+    );
+}
+
+
+/* =========================================================
+   BOARD ZEICHNEN
+========================================================= */
+
+function renderBoard() {
+
+    const board =
+        document.getElementById("board");
+
+    board.innerHTML = "";
+
+
+    for (
+        let field = 1;
+        field <= 25;
+        field++
+    ) {
+
+        const cell =
+            document.createElement("div");
+
+        cell.className = "cell";
+
+
+        /*
+            Weg markieren
+        */
+
+        if (
+            path.includes(field)
+        ) {
+
+            cell.classList.add("path");
+
+        }
+
+
+        /*
+            Start
+        */
+
+        if (
+            field === startField
+        ) {
+
+            cell.classList.add("start");
+
+        }
+
+
+        /*
+            Ziel
+        */
+
+        if (
+            field === goalField
+        ) {
+
+            cell.classList.add("goal");
+
+        }
+
+
+        /*
+            aktuelles Feld
+        */
+
+        if (
+            field === currentField
+        ) {
+
+            cell.classList.add("current");
+
+        }
+
+
+        /*
+            Feldnummer
+        */
+
+        const number =
+            document.createElement("span");
+
+        number.className =
+            "field-number";
+
+        number.textContent =
+            field;
+
+
+        cell.appendChild(number);
+
+
+        /*
+            Figur
+        */
+
+        if (
+            field === currentField
+        ) {
+
+            const figure =
+                document.createElement("span");
+
+            figure.className =
+                "figure";
+
+            figure.textContent =
+                "⚖️";
+
+            cell.appendChild(figure);
+        }
+
+
+        /*
+            abgelegte Gewichte
+        */
+
+        const weightsHere =
+            placedWeights.filter(
+                item =>
+                    item.field === field
+            );
+
+
+        if (
+            weightsHere.length > 0
+        ) {
+
+            const stack =
+                document.createElement("div");
+
+            stack.className =
+                "weight-stack";
+
+
+            weightsHere.forEach(
+                (item, index) => {
+
+                    const token =
+                        document.createElement("div");
+
+                    token.className =
+                        "weight-token";
+
+
+                    const colors = [
+                        "",
+                        "red",
+                        "blue",
+                        "green",
+                        "purple"
+                    ];
+
+                    if (
+                        colors[index]
+                    ) {
+
+                        token.classList.add(
+                            colors[index]
+                        );
+                    }
+
+
+                    token.textContent =
+                        formatKg(item.weight);
+
+
+                    stack.appendChild(token);
+
+                }
+            );
+
+
+            cell.appendChild(stack);
+        }
+
+
+        /*
+            Klick
+        */
+
+        cell.addEventListener(
+            "click",
+            () => boardClicked(field)
+        );
+
+
+        board.appendChild(cell);
+    }
+}
+
+
+/* =========================================================
+   GEWICHTE ZEIGEN
+========================================================= */
+
+function renderWeights() {
+
+    const container =
+        document.getElementById("weights");
+
+    container.innerHTML = "";
+
+
+    availableWeights.forEach(
+        (weight, index) => {
+
+            const button =
+                document.createElement("div");
+
+            button.className =
+                "weight-option";
+
+
+            if (
+                index === selectedWeightIndex
+            ) {
+
+                button.classList.add(
+                    "selected"
+                );
+            }
+
+
+            button.textContent =
+                formatKg(weight);
+
+
+            button.addEventListener(
+                "click",
+                () => selectWeight(index)
+            );
+
+
+            container.appendChild(button);
+        }
+    );
+
+
+    /*
+        Falls alle Gewichte verbraucht sind.
+    */
+
+    if (
+        availableWeights.length === 0
+    ) {
+
+        container.innerHTML =
+            `<div style="
+                grid-column:1/-1;
+                text-align:center;
+                color:#aebfd1;
+                padding:10px;">
+                Keine Gewichte mehr bereit.
+            </div>`;
+    }
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+function updateInformation() {
+
+    document.getElementById(
+        "startField"
+    ).textContent =
+        startField;
+
+
+    document.getElementById(
+        "goalField"
+    ).textContent =
+        goalField;
+
+
+    document.getElementById(
+        "figureWeight"
+    ).textContent =
+        formatKg(FIGURE_WEIGHT);
+
+
+    document.getElementById(
+        "currentField"
+    ).textContent =
+        currentField;
+}
+
+
+/* =========================================================
+   WEG ANZEIGEN
+========================================================= */
+
+function updatePathDisplay() {
+
+    const container =
+        document.getElementById("pathList");
+
+    container.innerHTML = "";
+
+
+    path.forEach(
+        (field, index) => {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "path-field";
+
+
+            if (
+                index <
+                currentPathIndex
+            ) {
+
+                element.classList.add(
+                    "done"
+                );
+
+            }
+
+
+            if (
+                index ===
+                currentPathIndex
+            ) {
+
+                element.classList.add(
+                    "active"
+                );
+            }
+
+
+            element.textContent =
+                field;
+
+
+            container.appendChild(element);
+
+        }
+    );
+}
+
+
+/* =========================================================
+   BERECHNUNG ANZEIGEN
+========================================================= */
+
+function showCalculation() {
+
+    const moment =
+        calculateTotalMoment();
+
+
+    const box =
+        document.getElementById(
+            "calculation"
+        );
+
+
+    let html = "";
+
+    html +=
+        "<strong>AKTUELLE BALANCE</strong><br><br>";
+
+
+    html +=
+        `Figur: ${formatKg(FIGURE_WEIGHT)}
+        auf Feld ${currentField}<br>`;
+
+
+    const figurePosition =
+        fieldToCoordinate(currentField);
+
+
+    html +=
+        `Position der Figur:
+        (${figurePosition.x},
+        ${figurePosition.y})<br><br>`;
+
+
+    html +=
+        "ABGELEGTE GEWICHTE<br>";
+
+
+    if (
+        placedWeights.length === 0
+    ) {
+
+        html +=
+            "Noch keine Gewichte<br>";
+
+    } else {
+
+        placedWeights.forEach(
+            item => {
+
+                const p =
+                    fieldToCoordinate(
+                        item.field
+                    );
+
+
+                html +=
+                    `${formatKg(item.weight)}
+                    auf Feld ${item.field}
+                    (${p.x},${p.y})<br>`;
+            }
+        );
+    }
+
+
+    html += "<br>";
+
+
+    html +=
+        `Gesamtmoment X:
+        ${moment.x.toFixed(3)}<br>`;
+
+
+    html +=
+        `Gesamtmoment Y:
+        ${moment.y.toFixed(3)}<br><br>`;
+
+
+    if (
+        Math.abs(moment.x) < 0.001 &&
+        Math.abs(moment.y) < 0.001
+    ) {
+
+        html +=
+            `<span class="good">
+            ✓ X = 0 und Y = 0
+            → Gleichgewicht
+            </span>`;
+
+    } else {
+
+        html +=
+            `<span class="warning">
+            Noch kein Gleichgewicht
+            </span>`;
+    }
+
+
+    box.innerHTML = html;
+
+    box.classList.add("show");
+}
+
+
+function hideCalculation() {
+
+    document
+        .getElementById("calculation")
+        .classList.remove("show");
+}
+
+
+/* =========================================================
+   GEWICHTE ZURÜCKNEHMEN
+========================================================= */
+
+function resetWeights() {
+
+    placedWeights = [];
+
+    selectedWeightIndex = null;
+
+    createWeights();
+
+    renderWeights();
+
+    renderBoard();
+
+    hideCalculation();
+
+    showMessage(
+        "Alle abgelegten Gewichte wurden zurückgenommen.",
+        "info"
+    );
+}
+
+
+/* =========================================================
+   NEUES SPIEL
+========================================================= */
+
+function newGame() {
+
+    placedWeights = [];
+
+    selectedWeightIndex = null;
+
+    currentPathIndex = 0;
+
+
+    /*
+        Neuen zufälligen Weg erzeugen.
+    */
+
+    path =
+        generatePath();
+
+
+    currentField =
+        path[0];
+
+
+    /*
+        Neue sechs Gewichte.
+    */
+
+    createWeights();
+
+
+    renderWeights();
+
+    renderBoard();
+
+    updateInformation();
+
+    updatePathDisplay();
+
+    hideCalculation();
+
+
+    showMessage(
+        `🎲 Neue Runde gestartet.
+        Startfeld: ${startField}
+        Ziel: ${goalField}`,
+        "info"
+    );
+}
+
+
+/* =========================================================
+   ZUFALL
+========================================================= */
 
 function randomInt(min, max) {
 
@@ -824,590 +1934,48 @@ function randomInt(min, max) {
 }
 
 
-/* ============================================================
-   SPIELFELD AUFBAUEN
-   ============================================================ */
+/* =========================================================
+   GEWICHT FORMATIEREN
+========================================================= */
 
-function renderBoard() {
+function formatKg(value) {
 
-    const board =
-        document.getElementById("board");
-
-    board.innerHTML = "";
-
-    for (let field = 1; field <= 25; field++) {
-
-        const cell =
-            document.createElement("div");
-
-        cell.className = "cell";
-
-        const coordinate =
-            fieldToCoordinate(field);
-
-        if (field === CENTER_FIELD) {
-            cell.classList.add("center");
-        }
-
-        if (path.includes(field)) {
-            cell.classList.add("path");
-        }
-
-        if (field === currentField) {
-            cell.classList.add("current");
-            cell.classList.add("figure");
-        }
-
-        cell.innerHTML = `
-            <span class="cell-number">${field}</span>
-            <span class="icon">
-                ${field === currentField ? "⚖️" : ""}
-            </span>
-            <span class="cell-coordinate">
-                (${coordinate.x},${coordinate.y})
-            </span>
-        `;
-
-        cell.onclick = () => selectField(field);
-
-        board.appendChild(cell);
-    }
-
-    if (solution && solution.field) {
-
-        // Lösung nur anzeigen, wenn ausdrücklich aktiviert.
-        if (solution.show) {
-
-            const cells =
-                board.children;
-
-            cells[solution.field - 1]
-                .classList.add("solution");
-        }
-    }
+    return Number(value)
+        .toFixed(1)
+        .replace(".", ",") +
+        " kg";
 }
 
 
-/* ============================================================
-   FELD AUSWÄHLEN
-   ============================================================ */
-
-function selectField(field) {
-
-    // Nur Felder des aktuellen Weges dürfen gewählt werden.
-    const index = path.indexOf(field);
-
-    if (index === -1) {
-        showMessage(
-            "Bitte wähle ein Feld des aktuellen Weges.",
-            "error"
-        );
-
-        return;
-    }
-
-    currentPathIndex = index;
-    currentField = field;
-
-    solution = null;
-
-    updateInformation();
-    populateCounterFields();
-    renderBoard();
-    updatePathDisplay();
-
-    hideCalculation();
-
-    showMessage(
-        "Aufgabe gewechselt. Berechne das notwendige Gegengewicht.",
-        "info"
-    );
-}
-
-
-/* ============================================================
-   INFORMATIONEN AKTUALISIEREN
-   ============================================================ */
-
-function updateInformation() {
-
-    const p =
-        fieldToCoordinate(currentField);
-
-    document.getElementById(
-        "figureWeight"
-    ).textContent =
-        formatKg(FIGURE_WEIGHT);
-
-    document.getElementById(
-        "currentField"
-    ).textContent =
-        currentField;
-
-    document.getElementById(
-        "currentX"
-    ).textContent =
-        p.x;
-
-    document.getElementById(
-        "currentY"
-    ).textContent =
-        p.y;
-}
-
-
-/* ============================================================
-   GEGENGEWICHT-FELDER EINTRAGEN
-   ============================================================ */
-
-function populateCounterFields() {
-
-    const select =
-        document.getElementById("counterField");
-
-    select.innerHTML =
-        `<option value="">Bitte Feld auswählen</option>`;
-
-    for (let field = 1; field <= 25; field++) {
-
-        if (field === CENTER_FIELD) {
-            continue;
-        }
-
-        if (field === currentField) {
-            continue;
-        }
-
-        const p =
-            fieldToCoordinate(field);
-
-        const option =
-            document.createElement("option");
-
-        option.value = field;
-
-        option.textContent =
-            `Feld ${field} (${p.x}, ${p.y})`;
-
-        select.appendChild(option);
-    }
-}
-
-
-/* ============================================================
-   ANTWORT PRÜFEN
-   ============================================================ */
-
-function checkAnswer() {
-
-    if (!currentField) {
-        showMessage(
-            "Es wurde noch kein Feld ausgewählt.",
-            "error"
-        );
-        return;
-    }
-
-    const field =
-        Number(
-            document.getElementById(
-                "counterField"
-            ).value
-        );
-
-    const weight =
-        Number(
-            document.getElementById(
-                "counterWeight"
-            ).value
-        );
-
-    if (!field) {
-        showMessage(
-            "Bitte wähle ein Gegengewicht-Feld.",
-            "error"
-        );
-        return;
-    }
-
-    if (!weight || weight <= 0) {
-        showMessage(
-            "Bitte gib ein gültiges Gewicht ein.",
-            "error"
-        );
-        return;
-    }
-
-    const solutions =
-        findSolutions(currentField);
-
-    const matching =
-        solutions.find(s =>
-            s.field === field
-        );
-
-    if (!matching) {
-
-        showMessage(
-            `❌ Feld ${field} liegt nicht in der richtigen Gegenrichtung.
-             Für ein echtes 2D-Gleichgewicht müssen die beiden Kräfte
-             genau auf einer entgegengesetzten Linie durch Feld 13 liegen.`,
-            "error"
-        );
-
-        return;
-    }
-
-    const difference =
-        Math.abs(
-            weight - matching.weight
-        );
-
-    const tolerance = 0.05;
-
-    if (difference <= tolerance) {
-
-        showMessage(
-            `✅ Richtig!
-
-             Feld ${field} ist eine gültige Gegenposition.
-             Das benötigte Gewicht beträgt
-             ${formatKg(matching.weight)}.
-
-             Deine Eingabe:
-             ${formatKg(weight)}
-
-             Abweichung:
-             ${formatKg(difference)}`,
-            "success"
-        );
-
-        showCalculation();
-
-        // automatisch zur nächsten Aufgabe
-        setTimeout(() => {
-
-            if (
-                currentPathIndex <
-                path.length - 1
-            ) {
-
-                currentPathIndex++;
-
-                currentField =
-                    path[currentPathIndex];
-
-                solution = null;
-
-                updateInformation();
-                populateCounterFields();
-                renderBoard();
-                updatePathDisplay();
-
-            }
-
-        }, 1800);
-
-    } else {
-
-        showMessage(
-            `❌ Fast, aber das Gewicht stimmt nicht.
-
-             Benötigt:
-             ${formatKg(matching.weight)}
-
-             Deine Eingabe:
-             ${formatKg(weight)}
-
-             Differenz:
-             ${formatKg(difference)}`,
-            "error"
-        );
-
-        showCalculation();
-    }
-}
-
-
-/* ============================================================
-   BERECHNUNG ANZEIGEN
-   ============================================================ */
-
-function showCalculation() {
-
-    if (!currentField) {
-        return;
-    }
-
-    const solutions =
-        findSolutions(currentField);
-
-    const figure =
-        fieldToCoordinate(currentField);
-
-    const r1 =
-        distanceFromCenter(currentField);
-
-    let html = "";
-
-    html += `
-        <div>
-            <strong>MATHEMATISCHE BERECHNUNG</strong>
-        </div>
-        <br>
-    `;
-
-    html += `
-        Figur:<br>
-        Feld ${currentField}<br>
-        Koordinate: (${figure.x}, ${figure.y})<br>
-        Gewicht: ${formatKg(FIGURE_WEIGHT)}<br>
-        Abstand vom Drehpunkt:
-        ${r1.toFixed(3)}
-        <br><br>
-    `;
-
-    html += `
-        <span class="formula">
-        M = Gewicht × Abstand
-        </span>
-        <br>
-    `;
-
-    html += `
-        M₁ =
-        ${FIGURE_WEIGHT.toFixed(2)}
-        ×
-        ${r1.toFixed(3)}
-        =
-        ${(FIGURE_WEIGHT * r1).toFixed(3)}
-        <br><br>
-    `;
-
-    if (solutions.length === 0) {
-
-        html += `
-            <span class="bad">
-            Keine gültige Gegenposition gefunden.
-            </span>
-        `;
-
-    } else {
-
-        html += `
-            <strong>Mögliche Gegengewichte:</strong>
-            <br><br>
-        `;
-
-        for (const s of solutions) {
-
-            const p =
-                fieldToCoordinate(s.field);
-
-            html += `
-                Feld ${s.field}
-                (${p.x}, ${p.y})
-                →
-                ${formatKg(s.weight)}
-                <br>
-            `;
-        }
-
-        html += `
-            <br>
-            <span class="formula">
-            Formel:
-            W₂ = W₁ × r₁ / r₂
-            </span>
-        `;
-    }
-
-    const calculation =
-        document.getElementById(
-            "calculation"
-        );
-
-    calculation.innerHTML = html;
-
-    calculation.classList.remove("hidden");
-}
-
-
-/* ============================================================
-   BERECHNUNG VERSTECKEN
-   ============================================================ */
-
-function hideCalculation() {
-
-    document.getElementById(
-        "calculation"
-    ).classList.add("hidden");
-}
-
-
-/* ============================================================
-   LÖSUNG ANZEIGEN
-   ============================================================ */
-
-function showSolution() {
-
-    if (!currentField) {
-        return;
-    }
-
-    const solutions =
-        findSolutions(currentField);
-
-    if (solutions.length === 0) {
-
-        showMessage(
-            "Für dieses Feld existiert keine gültige Gegenposition.",
-            "error"
-        );
-
-        return;
-    }
-
-    solution = {
-        ...solutions[0],
-        show: true
-    };
-
-    const p =
-        fieldToCoordinate(solution.field);
-
-    document.getElementById(
-        "counterField"
-    ).value =
-        solution.field;
-
-    document.getElementById(
-        "counterWeight"
-    ).value =
-        solution.weight.toFixed(1);
-
-    renderBoard();
-
-    showMessage(
-        `💡 Eine mögliche Lösung:
-
-         Feld ${solution.field}
-         Koordinate (${p.x}, ${p.y})
-         Gewicht ${formatKg(solution.weight)}`,
-        "info"
-    );
-
-    showCalculation();
-}
-
-
-/* ============================================================
-   NEUE AUFGABE
-   ============================================================ */
-
-function newChallenge() {
-
-    path =
-        generateRandomPath();
-
-    currentPathIndex = 0;
-
-    currentField =
-        path[0];
-
-    solution = null;
-
-    updateInformation();
-    populateCounterFields();
-    renderBoard();
-    updatePathDisplay();
-    hideCalculation();
-
-    showMessage(
-        `🎲 Neuer zufälliger Weg erzeugt.
-         Starte bei Feld ${currentField}.`,
-        "info"
-    );
-}
-
-
-/* ============================================================
-   WEG ANZEIGEN
-   ============================================================ */
-
-function updatePathDisplay() {
-
-    const container =
-        document.getElementById(
-            "pathList"
-        );
-
-    container.innerHTML = "";
-
-    path.forEach((field, index) => {
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "path-item";
-
-        if (index === currentPathIndex) {
-            item.classList.add("active");
-        }
-
-        item.textContent =
-            field;
-
-        item.onclick = () =>
-            selectField(field);
-
-        container.appendChild(item);
-    });
-}
-
-
-/* ============================================================
-   NACHRICHTEN
-   ============================================================ */
-
-function showMessage(text, type) {
+/* =========================================================
+   NACHRICHT
+========================================================= */
+
+function showMessage(
+    text,
+    type
+) {
 
     const box =
         document.getElementById(
             "message"
         );
 
+
     box.className =
-        "message " + type;
+        "message show " + type;
+
 
     box.textContent =
         text;
 }
 
 
-/* ============================================================
-   GEWICHT FORMATIEREN
-   ============================================================ */
+/* =========================================================
+   START
+========================================================= */
 
-function formatKg(value) {
-
-    return Number(value)
-        .toFixed(2)
-        .replace(".", ",") + " kg";
-}
-
-
-/* ============================================================
-   INITIALISIERUNG
-   ============================================================ */
-
-function init() {
-
-    newChallenge();
-}
-
-init();
+newGame();
 
 </script>
 
