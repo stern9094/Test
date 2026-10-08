@@ -3,495 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BALANCE-BRÜCKE</title>
+<title>Kugel-Rätsel</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #dff5ff, #fef6d8);
-    color: #243447;
-}
-
-.game {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: #155e75;
-    margin-bottom: 5px;
-}
-
-.subtitle {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #52616b;
-}
-
-.layout {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 20px;
-}
-
-/* =========================
-   SPIELBEREICH
-========================= */
-
-.game-area {
-    background: white;
-    border-radius: 24px;
-    padding: 25px;
-    box-shadow: 0 10px 35px rgba(0,0,0,.12);
-}
-
-/* =========================
-   BRÜCKE
-========================= */
-
-.bridge {
-    position: relative;
-    margin-top: 30px;
-    padding: 25px 10px 35px;
-}
-
-.bridge-road {
-    height: 95px;
-
-    background:
-        linear-gradient(
-            #a7d8e8,
-            #76bdd3
-        );
-
-    border: 5px solid #397b91;
-
-    border-radius: 25px;
-
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    box-shadow:
-        inset 0 -8px 0 rgba(0,0,0,.08);
-}
-
-.bridge-center {
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    width: 32px;
-    height: 32px;
-
-    border-radius: 50%;
-
-    background: #ef4444;
-
-    border: 4px solid white;
-
-    box-shadow:
-        0 0 0 5px rgba(239,68,68,.18),
-        0 4px 10px rgba(0,0,0,.25);
-
-    z-index: 20;
-}
-
-/* =========================
-   SEITEN
-========================= */
-
-.sides {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-}
-
-.side {
-    text-align: center;
-
-    background: #f8fafc;
-
-    border-radius: 20px;
-
-    padding: 15px;
-
-    border: 3px solid #dbeafe;
-}
-
-.side.left {
-    border-color: #93c5fd;
-}
-
-.side.right {
-    border-color: #86efac;
-}
-
-.side h2 {
-    margin: 0 0 8px;
-}
-
-.weight-total {
-    font-size: 36px;
-    font-weight: bold;
-}
-
-.weight-label {
-    color: #64748b;
-    font-size: 14px;
-}
-
-/* =========================
-   STEINHAUFEN
-========================= */
-
-.stack-area {
-    min-height: 145px;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.stack {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.row {
-    display: flex;
-    justify-content: center;
-}
-
-.stone {
-    width: 34px;
-    height: 30px;
-
-    margin: 2px;
-
-    border-radius: 7px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #e5e7eb,
-            #9ca3af
-        );
-
-    border: 2px solid #6b7280;
-
-    box-shadow:
-        inset 2px 2px 3px rgba(255,255,255,.7),
-        0 3px 4px rgba(0,0,0,.2);
-}
-
-/* =========================
-   FIGUR
-========================= */
-
-.figure {
-    position: absolute;
-
-    bottom: 8px;
-
-    font-size: 42px;
-
-    transition:
-        left .7s ease;
-
-    z-index: 30;
-
-    transform:
-        translateX(-50%);
-}
-
-.figure-weight {
-    position: absolute;
-
-    left: 50%;
-    bottom: -2px;
-
-    transform: translateX(-50%);
-
-    background: #334155;
-
-    color: white;
-
-    font-size: 10px;
-
-    padding: 2px 5px;
-
-    border-radius: 5px;
-}
-
-/* =========================
-   STATUS
-========================= */
-
-.status {
-    text-align: center;
-
-    padding: 15px;
-
-    margin-bottom: 20px;
-
-    border-radius: 15px;
-
-    background: #ecfeff;
-
-    border: 2px solid #a5f3fc;
-
-    font-size: 18px;
-
-    font-weight: bold;
-}
-
-.status.good {
-    background: #dcfce7;
-    border-color: #86efac;
-    color: #166534;
-}
-
-.status.bad {
-    background: #fee2e2;
-    border-color: #fca5a5;
-    color: #991b1b;
-}
-
-/* =========================
-   AUSWAHL
-========================= */
-
-.controls {
-    background: white;
-
-    border-radius: 24px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.12);
-}
-
-.controls h2 {
-    margin-top: 0;
-}
-
-.direction {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 10px;
-
-    margin-bottom: 15px;
-}
-
-.direction button {
-    padding: 12px;
-
-    border: 2px solid #cbd5e1;
-
-    border-radius: 12px;
-
-    background: #f8fafc;
-
-    cursor: pointer;
-
-    font-size: 15px;
-}
-
-.direction button.selected {
-    background: #dbeafe;
-    border-color: #3b82f6;
-}
-
-.weights {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 10px;
-}
-
-.weight-choice {
-    min-height: 110px;
-
-    border: 3px solid #cbd5e1;
-
-    border-radius: 15px;
-
-    background: #f8fafc;
-
-    cursor: pointer;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    transition: .15s;
-}
-
-.weight-choice:hover {
-    transform: translateY(-3px);
-    border-color: #38bdf8;
-}
-
-.weight-choice.selected {
-    border-color: #f59e0b;
-
-    background: #fff7ed;
-
-    box-shadow:
-        0 0 15px rgba(245,158,11,.3);
-}
-
-.choice-number {
-    margin-top: 7px;
-
-    font-weight: bold;
-
-    color: #475569;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-button.main {
-    width: 100%;
-
-    margin-top: 12px;
-
-    padding: 13px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    color: white;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0891b2,
-            #0e7490
-        );
-}
-
-button.new {
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #5b21b6
-        );
-}
-
-/* =========================
-   MELDUNG
-========================= */
-
-.message {
-    margin-top: 15px;
-
-    padding: 13px;
-
-    border-radius: 12px;
-
-    display: none;
-
-    text-align: center;
-
-    font-weight: bold;
-}
-
-.message.show {
-    display: block;
-}
-
-.message.good {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.message.bad {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.message.info {
-    background: #e0f2fe;
-    color: #075985;
-}
-
-/* =========================
-   ZIEL
-========================= */
-
-.goal {
-    margin-top: 20px;
-
-    text-align: center;
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    color: #15803d;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:850px) {
-
-    .layout {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media(max-width:550px) {
-
-    .sides {
-        grid-template-columns: 1fr;
+    * {
+        box-sizing: border-box;
     }
 
-    .weights {
-        grid-template-columns: repeat(3,1fr);
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: #111827;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    .stone {
-        width: 27px;
-        height: 24px;
+    .game {
+        width: min(95vw, 700px);
+        text-align: center;
     }
-}
+
+    h1 {
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        color: #9ca3af;
+        margin-bottom: 25px;
+    }
+
+    .screen {
+        background: #1f2937;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 15px 50px rgba(0,0,0,.4);
+    }
+
+    .phase {
+        color: #60a5fa;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+    }
+
+    .question {
+        font-size: 27px;
+        font-weight: bold;
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .timer {
+        font-size: 42px;
+        font-weight: bold;
+        color: #22c55e;
+        margin: 10px 0 20px;
+    }
+
+    .timer.warning {
+        color: #f59e0b;
+    }
+
+    .timer.danger {
+        color: #ef4444;
+        animation: pulse .5s infinite alternate;
+    }
+
+    @keyframes pulse {
+        from { transform: scale(1); }
+        to { transform: scale(1.08); }
+    }
+
+    .board {
+        width: min(90vw, 450px);
+        aspect-ratio: 1;
+        margin: 20px auto;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
+        background: #374151;
+        padding: 7px;
+        border-radius: 12px;
+    }
+
+    .cell {
+        background: #111827;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        aspect-ratio: 1;
+    }
+
+    .ball {
+        width: 65%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        box-shadow:
+            inset -5px -7px 10px rgba(0,0,0,.35),
+            inset 4px 4px 8px rgba(255,255,255,.35),
+            0 3px 5px rgba(0,0,0,.4);
+    }
+
+    .red { background: #ef4444; }
+    .blue { background: #3b82f6; }
+    .green { background: #22c55e; }
+    .yellow { background: #facc15; }
+    .purple { background: #a855f7; }
+
+    .answers {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        max-width: 500px;
+        margin: 20px auto;
+    }
+
+    .answer {
+        border: none;
+        border-radius: 12px;
+        padding: 18px 10px;
+        background: #374151;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .15s;
+        min-height: 65px;
+    }
+
+    .answer:hover {
+        background: #4b5563;
+        transform: translateY(-2px);
+    }
+
+    .answer:active {
+        transform: scale(.97);
+    }
+
+    .answer.correct {
+        background: #16a34a;
+    }
+
+    .answer.wrong {
+        background: #dc2626;
+    }
+
+    button.start,
+    button.confirm,
+    button.next {
+        border: none;
+        border-radius: 12px;
+        padding: 16px 30px;
+        background: #2563eb;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button.start:hover,
+    button.confirm:hover,
+    button.next:hover {
+        background: #3b82f6;
+    }
+
+    .result {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+
+    .correct-text {
+        color: #22c55e;
+    }
+
+    .wrong-text {
+        color: #ef4444;
+    }
+
+    .info {
+        color: #9ca3af;
+        margin-top: 15px;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    @media (max-width: 500px) {
+        .screen {
+            padding: 15px;
+        }
+
+        .question {
+            font-size: 21px;
+        }
+
+        .answers {
+            gap: 8px;
+        }
+
+        .answer {
+            font-size: 16px;
+            padding: 12px 5px;
+        }
+    }
 </style>
 </head>
 
@@ -499,912 +222,515 @@ button.new {
 
 <div class="game">
 
-    <h1>⚖️ BALANCE-BRÜCKE</h1>
-
+    <h1>🔴 Kugel-Rätsel</h1>
     <div class="subtitle">
-        Bringe die Brücke ins Gleichgewicht und hilf der Figur zum Ziel!
+        Beobachten · Denken · Schnell entscheiden
     </div>
 
+    <div class="screen">
 
-    <div class="layout">
+        <!-- START -->
+        <div id="startScreen">
+            <div class="phase">BEREIT?</div>
 
-        <!-- =========================
-             SPIEL
-        ========================== -->
+            <h2>Baue das Spielfeld nach</h2>
 
-        <div class="game-area">
-
-            <div
-                id="status"
-                class="status">
-
-                ⚖️ Die Brücke wartet auf dich!
-
-            </div>
-
-
-            <div class="sides">
-
-                <div class="side left">
-
-                    <h2>🔵 LINKS</h2>
-
-                    <div
-                        id="leftTotal"
-                        class="weight-total">
-                        0
-                    </div>
-
-                    <div class="weight-label">
-                        Gewichte
-                    </div>
-
-                    <div
-                        id="leftStack"
-                        class="stack-area">
-                    </div>
-
-                </div>
-
-
-                <div class="side right">
-
-                    <h2>🟢 RECHTS</h2>
-
-                    <div
-                        id="rightTotal"
-                        class="weight-total">
-                        0
-                    </div>
-
-                    <div class="weight-label">
-                        Gewichte
-                    </div>
-
-                    <div
-                        id="rightStack"
-                        class="stack-area">
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="bridge">
-
-                <div class="bridge-road">
-
-                    <div
-                        id="figure"
-                        class="figure">
-
-                        🧒
-
-                        <div
-                            class="figure-weight">
-                            2
-                        </div>
-
-                    </div>
-
-                    <div class="bridge-center"></div>
-
-                </div>
-
-            </div>
-
-
-            <div
-                id="goal"
-                class="goal">
-
-                🏁 Ziel: Noch nicht erreicht
-
-            </div>
-
-        </div>
-
-
-        <!-- =========================
-             STEUERUNG
-        ========================== -->
-
-        <div class="controls">
-
-            <h2>🧱 Gewicht wählen</h2>
-
-            <p>
-                Wähle zuerst die Seite und danach
-                einen Gewichtshaufen.
+            <p class="info">
+                Baue die angezeigte Anordnung mit deinen Kugeln
+                auf deinem echten 5×5-Spielfeld nach.
             </p>
 
-
-            <div class="direction">
-
-                <button
-                    id="leftButton"
-                    onclick="selectSide('left')">
-
-                    🔵 Links
-
-                </button>
-
-                <button
-                    id="rightButton"
-                    onclick="selectSide('right')">
-
-                    🟢 Rechts
-
-                </button>
-
-            </div>
+            <button class="start" onclick="startGame()">
+                Spiel starten
+            </button>
+        </div>
 
 
-            <div
-                id="weights"
-                class="weights">
-            </div>
+        <!-- AUFBAU -->
+        <div id="buildScreen" class="hidden">
 
+            <div class="phase">1 · AUFBAU</div>
 
-            <button
-                class="main"
-                onclick="placeWeight()">
+            <h2>Baue diese Anordnung nach</h2>
 
-                🧱 Gewicht ablegen
+            <div id="buildBoard" class="board"></div>
 
+            <p class="info">
+                Wenn dein echtes Spielfeld fertig aufgebaut ist:
+            </p>
+
+            <button class="confirm" onclick="startQuestions()">
+                Aufbau fertig
             </button>
 
-
-            <button
-                class="main new"
-                onclick="newGame()">
-
-                🎲 Neue Runde
-
-            </button>
+        </div>
 
 
-            <div
-                id="message"
-                class="message">
+        <!-- FRAGE -->
+        <div id="questionScreen" class="hidden">
+
+            <div class="phase" id="difficulty">
+                FRAGE
+            </div>
+
+            <div id="question" class="question"></div>
+
+            <div id="timer" class="timer">15</div>
+
+            <div id="answers" class="answers"></div>
+
+            <div id="questionBoard" class="board"></div>
+
+            <div class="info">
+                Nur eine Antwort ist richtig!
             </div>
 
         </div>
 
-    </div>
 
+        <!-- ERGEBNIS -->
+        <div id="resultScreen" class="hidden">
+
+            <div id="result" class="result"></div>
+
+            <p id="resultInfo" class="info"></p>
+
+            <button class="next" onclick="nextQuestion()">
+                Nächste Frage
+            </button>
+
+        </div>
+
+    </div>
 </div>
 
 
 <script>
 
-/* =========================================================
-   SPIELREGELN
-========================================================= */
+/*
+    ==========================================
+    SPIELDATEN
+    ==========================================
+*/
 
-const FIGURE_WEIGHT = 2;
-
-const AVAILABLE_WEIGHTS = [1, 2, 3, 4, 5, 6];
-
-const MAX_STEPS = 7;
-
-
-/* =========================================================
-   SPIELZUSTAND
-========================================================= */
-
-let leftWeights = [];
-
-let rightWeights = [];
-
-let selectedSide = null;
-
-let selectedWeight = null;
-
-let step = 0;
-
-let goalStep = MAX_STEPS;
-
-let locked = false;
+const colors = {
+    R: { name: "Rot", class: "red" },
+    B: { name: "Blau", class: "blue" },
+    G: { name: "Grün", class: "green" },
+    Y: { name: "Gelb", class: "yellow" },
+    P: { name: "Lila", class: "purple" }
+};
 
 
-/* =========================================================
-   STEINHAUFEN
-========================================================= */
+/*
+    Unser Beispiel-5x5-Spielfeld
+*/
 
-function createStack(amount) {
-
-    const stack =
-        document.createElement("div");
-
-    stack.className = "stack";
-
-
-    let rows = [];
+const board = [
+    ["G", "R", "B", "Y", "G"],
+    ["B", "Y", "R", "G", "B"],
+    ["R", "G", "Y", "B", "R"],
+    ["Y", "B", "G", "R", "Y"],
+    ["G", "R", "Y", "G", "B"]
+];
 
 
-    /*
-       1 = 1
-       2 = 1 + 1
-       3 = 1 + 2
-       4 = 2 + 2
-       5 = 2 + 3
-       6 = 3 + 3
-    */
+/*
+    Fragen.
+    
+    answer = richtige Antwort
+    answers = 6 mögliche Antworten
+    time = Zeit in Sekunden
+*/
 
-    switch(amount) {
+const questions = [
 
-        case 1:
-            rows = [1];
-            break;
+    {
+        difficulty: "EINFACH",
+        text: "Wie viele grüne Kugeln?",
+        answers: ["3", "4", "5", "6", "7", "8"],
+        answer: "5",
+        time: 15
+    },
 
-        case 2:
-            rows = [1,1];
-            break;
+    {
+        difficulty: "EINFACH",
+        text: "Wie viele gelbe und blaue Kugeln?",
+        answers: ["7", "8", "9", "10", "11", "12"],
+        answer: "10",
+        time: 15
+    },
 
-        case 3:
-            rows = [1,2];
-            break;
+    {
+        difficulty: "MITTEL",
+        text: "Welche Kugel liegt unter Blau?",
+        answers: ["Rot", "Blau", "Grün", "Gelb", "Lila", "Keine"],
+        answer: "Rot",
+        time: 12
+    },
 
-        case 4:
-            rows = [2,2];
-            break;
+    {
+        difficulty: "MITTEL",
+        text: "Was liegt zwischen Blau und Grün von oben nach unten?",
+        answers: ["Rot", "Blau", "Grün", "Gelb", "Lila", "Keine"],
+        answer: "Gelb",
+        time: 12
+    },
 
-        case 5:
-            rows = [2,3];
-            break;
+    {
+        difficulty: "SCHWER",
+        text: "Welche Kugel liegt 2 Felder rechts von Grün?",
+        answers: ["Rot", "Blau", "Grün", "Gelb", "Lila", "Keine"],
+        answer: "Gelb",
+        time: 10
+    },
 
-        case 6:
-            rows = [3,3];
-            break;
+    {
+        difficulty: "SCHWER",
+        text: "Welche Kugel liegt diagonal unter Blau?",
+        answers: ["Rot", "Blau", "Grün", "Gelb", "Lila", "Keine"],
+        answer: "Gelb",
+        time: 10
+    },
+
+    {
+        difficulty: "SEHR SCHWER",
+        text: "Welche Kugel liegt unter der Kugel rechts von Grün?",
+        answers: ["Rot", "Blau", "Grün", "Gelb", "Lila", "Keine"],
+        answer: "Blau",
+        time: 7
     }
 
-
-    rows.forEach(count => {
-
-        const row =
-            document.createElement("div");
-
-        row.className = "row";
+];
 
 
-        for(let i=0; i<count; i++) {
+let currentQuestion = 0;
+let timerInterval = null;
+let timeLeft = 0;
+let answered = false;
 
-            const stone =
-                document.createElement("div");
 
-            stone.className = "stone";
+/*
+    ==========================================
+    HILFSFUNKTIONEN
+    ==========================================
+*/
 
-            row.appendChild(stone);
+function show(id) {
+    document.getElementById(id).classList.remove("hidden");
+}
+
+function hide(id) {
+    document.getElementById(id).classList.add("hidden");
+}
+
+
+/*
+    Spielfeld zeichnen
+*/
+
+function drawBoard(elementId) {
+
+    const element = document.getElementById(elementId);
+
+    element.innerHTML = "";
+
+    board.forEach(row => {
+
+        row.forEach(color => {
+
+            const cell = document.createElement("div");
+            cell.className = "cell";
+
+            const ball = document.createElement("div");
+            ball.className = "ball " + colors[color].class;
+
+            cell.appendChild(ball);
+            element.appendChild(cell);
+
+        });
+
+    });
+}
+
+
+/*
+    ==========================================
+    START
+    ==========================================
+*/
+
+function startGame() {
+
+    hide("startScreen");
+    show("buildScreen");
+
+    drawBoard("buildBoard");
+}
+
+
+/*
+    ==========================================
+    FRAGEN STARTEN
+    ==========================================
+*/
+
+function startQuestions() {
+
+    hide("buildScreen");
+    show("questionScreen");
+
+    currentQuestion = 0;
+
+    loadQuestion();
+}
+
+
+/*
+    ==========================================
+    FRAGE LADEN
+    ==========================================
+*/
+
+function loadQuestion() {
+
+    clearInterval(timerInterval);
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("difficulty").textContent =
+        q.difficulty;
+
+    document.getElementById("question").textContent =
+        q.text;
+
+    drawBoard("questionBoard");
+
+    const answers = document.getElementById("answers");
+
+    answers.innerHTML = "";
+
+    q.answers.forEach(answer => {
+
+        const button = document.createElement("button");
+
+        button.className = "answer";
+        button.textContent = answer;
+
+        button.addEventListener("click", () => {
+
+            checkAnswer(answer, button);
+
+        });
+
+        answers.appendChild(button);
+
+    });
+
+    startTimer(q.time);
+}
+
+
+/*
+    ==========================================
+    COUNTDOWN
+    ==========================================
+*/
+
+function startTimer(seconds) {
+
+    clearInterval(timerInterval);
+
+    timeLeft = seconds;
+
+    const timer = document.getElementById("timer");
+
+    timer.textContent = timeLeft;
+
+    timer.className = "timer";
+
+    timerInterval = setInterval(() => {
+
+        timeLeft--;
+
+        timer.textContent = timeLeft;
+
+        if (timeLeft <= 5) {
+            timer.className = "timer danger";
+        }
+        else if (timeLeft <= 8) {
+            timer.className = "timer warning";
         }
 
+        if (timeLeft <= 0) {
 
-        stack.appendChild(row);
-    });
+            clearInterval(timerInterval);
 
+            timeExpired();
 
-    return stack;
-}
-
-
-/* =========================================================
-   GESAMTGEWICHT
-========================================================= */
-
-function getTotal(weights) {
-
-    return weights.reduce(
-        (sum, value) =>
-            sum + value,
-        0
-    );
-}
-
-
-/* =========================================================
-   GEWICHTSAUSWAHL
-========================================================= */
-
-function renderWeightChoices() {
-
-    const container =
-        document.getElementById("weights");
-
-    container.innerHTML = "";
-
-
-    const choices =
-        generateChoices();
-
-
-    choices.forEach(weight => {
-
-        const button =
-            document.createElement("div");
-
-        button.className =
-            "weight-choice";
-
-
-        if (
-            selectedWeight === weight
-        ) {
-
-            button.classList.add(
-                "selected"
-            );
         }
 
-
-        button.appendChild(
-            createStack(weight)
-        );
-
-
-        const label =
-            document.createElement("div");
-
-        label.className =
-            "choice-number";
-
-        label.textContent =
-            weight === 1
-                ? "1 Gewicht"
-                : `${weight} Gewichte`;
-
-
-        button.appendChild(label);
-
-
-        button.onclick = () => {
-
-            if (locked) return;
-
-            selectedWeight = weight;
-
-            renderWeightChoices();
-
-            showMessage(
-                "🧱 Gewicht ausgewählt. Jetzt ablegen.",
-                "info"
-            );
-        };
-
-
-        container.appendChild(button);
-    });
+    }, 1000);
 }
 
 
-/* =========================================================
-   3 AUSWAHLEN
-========================================================= */
+/*
+    ==========================================
+    ANTWORT PRÜFEN
+    ==========================================
+*/
 
-function generateChoices() {
+function checkAnswer(answer, button) {
 
-    /*
-       Für die aktuelle Aufgabe wird
-       immer eine passende Lösung erzeugt.
+    if (answered) return;
 
-       Die beiden anderen Werte sind
-       bewusst falsch.
-    */
+    answered = true;
 
-    const difference =
-        Math.abs(
-            getTotal(leftWeights)
-            -
-            getTotal(rightWeights)
+    clearInterval(timerInterval);
+
+    const q = questions[currentQuestion];
+
+    const allButtons =
+        document.querySelectorAll(".answer");
+
+    allButtons.forEach(btn => {
+        btn.disabled = true;
+    });
+
+    if (answer === q.answer) {
+
+        button.classList.add("correct");
+
+        showResult(
+            true,
+            "RICHTIG!",
+            "Die Antwort war " + q.answer + "."
         );
 
-
-    let correct =
-        difference;
-
-
-    /*
-       Wenn beide Seiten gleich sind,
-       muss 1 gewählt werden, damit
-       die nächste Aufgabe entsteht.
-    */
-
-    if (correct === 0) {
-
-        correct = 1;
     }
+    else {
 
+        button.classList.add("wrong");
 
-    /*
-       Maximal 6.
-    */
+        allButtons.forEach(btn => {
 
-    correct =
-        Math.min(
-            correct,
-            6
+            if (btn.textContent === q.answer) {
+                btn.classList.add("correct");
+            }
+
+        });
+
+        showResult(
+            false,
+            "FALSCH!",
+            "Richtig wäre: " + q.answer
         );
+    }
+}
 
 
-    const choices = [correct];
+/*
+    ==========================================
+    ZEIT ABGELAUFEN
+    ==========================================
+*/
 
+function timeExpired() {
 
-    while (
-        choices.length < 3
-    ) {
+    if (answered) return;
 
-        const value =
-            randomInt(1,6);
+    answered = true;
 
+    const q = questions[currentQuestion];
 
-        if (
-            !choices.includes(value)
-        ) {
+    const allButtons =
+        document.querySelectorAll(".answer");
 
-            choices.push(value);
+    allButtons.forEach(btn => {
+
+        btn.disabled = true;
+
+        if (btn.textContent === q.answer) {
+            btn.classList.add("correct");
         }
-    }
 
-
-    return shuffle(choices);
-}
-
-
-/* =========================================================
-   SEITE AUSWÄHLEN
-========================================================= */
-
-function selectSide(side) {
-
-    if (locked) return;
-
-
-    selectedSide = side;
-
-
-    document
-        .getElementById("leftButton")
-        .classList.toggle(
-            "selected",
-            side === "left"
-        );
-
-
-    document
-        .getElementById("rightButton")
-        .classList.toggle(
-            "selected",
-            side === "right"
-        );
-
-
-    showMessage(
-        side === "left"
-            ? "🔵 Linke Seite ausgewählt."
-            : "🟢 Rechte Seite ausgewählt.",
-        "info"
-    );
-}
-
-
-/* =========================================================
-   GEWICHT ABLEGEN
-========================================================= */
-
-function placeWeight() {
-
-    if (locked) return;
-
-
-    if (!selectedSide) {
-
-        showMessage(
-            "👆 Wähle zuerst links oder rechts.",
-            "bad"
-        );
-
-        return;
-    }
-
-
-    if (!selectedWeight) {
-
-        showMessage(
-            "👆 Wähle zuerst ein Gewicht.",
-            "bad"
-        );
-
-        return;
-    }
-
-
-    const beforeLeft =
-        getTotal(leftWeights);
-
-    const beforeRight =
-        getTotal(rightWeights);
-
-
-    /*
-       Das gewählte Gewicht wird
-       dauerhaft abgelegt.
-    */
-
-    if (
-        selectedSide === "left"
-    ) {
-
-        leftWeights.push(
-            selectedWeight
-        );
-
-    } else {
-
-        rightWeights.push(
-            selectedWeight
-        );
-    }
-
-
-    const left =
-        getTotal(leftWeights);
-
-    const right =
-        getTotal(rightWeights);
-
-
-    selectedSide = null;
-
-    selectedWeight = null;
-
-
-    document
-        .getElementById("leftButton")
-        .classList.remove("selected");
-
-    document
-        .getElementById("rightButton")
-        .classList.remove("selected");
-
-
-    renderBoard();
-
-
-    /*
-       Gleichgewicht?
-    */
-
-    if (left === right) {
-
-        locked = true;
-
-
-        showMessage(
-            "🎉 PERFEKT! Die Brücke ist im Gleichgewicht!",
-            "good"
-        );
-
-
-        setTimeout(() => {
-
-            locked = false;
-
-            moveFigure();
-
-        }, 1000);
-
-
-    } else {
-
-        showMessage(
-            left > right
-                ? "⚖️ Links ist noch schwerer."
-                : "⚖️ Rechts ist noch schwerer.",
-            "bad"
-        );
-    }
-}
-
-
-/* =========================================================
-   FIGUR BEWEGEN
-========================================================= */
-
-function moveFigure() {
-
-    step++;
-
-
-    if (
-        step >= goalStep
-    ) {
-
-        finishGame();
-
-        return;
-    }
-
-
-    renderBoard();
-
-
-    showMessage(
-        "➡️ Die Figur ist ein Feld weiter!",
-        "good"
-    );
-
-
-    /*
-       Neue Auswahl erzeugen.
-    */
-
-    renderWeightChoices();
-}
-
-
-/* =========================================================
-   FIGUR POSITION
-========================================================= */
-
-function updateFigure() {
-
-    const figure =
-        document.getElementById(
-            "figure"
-        );
-
-
-    /*
-       Die Figur bewegt sich
-       von links nach rechts
-       über die Brücke.
-    */
-
-    const positions = [
-        8,
-        20,
-        32,
-        44,
-        56,
-        68,
-        80
-    ];
-
-
-    const position =
-        positions[
-            Math.min(
-                step,
-                positions.length - 1
-            )
-        ];
-
-
-    figure.style.left =
-        position + "%";
-}
-
-
-/* =========================================================
-   BRETT DARSTELLEN
-========================================================= */
-
-function renderBoard() {
-
-    const left =
-        getTotal(leftWeights);
-
-    const right =
-        getTotal(rightWeights);
-
-
-    document
-        .getElementById("leftTotal")
-        .textContent =
-        left;
-
-
-    document
-        .getElementById("rightTotal")
-        .textContent =
-        right;
-
-
-    const leftStack =
-        document.getElementById(
-            "leftStack"
-        );
-
-    const rightStack =
-        document.getElementById(
-            "rightStack"
-        );
-
-
-    leftStack.innerHTML = "";
-
-    rightStack.innerHTML = "";
-
-
-    /*
-       Alle einzelnen Gewichtshaufen
-       bleiben sichtbar.
-    */
-
-    leftWeights.forEach(weight => {
-
-        leftStack.appendChild(
-            createStack(weight)
-        );
     });
 
-
-    rightWeights.forEach(weight => {
-
-        rightStack.appendChild(
-            createStack(weight)
-        );
-    });
-
-
-    updateFigure();
-
-
-    /*
-       Statusanzeige
-    */
-
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-
-    if (left === right) {
-
-        status.className =
-            "status good";
-
-        status.textContent =
-            "⚖️ GLEICHGEWICHT!";
-
-    } else {
-
-        status.className =
-            "status";
-
-        status.textContent =
-            "⚖️ Die Brücke muss ausgeglichen werden.";
-    }
-}
-
-
-/* =========================================================
-   SPIEL BEENDET
-========================================================= */
-
-function finishGame() {
-
-    locked = true;
-
-
-    document
-        .getElementById("goal")
-        .textContent =
-        "🏆 ZIEL ERREICHT! SUPER GEMACHT!";
-
-
-    showMessage(
-        "🎉 Du hast die BALANCE-BRÜCKE geschafft!",
-        "good"
+    showResult(
+        false,
+        "ZEIT ABGELAUFEN!",
+        "Richtig wäre: " + q.answer
     );
 }
 
 
-/* =========================================================
-   NEUES SPIEL
-========================================================= */
+/*
+    ==========================================
+    ERGEBNIS
+    ==========================================
+*/
 
-function newGame() {
+function showResult(correct, title, info) {
 
-    leftWeights = [];
+    hide("questionScreen");
 
-    rightWeights = [];
-
-    selectedSide = null;
-
-    selectedWeight = null;
-
-    step = 0;
-
-    goalStep =
-        randomInt(5,7);
-
-    locked = false;
-
-
-    document
-        .getElementById("goal")
-        .textContent =
-        "🏁 Ziel: Noch nicht erreicht";
-
-
-    document
-        .getElementById("leftButton")
-        .classList.remove("selected");
-
-    document
-        .getElementById("rightButton")
-        .classList.remove("selected");
-
-
-    renderBoard();
-
-    renderWeightChoices();
-
-
-    showMessage(
-        "🎲 Neue Runde! Bringe beide Seiten ins Gleichgewicht.",
-        "info"
-    );
-}
-
-
-/* =========================================================
-   HILFSFUNKTIONEN
-========================================================= */
-
-function randomInt(min,max) {
-
-    return Math.floor(
-        Math.random() *
-        (max - min + 1)
-    ) + min;
-}
-
-
-function shuffle(array) {
+    show("resultScreen");
 
     const result =
-        [...array];
+        document.getElementById("result");
 
+    result.textContent = title;
 
-    for (
-        let i =
-            result.length - 1;
+    result.className =
+        "result " + (correct
+            ? "correct-text"
+            : "wrong-text");
 
-        i > 0;
+    document.getElementById("resultInfo")
+        .textContent = info;
 
-        i--
-    ) {
-
-        const j =
-            Math.floor(
-                Math.random() *
-                (i + 1)
-            );
-
-
-        [
-            result[i],
-            result[j]
-        ] =
-        [
-            result[j],
-            result[i]
-        ];
-    }
-
-
-    return result;
 }
 
 
-/* =========================================================
-   START
-========================================================= */
+/*
+    ==========================================
+    NÄCHSTE FRAGE
+    ==========================================
+*/
 
-newGame();
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if (currentQuestion >= questions.length) {
+
+        currentQuestion = 0;
+
+        document.getElementById("result").textContent =
+            "RUNDE BEENDET";
+
+        document.getElementById("result").className =
+            "result correct-text";
+
+        document.getElementById("resultInfo").textContent =
+            "Alle Fragen wurden gespielt.";
+
+        document.querySelector(".next").textContent =
+            "Neue Runde";
+
+        document.querySelector(".next").onclick =
+            () => location.reload();
+
+        return;
+    }
+
+    hide("resultScreen");
+    show("questionScreen");
+
+    loadQuestion();
+}
 
 </script>
 
